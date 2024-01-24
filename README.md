@@ -1,1 +1,2 @@
-# aulaLogicaProgramacao2
+**Aula Lógica Programacao II**
+prof: Reinaldo
