@@ -229,7 +229,7 @@ rl.question("Digite o nome do aluno: ", function(nome) {
 
 // Exercício 9 ----------------------------------------------------------------------------------
 
-const readline = require('readline');
+/*const readline = require('readline');
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -271,4 +271,4 @@ const readline = require('readline');
         console.log(`O valor do resultado da ${operacao} entre ${n1} e ${n2} é de ${result.toFixed(2)}}`)
       }
       rl.close();
-})})});
+})})});*/
