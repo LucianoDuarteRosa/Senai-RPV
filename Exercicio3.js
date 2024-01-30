@@ -1,7 +1,7 @@
 let historicoAluno = {
     ensinoMedio: true,
     ensinoSuperior: true,
-    hardSkils: ['adapatabilidade', 'flexível', 'dedicado'],
+    hardSkils: ['C#', 'Git e GitHub', 'MySql'],
     idioma: ['ingles', 'espanhol', 'russo']
 }
 
