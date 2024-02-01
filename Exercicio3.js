@@ -78,7 +78,7 @@ let aluno = {
         }
 
 
-        let escolaStark = {
+        let escola = {
             alunos: [aluno],
             ministracaoAulas: [aulas],
             realizacaoCurso:[cursos],
