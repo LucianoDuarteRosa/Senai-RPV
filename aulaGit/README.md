@@ -1,3 +1,6 @@
-## Aula de Git
+## Versionamento
 ---
-**Senai Cataguases/Edu Livre**
+**Git e GitHub**
+
+Senai/Edu Livre
+prof: Reinaldo
