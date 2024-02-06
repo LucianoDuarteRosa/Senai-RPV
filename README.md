@@ -1,8 +1,5 @@
 <h2><center><strong><font style="font-family: Arial, sans-serif;">Rio Pomba Valley - Senai </font></strong></center></h2>
 
-<p align="center">
-    <img src="https://encurtador.com.br/kHL08" alt="Logo">
-</p>
 
 ---
 <h4><center><strong>Programação FullStack e Desenvolvimento de Habilidades Socioemocionais</strong></center></h4>
