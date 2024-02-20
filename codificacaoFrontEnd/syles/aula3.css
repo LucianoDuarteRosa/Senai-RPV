@@ -1,0 +1,82 @@
+body{
+    background-color: black;
+    color: black;
+}
+.container{
+    background-color: #242424;
+    text-align: center;
+    border: 5px solid white;
+    margin: 10px 20px 10px 20px;
+    padding: 20;
+    height: 150px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.container div{
+    height: 40px;
+    background-color: aliceblue;
+    height: 130px;
+    width: 250px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 50px;
+    border: 5px solid black;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.container2{
+    display: flex;
+    justify-content: space-between;
+    border: 5px solid white;
+    margin: 10px 20px 10px 20px;
+    background-color: #242424;
+    height: 150px;
+    padding: 10px;
+}
+
+.container2 div{
+    height: 40px;
+    background-color: aliceblue;
+    height: 130px;
+    width: 180px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 50px;
+    border: 5px solid black;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#section1{
+    justify-content: flex-end;
+}
+
+#section2{
+    justify-content: flex-start;
+}
+
+body .head{
+    background-color: hotpink;
+}
+
+body .div1{
+    background-color: aqua;
+}
+
+body .div2{
+    background-color: blueviolet;
+}
+
+body .div3{
+    background-color: chartreuse;
+}
+
+body .div4{
+    background-color: darkorange;
+}
