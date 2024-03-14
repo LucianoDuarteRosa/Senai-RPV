@@ -73,3 +73,12 @@ header {
 .footer img{
   width: 70px;
 }
+
+.cards-main a{
+  text-decoration: none;
+}
+
+.cards-main a:hover{
+  opacity: .7;
+
+}
