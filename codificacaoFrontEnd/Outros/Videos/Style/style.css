@@ -1,0 +1,157 @@
+body{
+    background-color: #000;
+    font-family: 'DM Sans' sans-serif;
+    color: red;
+    margin: 0;
+    padding: 0;
+}
+.navbarMain{
+    background-image: url('/Outros/Videos/Images/home.jpg'), linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%);
+    background-size: cover;
+    background-position: center;
+    padding-bottom: 100px;
+    border-bottom: 5px solid #8f8888;
+}
+
+.navbar{
+    padding: 20px;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.navbar-brand{
+    font-weight: 700;
+    font-size: 2rem;
+    color: red;
+}
+
+.btn{
+    font-weight: 700;
+    background-color: red;
+    border-radius: 0;
+}
+
+.text{
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+.text1{
+    font-size: 3rem;
+    font-weight: 1000;
+    margin: 0;
+}
+
+.text2{
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.text3{
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.d-flex{
+    display: flex;
+    justify-content: center;
+}
+
+.form-control{
+    width: 40%;
+    border-radius: 0;
+    margin: 0;
+    margin-right: 0;
+    margin-bottom: 20px;
+}
+
+.btn-outline-success{
+    color: white;
+    border: red;
+    margin-bottom: 20px;
+}
+
+.btn-outline-success:hover{
+    background-color: rgb(238, 66, 66);
+}
+
+.navbar-brand:hover{
+    color: rgb(238, 66, 66);
+}
+
+.main{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.container .card{
+    background-color: #000;
+}
+
+.card-body{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    justify-content: center; 
+}
+
+.card-title{
+    color: white;
+    font-weight: 1000;
+    font-size: 4rem;
+}
+
+.card-text{
+    color: white;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+.imgCard{
+    padding-top: 10px;
+    border-top: 2px solid #b3b3b3;
+    width: auto;
+    height: 100%;
+}
+
+.footer h5{
+    color: white;
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.acordion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.accordion-item{
+    margin-bottom: 10px;
+    border: none;
+    width: 630px;
+}
+.accordion-button{
+    background-color: #727171;
+    border-radius: 2px;
+    color: white;
+    font-weight: 400;
+    border: none;
+}
