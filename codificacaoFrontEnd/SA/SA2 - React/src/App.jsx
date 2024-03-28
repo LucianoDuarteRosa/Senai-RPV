@@ -15,15 +15,17 @@ function App() {
         cidadeCliente='Cataguases'
         ufCidade = 'Minas Gerais'/>
       <Routes>
-        <Route path='/Section' element={<Section />}>
+        <Route path='/' element={<Section />}>
         </Route>
-        <Route path='/SectionVantagens' element={<SectionVantagens />}>
+        <Route path='/Section' element={<Section titulo='Introdução a React'/>}>
         </Route>
-        <Route path='/SectionVite' element={<SectionVite />}>
+        <Route path='/SectionVantagens' element={<SectionVantagens titulo='Vantagens do React'/>}>
         </Route>
-        <Route path='/SectionHistory' element={<SectionHistory />}>
+        <Route path='/SectionVite' element={<SectionVite titulo='Explorando o Vite: Uma Introdução à Nova Geração de Ferramentas de Desenvolvimento Front-en'/>}>
         </Route>
-        <Route path='/SectionContact' element={<SectionContact endereco='Rua Leogédio Carlos da Silva 182, Vila Reis'
+        <Route path='/SectionHistory' element={<SectionHistory titulo='A Jornada Veloz de Sara: Uma História de Vite e React'/>}>
+        </Route>
+        <Route path='/SectionContact' element={<SectionContact titulo='Luciano Duarte' endereco='Rua Leogédio Carlos da Silva 182, Vila Reis'
         cidade='Cataguases' ufCidade = 'Minas Gerais' email = 'exemplo@exemplo.com.br' tel='(32)999-999-999'/>}>
         </Route>
       </Routes>

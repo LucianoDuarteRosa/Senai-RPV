@@ -1,10 +1,10 @@
 import style from './SectionVantagens.module.css'
 
-export function SectionVantagens(){
+export function SectionVantagens(props){
 
     return(
         <section className={style.section2}>
-            <h1>Vantagens do React</h1>
+            <h1>{props.titulo}</h1>
             <ul>
                 <li>
                 Reutilização de Componentes: React promove a reutilização de componentes, permitindo que os desenvolvedores dividam a interface de usuário em componentes pequenos e independentes. Esses componentes podem ser facilmente reutilizados em diferentes partes do aplicativo, reduzindo a redundância de código e facilitando a manutenção.
