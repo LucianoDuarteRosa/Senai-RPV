@@ -1,6 +1,16 @@
-----
+<h2><center><strong><font style="font-family: Arial, sans-serif;">Rio Pomba Valley - Senai </font></strong></center></h2>
 
-**Perfect World - Projeto Front End**
+<p align="center">
+    <img src="https://lh6.googleusercontent.com/proxy/qQbvb0Tf0mQZ5M6MFkiAxKJCfQ5hVANy2leKNGJ1BgqsfwBf_ukHRhFKMc1_CrvNrlgiDNNiMkrKFvBKGC_EjgftmE-PV9tQJJXoNf_OsykkYwtITGWh0Z3AucUSRO7teA1kCQ" alt="Logo">
+</p>
+
+<h4><center><strong><font style="font-family: Arial, sans-serif;">Projeto Final de Front-End </font></strong></center></h4>
+
+**Perfect World**
+
+<p align="center">
+    <img src="imagem.png" alt="Logo">
+</p>
 
 Este é o repositório para o projeto "Perfect World", desenvolvido como parte do módulo de codificação front end do projeto de desenvolvedor Full Stack aplicado pelo SENAI em parceria com o Edu Livre e Energisa.
 
