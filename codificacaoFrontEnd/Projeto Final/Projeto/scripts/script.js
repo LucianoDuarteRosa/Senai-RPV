@@ -136,7 +136,7 @@ function fazerLogout() {
     elemento.style.visibility = "hidden"
 }
 
-/*Registro com verificação*/
+/*Registro com verificação--está com erro
 function registro2() {
     var usuario = document.getElementById('exampleInputName1').value;
     var email = document.getElementById('exampleInputEmail1').value;
@@ -207,4 +207,4 @@ function registro2() {
             console.error('Erro ao buscar dados:', error);
         });
 }
-
+*/
