@@ -263,3 +263,35 @@ if(result < 18.5){
 */
 
 // Atividade - 15
+
+function calcularNotas(valor) {
+    const notas = [100, 50, 20, 10, 5, 2, 1];
+    const distribuicao = {};
+
+    for (let nota of notas) {
+        distribuicao[nota] = Math.floor(valor / nota);
+        valor %= nota;
+    }
+
+    return distribuicao;
+}
+
+function realizarSaque() {
+    let valor = parseFloat(prompt('Digite o valor do saque (sem casas decimais): '));
+
+    if (isNaN(valor) || !Number.isInteger(valor)) {
+        console.log('Valor inválido. Por favor, digite um valor inteiro.');
+        return;
+    }
+
+    const distribuicaoNotas = calcularNotas(valor);
+
+    console.log('Distribuição das notas:');
+    for (let nota in distribuicaoNotas) {
+        if (distribuicaoNotas[nota] > 0) {
+            console.log(`${distribuicaoNotas[nota]} nota(s) de R$ ${nota},00`);
+        }
+    }
+}
+
+realizarSaque();
