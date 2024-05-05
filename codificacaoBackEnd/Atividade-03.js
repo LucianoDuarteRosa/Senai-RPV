@@ -271,8 +271,7 @@ console.log(`A média do aluno ${listaAlunos[0].nome} do curso ${listaAlunos[0].
         console.log(resultString);
     };
     
-    let valor = entradaDados();
-    fazerCalculo(valor);
+    fazerCalculo(entradaDados());
 */
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -303,6 +302,7 @@ function entradaDados(){
             console.log("Por favor, digite uma medida válida.");
         };
     };
+
     terreno.area = terreno.comprimento * terreno.largura
     return terreno;
 };
@@ -311,15 +311,14 @@ function entradaDados(){
 function classificacaoTerreno(terreno){
     if(terreno.area < 100){
         console.log(`A área do terreno é de ${terreno.area.toFixed(0)}. O seu terreno é POPULAR.`);
-    }else if (terreno.area >= 100 && terreno.area < 500){
+    }else if (terreno.area >= 100 && terreno.area <= 500){
         console.log(`A área do terreno é de ${terreno.area.toFixed(0)}. O seu terreno é TERRENO MASTER.`);
     }else{
         console.log(`A área do terreno é de ${terreno.area.toFixed(0)}. O seu terreno é TERRENO VIP.`);
     };
 };
 
-let terreno = entradaDados();
-classificacaoTerreno(terreno);
+classificacaoTerreno(entradaDados());
 */
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -369,6 +368,73 @@ function classificacaoPessoa(pessoa){
     };
 };
 
-let pessoa = entradaDados();
-classificacaoPessoa(pessoa);
+classificacaoPessoa(entradaDados());
 */
+
+
+//--------------------------------------------------------------- AULA 04 --------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------
+/*1. Utilizando tratamento de erros: Crie um programa que receba dois números como parâmetros e retorna a divisão do primeiro pelo segundo.
+Use try-catch para lidar com o caso em que o segundo número é zero e imprima uma mensagem de erro apropriada.*/
+/*
+let nun1 = 0;
+let nun2 = 0;
+
+while (true) {
+    nun1 = parseFloat(prompt("Digite o primeiro número: "))
+    if (!isNaN(nun1)) {
+        break;
+    } else {
+        console.log("Por favor, digite um número.");
+    };
+};
+
+while (true) {
+    nun2 = parseFloat(prompt("Digite o segundo número: "))
+    if (!isNaN(nun2)) {
+        break;
+    } else {
+        console.log("Por favor, digite um número.");
+    };
+};
+
+try{
+    if(nun2 === 0){
+        throw new Error('Valor da divisão não pode ser 0.');
+    }else{
+        console.log(`O resultado da divisão entre ${nun1} e ${nun2} é : ${(nun1/nun2).toFixed('2')}`)
+    }
+}catch(e){
+    console.error(e.message)
+}
+*/
+/*
+let nun1 = 10;
+let nun2 = 0;
+
+try{
+    if(nun2 === 0){
+        throw new console.erro('Valor da divisão não pode ser 0.');
+    }else{
+        console.log(`O resultado da divisão entre ${nun1} e ${nun2} é : ${(nun1/nun2).toFixed('2')}`)
+    }
+}catch(e){
+    console.error(console.log(e.message))
+}
+*/
+//--------------------------------------------------------------------------------------------------------------------------------------------
+/*2. Utilizando tratamento de erros: Crie um programa que receba um array de números e um índice como argumentos e retorna o elemento do array no índice especificado. 
+Utilize try-catch para lidar com o caso em que o índice fornecido está fora dos limites do array e imprima uma mensagem de erro apropriada.*/
+
+let array = [1, 5, 6, 9, 10, 3, 4];
+let indice = 10; 
+
+try{
+    if(array[indice] === undefined){
+        throw new Error('Indice não existe no array.')
+    }else{
+        console.log("o valor no indice é : " + array[indice])
+    }
+}catch(e){
+    console.error(e.message)
+}
