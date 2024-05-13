@@ -15,6 +15,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 10px;
 }
 
 .cabecalho div p{
@@ -51,10 +52,11 @@ main{
 main a{
     text-decoration: none;
     color: #000;
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: #f3eaea;
     font-weight: 500;
     width: 80%;
+    padding: 10px;
 }
 
 footer{
