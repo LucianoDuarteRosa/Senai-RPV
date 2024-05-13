@@ -1,50 +1,91 @@
-/* 3. Utilizando objeto: Crie um programa que leia os dados de um aluno: nome, matrícula,
-     disciplina, nota. 
-   - Se a nota do aluno for maior ou igual a 60 exiba no console “Aprovado”.
-   - Se a nota do aluno for menor que 60 porém maior ou igual a 50 
-   exiba no console “Em recuperação” 
-   - Se a nota do aluno for menor que 50 exiba no console “Reprovado”.
-   criar nova propriedade chamada situacao para o aluno.*/
+/* 2. Utilizando objeto: Crie um programa que leia os dados de um usuário: 
+    nome, sobrenome, CPF, sexo, data de nascimento, endereço e telefone e exiba no console.*/
 
-  function validarEnviar(){
-    let aluno = {};
-    let nome = document.getElementById('nome').value;
-    aluno.matricula = document.getElementById('matricula').value;
-    aluno.disciplina = document.getElementById('disciplina').value;
-    let nota = document.getElementById('nota').value
+    
+    function checkRatio(){
+      let radios = document.getElementsByName('opcao')
 
-
-    try{
-      if (/^[a-zA-ZÀ-ÿ\s']{2,}$/.test(nome)) {
-        aluno.nome = nome  
-      } else {
-          throw new Error('Por favor, digite um nome válido.')
-      };
-      
-      if (!isNaN(nota) && nota > 0 && nota <= 100) {
-        aluno.nota = parseInt(nota);
-      } else {
-          throw new Error('Por favor, digite uma nota válida.')
-      };
-      
-      if(aluno.nota >= 60){
-        aluno.situacao = "aprovado"
-      }else if(aluno.nota >= 50 && aluno.nota < 60){
-        aluno.situacao = "recuperação"
-      }else{
-          aluno.situacao = "reprovado"
+      for (let i = 0; i < radios.length; i++){
+        if(radios[i].checked){
+          return radios[i].value;
+        }
       }
+    };
 
-      let result = document.getElementById('retornoAqui');
-
-      result.innerText = `${aluno.nome}, matrícula ${aluno.matricula} está com a nota ${aluno.nota} está ${aluno.situacao} em ${aluno.disciplina}.`;
-
-      let visibility = document.getElementById('return')
-      visibility.style.visibility  = "visible";
-
-    }catch(error){
-      alert(error.message)
+    function formatarData(data){
+      let partes = data.split("-")
+      return partes[2] + "/" + partes[1] + "/" + partes[0];
     }
 
-  }
+    function validarEnviar(){
+      let pessoa = {};
+      let nome = document.getElementById('nome').value;
+      let sobrenome = document.getElementById('sobrenome').value;
+      let cpf = document.getElementById('cpf').value;
+      let dataNasc = document.getElementById('dataNasc').value;
+      dataNasc = formatarData(dataNasc);
+      pessoa.endereco = document.getElementById('endereco').value;
+      let telefone = document.getElementById('telefone').value;
+      pessoa.sexo = checkRatio();
 
+      try{
+        if (/^[a-zA-ZÀ-ÿ\s']{2,}$/.test(nome)) {
+          pessoa.nome = nome  
+        } else {
+            throw new Error('Por favor, digite um nome válido.')
+        };
+
+        if (/^[a-zA-ZÀ-ÿ\s']{3,}$/.test(sobrenome)) {
+          pessoa.sobrenome = sobrenome  
+        } else {
+            throw new Error('Por favor, digite um sobrenome válido.')
+        };
+
+        if (/\d{11}/.test(cpf)) {
+            if(cpf.length === 11){
+              pessoa.cpf = cpf;
+            }else{
+              throw new Error("Por favor, digite 11 números.")
+            } 
+          } else {
+              throw new Error("Por favor, digite somente números e 11 digitos.");
+          }
+
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dataNasc)) {
+          let partesData = dataNasc.split('/');
+          let dia = parseInt(partesData[0]);
+          let mes = parseInt(partesData[1]);
+          let ano = parseInt(partesData[2]);
+
+          if (!isNaN(dia) && !isNaN(mes) && !isNaN(ano)) {
+              if (dia > 0 && dia < 32 && mes > 0 && mes < 13 && ano < 2025) {
+                  pessoa.dataNascimento = dataNasc; 
+              } else {
+                  throw new Error("Data inválida.");
+              }
+          } else {
+              throw new Error("Data inválida.");
+          }
+        } else {
+            throw new Error("Formato de data inválido. Formato: DD/MM/AAAA");
+        }
+      
+        if (/\(\d{2,3}\)\d{4,5}-\d{4}/.test(telefone)) {
+          pessoa.telefone = telefone;
+        } else {
+            throw new Error("Telefone Inválido. Formato: (XX)XXXXX-XXXX");
+        }
+
+        let result = document.getElementById('retornoAqui');
+
+        result.innerText = `${pessoa.nome} ${pessoa.sobrenome} foi cadastrado com sucesso. Cpf: ${pessoa.cpf}, tel: ${pessoa.telefone}, data nascimento: ${pessoa.dataNascimento}, sexo: ${pessoa.sexo}, endereço: ${pessoa.endereco}.`;
+  
+        let visibility = document.getElementById('return')
+        visibility.style.visibility  = "visible";
+
+      }catch(error){
+        alert(error.message)
+      }
+
+    }
+    

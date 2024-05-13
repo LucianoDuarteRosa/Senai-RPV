@@ -1,91 +1,55 @@
-/* 2. Utilizando objeto: Crie um programa que leia os dados de um usuário: 
-    nome, sobrenome, CPF, sexo, data de nascimento, endereço e telefone e exiba no console.*/
+/*1. Utilizando função: Tendo como dados de entrada o peso (em quilogramas)
+   e a altura (em metros) de uma pessoa, 
+   crie um programa que calcule o Índice de Massa Corporal (IMC) dessa pessoa. 
+Calcule o IMC usando a fórmula: IMC = peso / (altura * altura). 
+Classifique o IMC da seguinte forma:
+- IMC < 18,5 Kg/m²: Abaixo do Peso
+- IMC >= 18,5 Kg/m² e < 24,9 Kg/m²: Peso Normal
+- IMC >= 25 Kg/m² e < 29,9 Kg/m²: Sobrepeso
+- IMC >= 30 Kg/m² e < 34.9 Kg/m²: Obesidade Grau I
+- IMC >= 35 Kg/m² e < 39.9 Kg/m²: Obesidade Grau II
+- IMC >= 39.9 Kg/m²: Obesidade Grau III   */
 
-    
-    function checkRatio(){
-      let radios = document.getElementsByName('opcao')
 
-      for (let i = 0; i < radios.length; i++){
-        if(radios[i].checked){
-          return radios[i].value;
-        }
-      }
-    };
+function validarEnviar(){
+  let pessoa = {};
+  let peso = parseFloat(document.getElementById('peso').value);
+  let altura = parseFloat(document.getElementById('altura').value);
 
-    function formatarData(data){
-      let partes = data.split("-")
-      return partes[2] + "/" + partes[1] + "/" + partes[0];
-    }
-
-    function validarEnviar(){
-      let pessoa = {};
-      let nome = document.getElementById('nome').value;
-      let sobrenome = document.getElementById('sobrenome').value;
-      let cpf = document.getElementById('cpf').value;
-      let dataNasc = document.getElementById('dataNasc').value;
-      dataNasc = formatarData(dataNasc);
-      pessoa.endereco = document.getElementById('endereco').value;
-      let telefone = document.getElementById('telefone').value;
-      pessoa.sexo = checkRatio();
-
-      try{
-        if (/^[a-zA-ZÀ-ÿ\s']{2,}$/.test(nome)) {
-          pessoa.nome = nome  
-        } else {
-            throw new Error('Por favor, digite um nome válido.')
-        };
-
-        if (/\d{11}/.test(cpf)) {
-            if(cpf.length === 11){
-              pessoa.cpf = cpf;
-            }else{
-              throw new Error("Por favor, digite 11 números.")
-            } 
-          } else {
-              throw new Error("Por favor, digite somente números e 11 digitos.");
-          }
-
-        if (/^[a-zA-ZÀ-ÿ\s']{3,}$/.test(sobrenome)) {
-          pessoa.sobrenome = sobrenome  
-        } else {
-            throw new Error('Por favor, digite um nome válido.')
-        };
-
-        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dataNasc)) {
-          let partesData = dataNasc.split('/');
-          let dia = parseInt(partesData[0]);
-          let mes = parseInt(partesData[1]);
-          let ano = parseInt(partesData[2]);
-
-          if (!isNaN(dia) && !isNaN(mes) && !isNaN(ano)) {
-              if (dia > 0 && dia < 32 && mes > 0 && mes < 13 && ano < 2025) {
-                  pessoa.dataNascimento = dataNasc; 
-              } else {
-                  throw new Error("Data inválida.");
-              }
-          } else {
-              throw new Error("Data inválida.");
-          }
-        } else {
-            throw new Error("Formato de data inválido.");
-        }
-      
-        if (/\(\d{2,3}\)\d{4,5}-\d{4}/.test(telefone)) {
-          pessoa.telefone = telefone;
-        } else {
-            throw new Error("Telefone Inválido");
-        }
-
-        let result = document.getElementById('retornoAqui');
-
-        result.innerText = `${pessoa.nome} ${pessoa.sobrenome} foi cadastrado com sucesso. Cpf: ${pessoa.cpf}, tel: ${pessoa.telefone}, data nascimento: ${pessoa.dataNascimento}, sexo: ${pessoa.sexo}, endereço: ${pessoa.endereco}.`;
-  
-        let visibility = document.getElementById('return')
-        visibility.style.visibility  = "visible";
-
-      }catch(error){
-        alert(error.message)
+  try{
+      if (!isNaN(peso) && !isNaN(altura)) {
+        pessoa.peso = peso;
+        pessoa.altura = altura;
+        pessoa.imc = pessoa.peso / (pessoa.altura * pessoa.altura)
+      } else {
+          throw new Error("Valor inválido.");
       }
 
+      let result = document.getElementById('retornoAqui');
+
+      result.innerText = classificacaoIMC(pessoa);
+
+      let visibility = document.getElementById('return')
+      visibility.style.visibility  = "visible";
+
+    }catch(error){
+      alert(error.message)
     }
-    
+
+}
+
+function classificacaoIMC(pessoa){
+  if(pessoa.imc < 18.5){
+      return `Abaixo do peso. Vai comer um hamburguer.`;
+  }else if (pessoa.imc >= 18.5 && pessoa.imc <= 24.9){
+    return `Peso ideal. Não gosto de gente assim.`;
+  }else if (pessoa.imc >= 25 && pessoa.imc <= 29.9){
+    return `Sobrepeso. Tá maneiro, mas pode melhorar.`;
+  }else if (pessoa.imc >= 30 && pessoa.imc <= 34.9){
+    return `Obesidade Grau I. Vamos maneirar aí? #partiuAlface.`;
+  }else if (pessoa.imc >= 35 && pessoa.imc < 39.9){
+    return `Obesidade Grau II. Eita porra. Ta ficando sério agora`;
+  }else{
+    return `Obesidade Grau III. Agora lascou!!`;
+  };
+};

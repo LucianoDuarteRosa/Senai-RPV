@@ -21,21 +21,39 @@
         <div class="inicioForms">
             <div>
                 <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome" minlength="2">
+                <input type="text" name="nome" id="nome">
             </div>
             <div>
-                <label for="matricula">Matrícula</label>
-                <input type="number" name="matricula" id="matricula" min="3">
+                <label for="sobrenome">Sobrenome</label>
+                <input type="text" name="sobrenome" id="sobrenome">
+            </div>
+            <div>
+                <label for="cpf">CPF</label>
+                <input type="number" name="cpf" id="cpf">
             </div>
         </div>
-        <div class="inicioForms">
+        <div class="segundoForms">
             <div>
-                <label for="disciplina">Disciplina</label>
-                <input type="text" name="disciplina" id="disciplina" minlength="2">
+                <label for="dataNasc">Data Nascimento</label>
+                <input type="date"name="dataNasc" id="dataNasc">
             </div>
+            <div class="enderecoLong">  
+                <label for="endereco">Endereço</label>
+                <input type="text" name="endereco" id="endereco">
+            </div>
+        </div>
+        <div class="finalForms">
             <div>
-                <label for="nota">Nota</label>
-                <input type="number" name="nota" id="nota" >
+                <label for="telefone">Telefone</label>
+                <input type="text" name="telefone" id="telefone">
+            </div>
+            <div class="opcao">
+                <input type="radio" id="masculino" name="opcao" value="masculino">
+                <label for="masculino">Masculino</label>
+                <input type="radio" id="feminino" name="opcao" value="feminino">
+                <label for="feminino">Feminino</label>
+                <input type="radio" id="outros" name="opcao" value="outros">
+                <label for="outros">Outros</label>
             </div>
         </div>
         <div class="btnEnviar">

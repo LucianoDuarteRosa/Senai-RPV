@@ -67,19 +67,50 @@ form{
 
 .inicioForms{ 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     justify-content: start;
     gap: 10px;
     font-size: 20px;
     margin: 30px;
 }
 
+.segundoForms{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-content: start;
+    gap: 10px;
+    font-size: 20px;
+    margin: 30px;
+}
+
+.finalForms{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-content: start;
+    gap: 10px;
+    font-size: 20px;
+    margin: 30px;
+}
 
 form div div{
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: end;
     margin-right: 20px;
+}
+
+.enderecoLong{
+    display: flex;
+    gap: 10px;
+}
+
+#endereco{
+    width: 700px;
+}
+
+.opcao{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
 }
 
 form div input{
@@ -136,3 +167,4 @@ input:focus{
     padding: 10px;
     visibility: hidden;
 }
+

@@ -66,9 +66,8 @@ form{
 }
 
 .inicioForms{ 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: start;
+    display: flex;
+    justify-content: center;
     gap: 10px;
     font-size: 20px;
     margin: 30px;
@@ -77,9 +76,10 @@ form{
 
 form div div{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     align-items: end;
     margin-right: 20px;
+    gap: 15px;
 }
 
 form div input{

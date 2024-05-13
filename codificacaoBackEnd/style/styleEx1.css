@@ -66,21 +66,20 @@ form{
 }
 
 .inicioForms{ 
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-content: start;
+    display: flex;
+    justify-content: center;
     gap: 10px;
     font-size: 20px;
     margin: 30px;
 }
 
-.segundoForms{
+
+form div div{
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    justify-content: start;
-    gap: 10px;
-    font-size: 20px;
-    margin: 30px;
+    grid-template-columns: 1fr;
+    align-items: end;
+    margin-right: 20px;
+    gap: 15px;
 }
 
 .finalForms{
