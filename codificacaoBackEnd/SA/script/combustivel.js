@@ -20,9 +20,9 @@ function calcular(){
 
     let result = document.getElementById('resultadoFinal');
     if((valorAlcool/valorGasolina) > 0.7){
-        result = "Nessa faixa preço, o a gasolina vale mais apena"
+        result = "O valor da gasolina é mais econômico"
     }else{
-        result = "Nessa faixa preço, o a álcool vale mais apena"
+        result = "O valor da álcool é mais econômico"
     }
 
     let atualizar1 = document.getElementById('resultado1');

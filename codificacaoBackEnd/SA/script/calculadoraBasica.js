@@ -4,7 +4,7 @@ function calcular(){
     let valor2 = document.getElementById('numero2').value;
     let operacao = checkRatio();
 
-    if(/^[0-9]/.test(valor1) && /^[0-9]/.test(valor2)){
+    if(/^\-?[0-9]/.test(valor1) && /^\-?[0-9]/.test(valor2)){
         valor1 = parseFloat(valor1);
         valor2 = parseFloat(valor2);
     }else{
