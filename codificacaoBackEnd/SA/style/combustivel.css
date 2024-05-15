@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
+:root {
+  --primary-color: rgb(17, 86, 102);
+  --primary-color-darker: rgb(9, 48, 56);
+}
+
+* {
+  box-sizing: border-box;
+  outline: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--primary-color);
+  font-family: 'Open sans', sans-serif;
+  font-size: 1.3em;
+  line-height: 1.5em;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 640px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.calculadora{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.calculadora div{
+    display: flex;
+    flex-direction: column;
+}
+
+label{
+  margin-right: 35px;
+}
+
+
+form input, form label, form button {
+  display: block;
+  width: 100%;
+}
+
+form input {
+  font-size: 24px;
+  height: 50px;
+  padding: 0 20px;
+}
+
+form input:focus {
+  outline: 1px solid var(--primary-color);
+}
+
+form button {
+  border: none;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  height: 50px;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+form button:hover {
+  background: var(--primary-color-darker);
+}
+
+.display {
+  font-size: 2em;
+  width: 100%;
+  text-align: right;
+}
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+input[type=number] {
+  -webkit-appearance: textfield;
+}
+
+#calcular{
+  border: none;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  height: 50px;
+  cursor: pointer;
+  margin-top: 30px;
+  border-radius: 10px;
+}
+
+input[type=number] {
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+}
+
+#calcular:hover {
+  background: var(--primary-color-darker);
+}
+
+
+#resultado1{
+  background: rgb(109, 255, 182);
+  padding: 10px 20px;
+  font-size: 700;
+  visibility: hidden;
+}
+
+#resultado2{
+    background: rgb(109, 255, 182);
+    padding: 10px 20px;
+    font-size: 700;
+    visibility: hidden;
+}
+
+#resultadoFinal{
+    background: rgb(109, 255, 182);
+    padding: 10px 20px;
+    font-size: 700;
+    visibility: hidden;
+}
+
+.resultados{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

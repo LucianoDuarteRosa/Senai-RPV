@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Modelo</title>
+  <link rel="stylesheet" href="style/calculadoraBasica.css">
+</head>
+
+<body>
+
+  <section class="container">
+    <h1>Calculadora</h1>
+
+    <div class="calculadora">
+      <div>
+        <input type="number" name="numero1" id="numero1">
+      </div>
+      <div class="opcao">
+        <input type="radio" id="multiplicavao" name="opcao" value="*">
+        <label for="multiplicavao">*</label>
+        <input type="radio" id="divisao" name="opcao" value="/">
+        <label for="divisao">/</label>
+        <input type="radio" id="soma" name="opcao" value="+">
+        <label for="soma">+</label>
+        <input type="radio" id="subtracao" name="opcao" value="-">
+        <label for="subtracao">-</label>
+      </div>
+      <div>
+        <input type="number" name="numero2" id="numero2">
+      </div>
+      <div>
+        <input type="button" id="calcular" onclick="calcular()" value="Calcular">
+      </div>
+    </div>
+    <p id="resultado"></p>
+  </section>
+
+  <script src="script/calculadoraBasica.js"></script>
+</body>
+
+</html>
