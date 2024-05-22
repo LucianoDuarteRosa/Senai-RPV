@@ -20,7 +20,7 @@ class ProdutoCereais extends Produto {
   }
   
   toString() {
-    return `Produto: ${this.nome.toUpperCase()} Valor: R$${this.valor.toFixed(2)} Setor: ${this.classificacao.toUpperCase()}`;
+    return `Produto: ${this.nome.toUpperCase()} Valor: R$${this.valor.toFixed(2)} Seção: ${this.classificacao.toUpperCase()}`;
   }
 }
 
@@ -31,7 +31,7 @@ class ProdutoPerfumaria extends Produto {
   }
   
   toString() {
-    return `Produto: ${this.nome.toUpperCase()} Valor: R$${this.valor.toFixed(2)} Setor: ${this.classificacao.toUpperCase()}`;
+    return `Produto: ${this.nome.toUpperCase()} Valor: R$${this.valor.toFixed(2)} Seção: ${this.classificacao.toUpperCase()}`;
   }
 }
 
