@@ -6,19 +6,18 @@
    criar nova propriedade chamada situacao para o aluno.*/
 
   class Aluno {
-   
-    constructor(nome, matricula, disciplina, nota, situacao) {
-        this.nome = nome;
-        this.matricula = matricula;
-        this.disciplina = disciplina;
-        this.nota = nota;
-        this.situacao = situacao
+      constructor(nome, matricula, disciplina, nota, situacao) {
+          this.nome = nome;
+          this.matricula = matricula;
+          this.disciplina = disciplina;
+          this.nota = nota;
+          this.situacao = situacao
 
-        
-    }
-}
+          
+      }
+  }
 
-
+  let nome = new Aluno();
   function validarEnviar(){
     let nome = document.getElementById('nome').value;
     let matricula = document.getElementById('matricula').value;

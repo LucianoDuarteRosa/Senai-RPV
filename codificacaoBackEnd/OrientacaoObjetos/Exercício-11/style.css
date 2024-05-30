@@ -66,7 +66,7 @@ form{
 
 .inicioForms{ 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-content: start;
     gap: 10px;
     font-size: 20px;
@@ -75,13 +75,21 @@ form{
 
 .segundoForms{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     justify-content: start;
     gap: 10px;
     font-size: 20px;
     margin: 20px;
 }
 
+.finalForms{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: start;
+    gap: 10px;
+    font-size: 20px;
+    margin:20px;
+}
 
 form div div{
     display: grid;
@@ -155,7 +163,7 @@ input:focus{
     visibility: hidden;
 }
 
-#estados {
+#estados , #conta, #pessoa{
     font-family: 'Dm sans', sans-serif;
     border: none;
     border-radius: 5px;
@@ -169,11 +177,12 @@ input:focus{
     padding-left: 4px;
 }
 
-#estados:focus, #estados::selection, #estados:hover{
+#estados:focus, #estados::selection, #estados:hover, #conta:focus, #conta::selection, #conta:hover, #pessoa:focus, #pessoa::selection, #pessoa:hover {
     border: none;
     box-shadow: none;
     outline: none;
 }
+
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -189,18 +198,4 @@ input[type=number] {
 
 input[type=number] {
   -webkit-appearance: textfield;
-}
-
-#pet , #sexo{
-    font-family: 'Dm sans', sans-serif;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #333;
-    background-color: #f9f9f9; 
-    appearance: none; 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-left: 4px;
 }

@@ -92,7 +92,7 @@
         return `${this.nomePet} diz : AUAUAUAU!!` 
       };
       toString() {
-        return `CACHORRO - Nome Dono: ${this.getNomeDono} - Telefone: ${this.getTelefone} </br> 
+        return `CACHORRO - Nome Dono: ${this.getNomeDono.toUpperCase()} - Telefone: ${this.getTelefone} </br> 
         Nome Pet: ${this.getNomePet.toUpperCase()} - Raça: ${this.getRaca.toUpperCase()} - Cor: ${this.getCor.toUpperCase()} - Sexo: ${this.getSexo.toUpperCase()} - Idade: ${this.getIdade} - Peso: ${this.getPeso} - Altura: ${this.getAltura}</br> <hr>` ;
       };
     }
@@ -209,7 +209,6 @@
       let retorno = document.getElementById('retornoAqui');
       retorno.innerHTML = result;
       let visibility = document.getElementById('return')
-      visibility.style.visibility  = "visible";
-    
+      visibility.style.visibility  = "visible";  
     }
     
