@@ -1,8 +1,8 @@
 const http = require("http");
 
 const httpServer = http.createServer(
-    function(req, resposta){
-        resposta.end("Seja bem-vindo ao servidor...");
+    function(req, res){
+        res.send("Seja bem-vindo ao servidor...");
 });
 
 const port = 3000;
