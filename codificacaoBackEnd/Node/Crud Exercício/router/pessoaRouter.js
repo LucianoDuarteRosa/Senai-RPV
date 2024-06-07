@@ -25,7 +25,7 @@ class Pessoa{
     update(updatePessoa, id){
         const index = this.pessoas.findIndex((pessoas) => pessoas.id === parseInt(id));
         if(index !== -1){
-            this.pessoas[index]= updateJob;
+            this.pessoas[index]= updatePessoa;
             return this.pessoas[index];
         }
         return false

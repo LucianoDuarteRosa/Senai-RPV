@@ -1,0 +1,13 @@
+
+Em caso de problemas com o acesso ao banco de dados,
+executar o codigo abaixo no mysql:
+    
+    alter user 'root'@'localhost' identified 
+    with mysql_native_password by 'admin'
+
+
+Exemplos de job:
+
+{ "id": 1, "nome": "Desenvolvedor Back End", "salario": 1500 }
+{ "id": 2, "nome": "Desenvolvedor Front End", "salario": 1500 }
+{ "id": 3, "nome": "Desenvolvedor Full Stack", "salario": 2000 }

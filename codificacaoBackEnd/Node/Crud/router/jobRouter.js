@@ -2,9 +2,8 @@ const Router = require('express').Router;
 
 const router = Router();
 
-const fs = require("fs")
 
-class Job{
+/*class Job{
     constructor(){
     this.type = 0;
     this.dir = "database/jobDatabase.json";
@@ -72,10 +71,23 @@ class Job{
                 break;
         }
     }
-}
+}*/
 
-const jobs = new Job();
 
+const JobController = require("../controllers/jobController.js")
+
+router.get("/job", JobController.readList);
+
+router.get("/job/:id", JobController.read);
+
+router.post("/job", JobController.create);
+
+router.put("/job/:id", JobController.update);
+
+router.delete("/job/:id", JobController.delete);
+
+
+/*
 router.get("/job", function(req, res){
     try{
         let arrayTodosJobs = jobs.readList();
@@ -141,5 +153,6 @@ router.delete("/job/:id", function(req, res){
         res.status(400).json(error.message);
     }
 });
+*/
 
 module.exports = router;
