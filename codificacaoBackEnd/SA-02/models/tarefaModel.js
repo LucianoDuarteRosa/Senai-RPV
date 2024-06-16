@@ -35,9 +35,9 @@ class tarefaModel {
   }
 
 
-  create(newJob) {
+  create(novaTarefa) {
     const sql = "INSERT INTO tarefas SET ?"; 
-    return this.executeSQL(sql, newJob);
+    return this.executeSQL(sql, novaTarefa);
   }
 
 

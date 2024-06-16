@@ -1,0 +1,29 @@
+<%- include('../header') %>
+
+  <div class="container">
+    <div class="cardCreate">
+      <div class="tituloCreate">
+        <h3>Nova tarefa</h3>
+        <hr>
+      </div>
+      <div class="card-body p-4">
+        <form action="/tarefa" method="POST">
+          <div class="imput_large">
+            <label for="Nome" class="col-sm-3 col-form-label col-form-label-lg">Nome:</label>
+            <input type="text" name="Nome" class="form-control form-control-lg" placeholder="Informe o nome..."
+              required />
+          </div>
+          <div class="imput_large">
+            <label for="Descricao" class="col-sm-3 col-form-label col-form-label-lg">Descrição:</label>
+            <input type="text" name="Descricao" class="form-control form-control-lg"
+              placeholder="Digite a descrição..." required />
+          </div>
+          <div class="divGravar">
+            <input type="submit" name="submit" value="Gravar" class=" btn-dark2" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<%- include('../footer') %>
