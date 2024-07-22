@@ -1,15 +1,15 @@
-class EduTechDatabase {
+
+class AgendaDatabase {
   
   initConnection(connection) {
     this.connection = connection; 
     this.initDatabase(); 
   }
 
- 
   initDatabase() {
     this.connection.connect((error) => {
       if (error) {
-        console.log("Ocorreu um erro ao conectar no banco de dados..."); 
+        console.log("Ocorreu um erro ao conectar no banco de dados...");
         console.log(error.message); 
         return;
       }
@@ -18,4 +18,4 @@ class EduTechDatabase {
   }
 }
 
-module.exports = new EduTechDatabase();
+module.exports = new AgendaDatabase();

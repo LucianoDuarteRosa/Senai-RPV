@@ -95,7 +95,7 @@ class TarefaController {
     const novaTarefa = req.body;
     const tarefa = tarefaModel.create(novaTarefa);
     return tarefa
-      .then((result) => res.status(201).send("<script> alert('Tarefa criada com sucesso!'); window.location='/tarefa' </script>"))
+      .then((result) => res.status(201).send("<script> alert('Tarefa criada com sucesso!'); window.location='../../tarefa' </script>"))
       .catch((error) => res.status(400).send(error.message));    
   }
 
