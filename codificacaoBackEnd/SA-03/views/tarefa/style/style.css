@@ -1,0 +1,285 @@
+@font-face {
+    font-family: 'DM Sans';
+    src: url('Fonte/DMSans-VariableFont_opsz\,wght.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+:root {
+    --font-family: 'DM Sans', sans-serif;
+    --color-primary: #000;
+    --color-secundary: #f3f3f3;
+    --color-destac: #917c4f;
+    --color-bg: #b3b3b3;
+}
+/*--------------------------------------------------------*/
+/*INICIO DO HEADER*/
+body {
+    font-family: var(--font-family); 
+    background-color: var(--color-bg);
+    color: var(--color-bg);
+}
+
+a{
+    text-decoration: none;
+    color: var(--color-bg);
+}
+
+.containerHeader{
+    background-color: var(--color-primary);
+    display: flex;
+    justify-content: space-around;
+    justify-items: center;
+    align-items: center;
+    padding: 1rem;
+    /*box-shadow: inset 0px 10px 20px rgba(179, 179, 179, 0.5);*/
+    box-shadow: inset 0px 0px 30px 5px rgba(179, 179, 179, 0.4); 
+}
+
+.tituloHeader{
+    color: var(--color-destac);
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+
+.link_header{
+    gap: .5rem;
+    font-size: 1.5rem;
+}
+/*FIM DO HEADER*/
+
+/*--------------------------------------------------------*/
+
+/*INICIO FOOTER*/
+footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: auto;
+}
+
+.containerFooter{
+    color: var(--color-bg);
+    background-color: var(--color-primary);
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    padding: 1rem;
+    font-weight: 500;
+    font-size: 1.3rem;
+    box-shadow: inset 10px 5px 30px 5px rgba(179, 179, 179, 0.4);
+}
+
+.containerFooter div{
+    display: flex;
+    gap: .3rem;
+    margin-right: 1rem;
+}
+
+.links_sociais a{
+    margin-left: 0.5rem;
+}
+/*FIM FOOTER*/
+
+/*--------------------------------------------------------*/
+
+/*INICIO MAIN*/
+.containerMain a{
+    text-decoration: none;
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.link_Main span{
+    margin-right: .5rem;
+}
+
+.containerMain{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    color: var(--color-primary);
+    padding-top: 3rem;
+}
+
+.containerMain h1{
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--color-primary);
+    margin: 2rem;
+}
+
+.containerMain p{
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-primary);
+    width: 30%;
+    margin-bottom: 2rem;
+    line-height: 1.3;
+}
+/*FIM MAIN*/
+
+/*--------------------------------------------------------*/
+
+/*INICIO TAREFA-All*/
+.container{
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.imput_large{
+    width: 600px;  
+} 
+
+.card-body div{
+    margin: 14px;
+}
+
+hr{
+    margin: 0;
+}
+
+/*FIM TAREFA-All*/
+
+/*--------------------------------------------------------*/
+
+/*INICIO TAREFA-READ*/
+.descricatable{
+    width: 500px;
+}
+
+.nometable{
+    width: 250px;
+}
+
+.div_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-Novo{
+    text-align: center;
+    width: 10%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 2rem;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}  
+
+.table-dark , tbody{
+    font-size: 1.25rem;
+}
+
+/*FIM TAREFA-READ*/
+
+/*--------------------------------------------------------*/
+
+/*INICIO TAREFA-CREATE*/
+.cardCreate{
+    background-color: var(--color-secundary);
+    border-radius: 1rem;
+    margin: 3rem;
+    padding: 1rem;
+    padding-bottom: 0;
+    font-size: 2rem;
+}
+
+.tituloCreate h3{
+    color: var(--color-primary);
+    font-weight: 900;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.divGravar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.btn-dark2{
+    text-align: center;
+    width: 50%;
+    font-weight: 700;
+    margin-top: 1rem;
+    padding: .5rem;
+    border-radius: 2rem;
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 1.5rem;
+}
+
+.imput_large input{
+    border: solid 2px var(--color-primary);
+}
+/*FIM TAREFA-CREATE*/
+
+/*--------------------------------------------------------*/
+
+/*INICIO TAREFA-UPDATE*/
+.cardCreate div{
+    margin: 14px;
+}
+
+.updateMain{
+    font-size: 1.5rem;
+}
+
+.finalizado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 500!important;
+}
+
+/*FIM TAREFA-UPDATE*/
+
+
+/*--------------------------------------------------------*/
+
+/*INICIO HOVER*/
+a i:hover, .newSupport a:hover, .containerMain a:hover, .button-Novo:hover{
+    color: var(--color-destac);
+}
+
+.tituloHeader:hover{
+    opacity: .5;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.form-control-lg:focus {
+    border-color: var(--color-primary);
+}
+
+.btn-dark2:hover{
+    color: var(--color-destac)!important;
+}
+
+
+/*FIM HOVER*/
+
+/*--------------------------------------------------------*/
+

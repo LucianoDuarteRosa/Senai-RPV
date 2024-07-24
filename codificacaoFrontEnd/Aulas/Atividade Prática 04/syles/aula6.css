@@ -1,0 +1,68 @@
+.header h1{
+    display: flex;
+    border-top: 2px solid black;
+    padding-top: 10px;
+    justify-content: center;
+    color: goldenrod;
+}
+
+.linkHeader{
+    display: flex;
+    flex-direction: row;
+    padding-left: 200px;
+    padding-top: 10px;
+}
+
+header a{
+    margin-right: 10px;
+    padding-left: 10px;
+}
+
+.divImgHeader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+}
+.divImgHeader img{
+    width: 1000px;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px slategray;    
+}
+
+main h1 {
+    padding-top: 20px;
+    padding-left: 250px;
+}
+
+.div1 {
+    display: grid;
+    justify-content: space-around;
+    grid-template-columns: 400px 400px 400px;
+}
+
+.div1 div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.div1 div img{
+    padding-top: 50px;
+    width: 150px;
+
+} 
+
+.footer {
+    border-top: 1px solid black;
+    padding: 10px;
+}
+footer div p {
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+}
+footer div a {
+    padding-right: 10px;
+}

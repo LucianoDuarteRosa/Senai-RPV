@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Modelo</title>
+  <link rel="stylesheet" href="style/combustivel.css">
+</head>
+
+<body>
+
+  <section class="container">
+    <h1>Combustível</h1>
+
+    <div class="calculadora">
+        <div class="divs">
+            <div>
+                <label for="alcool">Valor do Álcool</label>
+                <input type="number" name="alcool" id="alcool">
+            </div>
+            <div>
+                <label for="abAlcool">Abast. do Álcool</label>
+                <input type="number" name="abAlcool" id="abAlcool">
+            </div>
+        </div>
+        
+        <div class="divs">
+            <div>
+                <label for="gasolina">Valor do Gasolina</label>
+                <input type="number" name="gasolina" id="gasolina">
+            </div>
+            <div>
+                <label for="abGasolina">Abast. do Gasolina</label>
+                <input type="number" name="abGasolina" id="abGasolina">
+            </div>
+        </div>
+    </div>
+      <div>
+        <input type="button" id="calcular" onclick="calcular()" value="Calcular">
+      </div>
+    <div class="resultados">
+        <p id="resultado1"></p>
+        <p id="resultado2"></p>
+    </div>
+    <p id="resultadoFinal"></p>
+  </section>
+
+  <script src="script/combustivel.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../DOM/img/favicon.png" type="image/x-icon">
+    <title>Codificação Back End</title>
+    <link rel="stylesheet" href="../../DOM/style/reset.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../DOM/fontes/fontawesome-free-6.5.1-web/css/all.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div>
+            <p>Programação FullStack e Desenvolvimento de Habilidades Socioemocionais</p>
+        </div>
+        <h1 class="titulo">Orientação a Objetos</h1>
+    </header></br>
+    <hr>
+    <form>
+        <div class="inicioForms">
+            <div>
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" id="nome">
+            </div>
+            <div class="endereco">  
+                <label for="pessoa">Tipo Pessoa</label>
+                <select id="pessoa">
+                    <option value="fisica">Física</option>
+                    <option value="juridica">Jurídica</option>
+                </select>
+            </div>
+            <div id="displayCPF">
+                <label for="cpf">CPF</label>
+                <input type="number" name="cpf" id="cpf">
+            </div>
+            <div class="endereco">  
+                <label for="conta">Tipo Conta</label>
+                <select id="conta">
+                    <option value="corrente">Corrente</option>
+                    <option value="poupanca">Poupança</option>
+                </select>
+            </div>
+        </div>
+        <div class="segundoForms">
+            <div class="endereco">  
+                <label for="logradouro">Logradouro</label>
+                <input type="text" name="logradouro" id="logradouro">
+            </div>
+            <div class="endereco">  
+                <label for="numero">Número</label>
+                <input type="text" name="numero" id="numero">
+            </div>
+            <div class="endereco">  
+                <label for="bairro">Bairro</label>
+                <input type="text" name="bairro" id="bairro">
+            </div>
+            <div class="endereco">  
+                <label for="cep">CEP</label>
+                <input type="text" name="cep" id="cep">
+            </div>
+            <div class="endereco">  
+                <label for="estados">Estado</label>
+                <select id="estados">
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="finalForms">
+            <div>
+                <label for="dataNasc">Data Nascimento</label>
+                <input type="date"name="dataNasc" id="dataNasc">
+            </div>
+            <div>
+                <label for="telefone">Telefone</label>
+                <input type="text" name="telefone" id="telefone">
+            </div>
+            <div class="opcao">
+                <input type="radio" id="masculino" name="opcao" value="masculino">
+                <label for="masculino">Masculino</label>
+                <input type="radio" id="feminino" name="opcao" value="feminino">
+                <label for="feminino">Feminino</label>
+                <input type="radio" id="outros" name="opcao" value="outros">
+                <label for="outros">Outros</label>
+            </div>
+        </div>
+        <div class="btnEnviar">
+            <input type="button" name="enviar" id="btnEnviar" value="Gravar" onclick="validarEnviar()">
+        </div>
+
+        <div id="return">
+            <p id="retornoAqui"></p>
+        </div>
+
+    </form>
+    <hr>
+    <footer>
+        <div class="logosFooter">
+            <a href="https://www.facebook.com/luciano.duarte.779" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="www.linkedin.com/in/lucianoduarterosa" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://github.com/LucianoDuarteRosa" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://wa.me/5532988996771" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

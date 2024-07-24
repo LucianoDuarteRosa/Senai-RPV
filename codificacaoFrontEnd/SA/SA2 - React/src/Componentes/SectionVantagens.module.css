@@ -1,0 +1,19 @@
+.section2{
+    color: white;
+    background-color: #b3b3b3;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    height: 480px;
+}
+
+.section2 li{
+    text-align: start;
+}
+
+.section2 h1{
+    margin: 0;
+    padding-bottom: 0;
+    padding-top: 10px;
+    text-decoration: underline;
+}

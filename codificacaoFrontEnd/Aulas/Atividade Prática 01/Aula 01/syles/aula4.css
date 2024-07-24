@@ -1,0 +1,69 @@
+body{
+    background-color: white;
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.barraMenu{
+    display: flex;
+    background-color: bisque;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 2rem;
+}
+.menu{
+    display: flex;
+
+}
+.menu li a{
+    text-decoration: none;
+    border: 1px black solid;
+    padding: 10px;
+    display: inline-block;
+    margin: 10px;
+}
+.menu li a:hover{
+    color: white;
+    border: none;
+}
+.divs{
+    display: flex;
+    margin: 10px;
+    gap: 10px;
+}
+.div1, .div2, .div3{
+    display: flex;
+    border: 1px solid black;
+}
+
+.title{
+    text-align: center;
+    background-color: black;
+    color: white;
+    border: 5px;
+}
+
+.imagens{
+    display: flex;
+    justify-content: space-around;
+    border: 15px;
+    margin: 15px;
+    border: 5px solid black;
+    border-radius: 10px;
+    background-color: #b3b3b3;
+}
+
+.imagemDestaque{
+    display: flex;
+    justify-content: center;
+    border: 15px;
+    margin: 15px;
+    border: 5px solid black;
+    background-color: white;
+}
+
+.imgDestaque{
+    width: 150px;
+}

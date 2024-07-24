@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+    <title>Codificação Back End</title>
+    <link rel="stylesheet" href="../style/reset.css">
+    <link rel="stylesheet" href="../style/styleEx2.css">
+    <link rel="stylesheet" href="../fontes/fontawesome-free-6.5.1-web/css/all.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div>
+            <p>Programação FullStack e Desenvolvimento de Habilidades Socioemocionais</p>
+        </div>
+        <h1 class="titulo">Codificação Back-End</h1>
+    </header></br>
+    <hr>
+    <form>
+        <div class="inicioForms">
+            <div>
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" id="nome">
+            </div>
+            <div>
+                <label for="sobrenome">Sobrenome</label>
+                <input type="text" name="sobrenome" id="sobrenome">
+            </div>
+            <div>
+                <label for="cpf">CPF</label>
+                <input type="number" name="cpf" id="cpf">
+            </div>
+        </div>
+        <div class="segundoForms">
+            <div>
+                <label for="dataNasc">Data Nascimento</label>
+                <input type="date"name="dataNasc" id="dataNasc">
+            </div>
+            <div class="enderecoLong">  
+                <label for="endereco">Endereço</label>
+                <input type="text" name="endereco" id="endereco">
+            </div>
+        </div>
+        <div class="finalForms">
+            <div>
+                <label for="telefone">Telefone</label>
+                <input type="text" name="telefone" id="telefone">
+            </div>
+            <div class="opcao">
+                <input type="radio" id="masculino" name="opcao" value="masculino">
+                <label for="masculino">Masculino</label>
+                <input type="radio" id="feminino" name="opcao" value="feminino">
+                <label for="feminino">Feminino</label>
+                <input type="radio" id="outros" name="opcao" value="outros">
+                <label for="outros">Outros</label>
+            </div>
+        </div>
+        <div class="btnEnviar">
+            <input type="button" name="enviar" id="btnEnviar" value="Enviar" onclick="validarEnviar()">
+        </div>
+
+        <div id="return">
+            <p id="retornoAqui"></p>
+        </div>
+
+    </form>
+    <hr>
+    <footer>
+        <div class="logosFooter">
+            <a href="https://www.facebook.com/luciano.duarte.779" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="www.linkedin.com/in/lucianoduarterosa" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://github.com/LucianoDuarteRosa" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://wa.me/5532988996771" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+    </footer>
+    <script src="../javascript/Exercicio-02.js"></script>
+</body>
+</html>

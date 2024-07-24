@@ -1,0 +1,169 @@
+@font-face {
+    font-family: 'Dm sans';
+    src: url('../fontes/DMSans-VariableFont_opsz\,wght.ttf') format('truetype');
+}
+
+body{
+    font-family: 'Dm sans', sans-serif;
+    background-color: #000;
+    color: #b3b3b3;
+}
+
+.cabecalho{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cabecalho div p{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.titulo{
+    font-size: 80px;
+    font-weight: 700;
+    margin-top: 10px;
+    color: #b3b3b3;
+}
+
+
+.headerLogo{
+    gap: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.logosFooter{
+    gap: 20px;
+    font-size: 25px;
+}
+
+.logosFooter a i {
+    color: #b3b3b3;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+form{
+    height: 330px;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    margin: 30px;  
+}
+
+.inicioForms{ 
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 20px;
+    margin: 30px;
+}
+
+
+form div div{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: end;
+    margin-right: 20px;
+    gap: 15px;
+}
+
+.finalForms{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-content: start;
+    gap: 10px;
+    font-size: 20px;
+    margin: 30px;
+}
+
+form div div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    margin-right: 20px;
+}
+
+.enderecoLong{
+    display: flex;
+    gap: 10px;
+}
+
+#endereco{
+    width: 700px;
+}
+
+.opcao{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+form div input{
+    border: none;
+    border-radius: 5px;
+    font-weight: 300;
+}
+
+
+.btnEnviar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btnEnviar{
+    font-family: 'Dm sans', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    width: 10%;
+    border-radius: 15px;
+    background-color: #b3b3b3;
+}
+
+input[type="text"], input[type="date"], input[type="number"] {
+    font-family: 'Dm sans', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+input:focus{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#btnEnviar:hover{
+    border: none;
+    outline: none;
+    box-shadow: none;
+    opacity: 0.75;
+}
+
+#return{
+    margin-top: 20px;
+    background-color: #b3b3b3;
+    border-radius: 8px;
+    color: #000;
+    text-align: center;
+    font-family: 'Dm sans', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    visibility: hidden;
+}
+

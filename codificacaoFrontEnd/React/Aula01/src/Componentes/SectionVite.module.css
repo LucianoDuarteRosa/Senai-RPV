@@ -1,0 +1,19 @@
+.sectionVite{
+    color: white;
+    background-color: #b3b3b3;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.sectionVite p{
+    text-align: start;
+    padding: 10px;
+}
+
+.sectionVite h1{
+    padding: 10px;
+    padding-bottom: 0;
+    text-decoration: underline;
+    margin: 0;
+}

@@ -1,0 +1,28 @@
+.SectionHistory{
+    color: white;
+    background-color: #b3b3b3;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.SectionHistory p{
+    text-align: start;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.SectionHistory h1{
+    padding: 10px;
+    text-decoration: underline;
+    margin: 0;
+}
+
+.SectionHistory a{
+    text-decoration: none;
+    color: rgb(55, 73, 6);
+}
+
+.SectionHistory a:hover {
+    opacity: 0.75;
+}

@@ -1,0 +1,63 @@
+body{
+    background-color: #000;
+    font-family: "DM Sans", sans-serif;
+    color: #fff;
+}
+
+h1{
+    text-align: center;
+}
+
+.main{
+    background-color: #121212;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+h3{
+    text-align: center;
+    text-decoration-line: underline;
+}
+
+.card{
+    background-color: #383838;
+    color: #fff;
+    font-family: "DM Sans", sans-serif;
+}
+
+#link{
+    color: #b7a6fc;
+    font-weight: 600;
+    font-family: "DM Sans", sans-serif;
+}
+
+.divexp h5{
+    font-weight: 600;
+    color: #fff;
+}
+
+.divexp p {
+    font-weight: 150px;
+    color: #fff;
+}
+
+#logo{
+    text-align: center;
+}
+
+#dados{
+    font-weight: 200;
+    text-align: center;
+}
+
+#perfil{
+    margin-left: 80%;
+    margin-top: 10px;
+    width: 150px;
+    position: absolute;
+    z-index: 9999;
+}

@@ -1,0 +1,16 @@
+.section2{
+    color: white;
+    background-color: #b3b3b3;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.section2 li{
+    text-align: start;
+}
+
+.section2 h1{
+    padding-top: 0px;
+    text-decoration: underline;
+}

@@ -1,0 +1,22 @@
+.section{
+    color: white;
+    background-color: #b3b3b3;
+    text-align: start;
+    margin: 0;
+    padding: 0;
+}
+
+.section h1{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 0;
+    text-decoration: underline;
+}
+
+.section ul{
+    text-align: start;
+    font-size: 1.2rem;
+    font-weight: 300;
+    padding: 10px;
+    margin-left: 40%;
+}
