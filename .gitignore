@@ -10,6 +10,10 @@
 *.userosscache
 *.sln.docstates
 *.json
+<<<<<<< HEAD
+=======
+./projetoFinal/API/node_modules
+>>>>>>> 6ede8a94d3bea99377862e4f8e918300b8edc4c8
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -166,7 +170,6 @@ AutoTest.Net/
 
 # Installshield output folder
 [Ee]xpress/
-node_modules/
 
 # DocProject is a documentation generator add-in
 DocProject/buildhelp/
