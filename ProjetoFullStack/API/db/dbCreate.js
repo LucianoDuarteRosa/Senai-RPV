@@ -1,4 +1,3 @@
-
 class Database {
   
   initConnection(connection) {
