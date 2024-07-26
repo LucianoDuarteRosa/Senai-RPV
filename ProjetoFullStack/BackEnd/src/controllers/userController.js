@@ -79,33 +79,20 @@ class UserController {
       .catch((error) => res.status(400).json(error.message));
   }
 
-  login(req, res) {
+  async login(req, res) {
     let email = req.body.email;
     let password = req.body.password;
- 
     try {
-      const user = userModel.findByEmail(email);
-
+      const user = await userModel.findByEmail(email);
       if (!user) {
         return res.status(404).json({ message: 'Usuário não encontrado' });
       }
 
-      // Verifique se a senha está presente no corpo da requisição
       if (!password) {
         return res.status(400).json({ message: 'Senha não fornecida' });
       }
     
-      // Compare a senha fornecida com a senha no banco de dados
-      /*const isMatch = await bcrypt.compare(password, user[0].Senha);
-
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Credenciais Inválidas' });
-      }*/
-
-      const token = jwt.sign({ id: userModel.Iduser }, 'your_jwt_secret', { expiresIn: '1h' });
-
-      //return res.status(200).json({ token, user: {id: user[0].Iduser, email: user[0].Email, nome: user[0].Nome} });
-      return res.status(200).json({id: userModel[0].Iduser, email: userModel[0].Email, nome: userModel[0].Nome});
+      return res.status(200).json({id: user[0].IdUser, email: user[0].UserEmail, nome: user[0].UserName});
     } catch (error) {
       console.error('Erro durante o login:', error);
       res.status(500).json({ message: 'Erro no servidor' });
