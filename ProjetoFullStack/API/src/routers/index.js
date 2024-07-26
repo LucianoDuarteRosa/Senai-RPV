@@ -8,6 +8,9 @@ const clientSupplierRouters = require("./clientSupplierRouter.js");
 const productRouters = require("./productRouter.js");
 const imageRouters = require("./imageRouter.js");
 const saleRouters = require("./saleRouter.js");
+const saleDetailRouters = require("./saleDetailRouter.js");
+const accountsPayableRouters = require("./accountsPayableRouter.js");
+const accountsReceivableRouters = require("./accountsReceivableRouter.js");
 
 module.exports = function (app, express) {
   app.use(express.json());
@@ -22,4 +25,7 @@ module.exports = function (app, express) {
   app.use(productRouters);
   app.use(imageRouters);
   app.use(saleRouters);
+  app.use(saleDetailRouters);
+  app.use(accountsPayableRouters);
+  app.use(accountsReceivableRouters);
 };

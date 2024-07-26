@@ -1,15 +1,15 @@
 
-const saleModel = require("../models/saleModel");
+const accountsReceivableModel = require("../models/accountsReceivableModel");
 
 
-class SaleController {
+class AccountsReceivableController {
  
   readList(req, res) {
    
-    const retorno = saleModel.readList();
+    const retorno = accountsReceivableModel.readList();
     return retorno
       .then((result) => result.length == 0
-        ? res.status(404).send("Nenhuma venda encontrada!")
+        ? res.status(404).send("Nenhuma contas a receber encontrada!")
         : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
@@ -20,11 +20,11 @@ class SaleController {
     
     const { id } = req.params;
     
-    const retorno = saleModel.read(id);
+    const retorno = accountsReceivableModel.read(id);
     return retorno
       .then((result) =>
         result.length == 0 
-        ? res.status(404).send("Venda não encontrada!") 
+        ? res.status(404).send("Conta a receber não encontrada!") 
         : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
@@ -34,11 +34,11 @@ class SaleController {
     
     const { id } = req.params;
     
-    const retorno = saleModel.search(id);
+    const retorno = accountsReceivableModel.search(id);
     return retorno
       .then((result) =>
         result.length == 0 
-        ? res.status(404).send("Nenhuma venda encontrada!") 
+        ? res.status(404).send("Nenhuma contas a receber encontrada!") 
         : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
@@ -46,10 +46,10 @@ class SaleController {
 
   create(req, res) {
     const reqBody = req.body; 
-    const retorno = saleModel.create(reqBody);
+    const retorno = accountsReceivableModel.create(reqBody);
     return retorno
       .then((result) =>
-        res.status(201).send("Venda criada com sucesso!")
+        res.status(201).send("Conta a receber criado com sucesso!")
       )
       .catch((error) => res.status(400).json(error.message));
   }
@@ -58,10 +58,10 @@ class SaleController {
     const { id } = req.params;
     const reqBody = req.body;
       
-    const retorno = saleModel.update(reqBody, id);
+    const retorno = accountsReceivableModel.update(reqBody, id);
     return retorno
       .then((result) =>
-        res.status(200).send("Venda atualizada com sucesso!")
+        res.status(200).send("Conta a receber atualizada com sucesso!")
       )
       .catch((error) => res.status(400).json(error.message));
 
@@ -69,14 +69,14 @@ class SaleController {
 
   delete(req, res) {
     const { id } = req.params;
-    const retorno = saleModel.delete(id);
+    const retorno = accountsReceivableModel.delete(id);
     return retorno
       .then((result) =>
-        res.status(200).send("Venda deletada com sucesso!")
+        res.status(200).send("contas a receber deletado com sucesso!")
       )
       .catch((error) => res.status(400).json(error.message));
   }
   
 }
 
-module.exports = new SaleController();
+module.exports = new AccountsReceivableController();

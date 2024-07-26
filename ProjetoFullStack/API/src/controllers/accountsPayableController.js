@@ -1,15 +1,15 @@
 
-const saleModel = require("../models/saleModel");
+const accountsPayableModel = require("../models/accountsPayableModel");
 
 
-class SaleController {
+class AccountsPayableController {
  
   readList(req, res) {
    
-    const retorno = saleModel.readList();
+    const retorno = accountsPayableModel.readList();
     return retorno
       .then((result) => result.length == 0
-        ? res.status(404).send("Nenhuma venda encontrada!")
+        ? res.status(404).send("Nenhuma contas a pagar encontrada!")
         : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
@@ -20,11 +20,11 @@ class SaleController {
     
     const { id } = req.params;
     
-    const retorno = saleModel.read(id);
+    const retorno = accountsPayableModel.read(id);
     return retorno
       .then((result) =>
         result.length == 0 
-        ? res.status(404).send("Venda não encontrada!") 
+        ? res.status(404).send("Conta a pagar não encontrada!") 
         : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
@@ -34,11 +34,11 @@ class SaleController {
     
     const { id } = req.params;
     
-    const retorno = saleModel.search(id);
+    const retorno = accountsPayableModel.search(id);
     return retorno
       .then((result) =>
         result.length == 0 
-        ? res.status(404).send("Nenhuma venda encontrada!") 
+        ? res.status(404).send("Nenhuma contas a pagar encontrada!") 
         : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
@@ -46,10 +46,10 @@ class SaleController {
 
   create(req, res) {
     const reqBody = req.body; 
-    const retorno = saleModel.create(reqBody);
+    const retorno = accountsPayableModel.create(reqBody);
     return retorno
       .then((result) =>
-        res.status(201).send("Venda criada com sucesso!")
+        res.status(201).send("Conta a pagar criado com sucesso!")
       )
       .catch((error) => res.status(400).json(error.message));
   }
@@ -58,10 +58,10 @@ class SaleController {
     const { id } = req.params;
     const reqBody = req.body;
       
-    const retorno = saleModel.update(reqBody, id);
+    const retorno = accountsPayableModel.update(reqBody, id);
     return retorno
       .then((result) =>
-        res.status(200).send("Venda atualizada com sucesso!")
+        res.status(200).send("Conta a pagar atualizada com sucesso!")
       )
       .catch((error) => res.status(400).json(error.message));
 
@@ -69,14 +69,14 @@ class SaleController {
 
   delete(req, res) {
     const { id } = req.params;
-    const retorno = saleModel.delete(id);
+    const retorno = accountsPayableModel.delete(id);
     return retorno
       .then((result) =>
-        res.status(200).send("Venda deletada com sucesso!")
+        res.status(200).send("contas a pagar deletado com sucesso!")
       )
       .catch((error) => res.status(400).json(error.message));
   }
   
 }
 
-module.exports = new SaleController();
+module.exports = new AccountsPayableController();
