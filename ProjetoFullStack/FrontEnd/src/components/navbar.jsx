@@ -16,7 +16,7 @@ export default function Navbar() {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       const userObj = JSON.parse(savedUser);
-      return userObj.nome;
+      return userObj.name;
     }
     return '';
   };

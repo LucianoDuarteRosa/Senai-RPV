@@ -47,8 +47,12 @@ class UserController {
   }
 
   create(req, res) {
-    const reqBody = req.body;
-    const retorno = userModel.create(reqBody);
+    const { name, email, password } = req.body;
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    let user = { UserName: name, UserEmail: email, Password: hashedPassword };
+
+    const retorno = userModel.create(user);
     return retorno
       .then((result) =>
         res.status(201).send("Usuário criado com sucesso!")
@@ -74,7 +78,7 @@ class UserController {
     let password = req.body.password;
     try {
       const user = await userModel.findByEmail(email);
-      if (!user) {
+      if (!user[0]) {
         return res.status(404).json({ message: 'Usuário não encontrado' });
       }
 
@@ -82,16 +86,18 @@ class UserController {
         return res.status(400).json({ message: 'Senha não fornecida' });
       }
 
-      // Compare a senha fornecida com a senha no banco de dado
-      /*const isMatch = await bcrypt.compare(password, user[0].Senha);
+      const isPasswordValid = await bcrypt.compare(password, user[0].Password);
 
-      if (!isMatch) {
+      if (isPasswordValid) {
+        const token = jwt.sign({ id: user[0].IdUsuario }, process.env.JWT_SECRET, { expiresIn: '8h' });
+        return res.status(200).json({ 
+          token: token, 
+          id: user[0].IdUsuario, 
+          name: user[0].UserName, 
+          profile: user[0].IdProfile });
+      } else {
         return res.status(400).json({ message: 'Credenciais Inválidas' });
-      }*/
-
-      const token = jwt.sign({ id: user.IdUsuario }, 'your_jwt_secret', { expiresIn: '1h' });
-
-      return res.status(200).json({ id: user[0].IdUser, email: user[0].UserEmail, nome: user[0].UserName });
+      }
     } catch (error) {
       console.error('Erro durante o login:', error);
       res.status(500).json({ message: 'Erro no servidor' });

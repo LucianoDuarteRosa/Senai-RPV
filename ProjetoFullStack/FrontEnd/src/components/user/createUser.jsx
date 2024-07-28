@@ -21,9 +21,9 @@ const theme = createTheme();
 function CreateUser() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        nome: "",
+        name: "",
         email: "",
-        senha: ""
+        password: ""
     });
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -36,16 +36,14 @@ function CreateUser() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        //encriptar a senha antes do envio
+        //encriptar a password antes do envio
         try {
-            const salt = bcrypt.genSaltSync(10);
-            const hashedPassword = bcrypt.hashSync(formData.senha, salt);
-            const response = await axios.post('http://localhost:3000/usuario', { ...formData, senha: hashedPassword });
+            const response = await axios.post('http://localhost:3000/usuario', { ...formData,});
             console.log(response.data);
             setFormData({
-                nome: "",
+                name: "",
                 email: "",
-                senha: ""
+                password: ""
             });
             setErrorMessage(""); // Limpa mensagem de erro se houver
             setSuccessMessage("Usuário cadastrado com sucesso!");
@@ -83,12 +81,12 @@ function CreateUser() {
                             margin="normal"
                             required
                             fullWidth
-                            id="nome"
-                            label="Nome"
-                            name="nome"
-                            autoComplete="nome"
+                            id="name"
+                            label="name"
+                            name="name"
+                            autoComplete="name"
                             autoFocus
-                            value={formData.nome}
+                            value={formData.name}
                             onChange={handleChange}
                         />
                         <TextField
@@ -106,12 +104,12 @@ function CreateUser() {
                             margin="normal"
                             required
                             fullWidth
-                            name="senha"
-                            label="Senha"
+                            name="password"
+                            label="password"
                             type="password"
-                            id="senha"
+                            id="password"
                             autoComplete="current-password"
-                            value={formData.senha}
+                            value={formData.password}
                             onChange={handleChange}
                         />
                         <Box
