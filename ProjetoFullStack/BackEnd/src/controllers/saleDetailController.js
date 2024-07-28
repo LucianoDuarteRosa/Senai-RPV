@@ -53,16 +53,6 @@ class SaleDetailController {
 
   }
 
-  delete(req, res) {
-    const { id } = req.params;
-    const retorno = saleDetailModel.delete(id);
-    return retorno
-      .then((result) =>
-        res.status(200).send("Venda detalhada deletada com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
-  }
-  
 }
 
 module.exports = new SaleDetailController();

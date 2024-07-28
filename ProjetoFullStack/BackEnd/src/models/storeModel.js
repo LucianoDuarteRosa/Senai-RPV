@@ -53,11 +53,6 @@ class StoreModel {
     return this.executeSQL(sql, [updateEspaco, id]); 
   }
 
-  delete(id) {
-    const sql = "DELETE FROM Store WHERE IdStore = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new StoreModel();

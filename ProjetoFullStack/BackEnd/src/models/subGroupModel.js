@@ -52,11 +52,6 @@ class SubGroupModel {
     return this.executeSQL(sql, [updateSubGroup, id]); 
   }
 
-  delete(id) {
-    const sql = "DELETE FROM SubGroup WHERE IdSubGroup = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new SubGroupModel();

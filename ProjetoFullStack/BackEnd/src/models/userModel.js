@@ -58,11 +58,6 @@ class UserModel {
     return this.executeSQL(sql, [updateUser, id]); 
   }
 
-  delete(id) {
-    const sql = "DELETE FROM User WHERE IdUser = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new UserModel();

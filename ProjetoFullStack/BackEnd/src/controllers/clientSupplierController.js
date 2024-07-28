@@ -66,16 +66,6 @@ class ClientSupplierController {
 
   }
 
-  delete(req, res) {
-    const { id } = req.params;
-    const retorno = clientSupplierModel.delete(id);
-    return retorno
-      .then((result) =>
-        res.status(200).send("Cliente/Fornecedor deletado com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
-  }
-  
 }
 
 module.exports = new ClientSupplierController();

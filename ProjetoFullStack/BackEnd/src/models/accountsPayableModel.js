@@ -107,11 +107,6 @@ class AccountsPayableModel {
     return this.executeSQL(sql, [updateAccountsPayable, id]); 
   }
 
-  delete(id) {
-    const sql = "DELETE FROM AccountsPayable WHERE IdAccountsPayable = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new AccountsPayableModel();

@@ -26,14 +26,13 @@ export default function Navbar() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
+      <Box className='navbar'
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           width: '100%',
           height: '80px',
-          backgroundColor: '#1E90FF',
           m: 0,
           p: 0,
         }}
@@ -68,7 +67,7 @@ export default function Navbar() {
             <IconButton component={Link} to="/manager" sx={{ color: '#fff' }}>
               <HandymanIcon fontSize="large" />
             </IconButton>
-            <Button variant="contained" color="primary" onClick={logout} sx={{ ml: 2 }}>
+            <Button variant="contained" color='success' onClick={logout} sx={{ ml: 2 }}>
               Sair
             </Button>
           </Box>

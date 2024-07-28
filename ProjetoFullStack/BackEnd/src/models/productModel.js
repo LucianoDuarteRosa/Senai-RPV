@@ -134,11 +134,6 @@ class ProductModel {
     return this.executeSQL(sql, [updateProduct, id]); 
   }
 
-  delete(id) {
-    const sql = "DELETE FROM Product WHERE IdProduct = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new ProductModel();

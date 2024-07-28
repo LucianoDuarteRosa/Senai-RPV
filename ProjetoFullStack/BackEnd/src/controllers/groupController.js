@@ -66,16 +66,6 @@ class GroupController {
       .catch((error) => res.status(400).json(error.message));
 
   }
-
-  delete(req, res) {
-    const { id } = req.params;
-    const retorno = groupModel.delete(id);
-    return retorno
-      .then((result) =>
-        res.status(200).send("Grupo deletado com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
-  }
   
 }
 

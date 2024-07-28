@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../styles/home.css';
+import React from 'react';
+import '../styles/index.css';
 
 export default function Home() {
 

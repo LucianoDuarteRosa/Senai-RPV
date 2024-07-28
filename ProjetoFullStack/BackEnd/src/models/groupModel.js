@@ -49,11 +49,6 @@ class GroupModel {
     return this.executeSQL(sql, [updateGroup, id]); 
   }
 
-  delete(id) {
-    const sql = "DELETE FROM ProductGroup WHERE IdGroup = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new GroupModel();

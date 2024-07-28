@@ -67,16 +67,6 @@ class AccountsPayableController {
 
   }
 
-  delete(req, res) {
-    const { id } = req.params;
-    const retorno = accountsPayableModel.delete(id);
-    return retorno
-      .then((result) =>
-        res.status(200).send("contas a pagar deletado com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
-  }
-  
 }
 
 module.exports = new AccountsPayableController();

@@ -14,6 +14,4 @@ router.post("/payable", accountsPayableController.create);
 
 router.put("/payable/:id", accountsPayableController.update);
 
-router.delete("/payable/:id", accountsPayableController.delete);
-
 module.exports = router;

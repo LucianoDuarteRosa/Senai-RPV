@@ -67,16 +67,6 @@ class SubGroupController {
 
   }
 
-  delete(req, res) {
-    const { id } = req.params;
-    const retorno = subGroupModel.delete(id);
-    return retorno
-      .then((result) =>
-        res.status(200).send("Sub-Grupo deletado com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
-  }
-  
 }
 
 module.exports = new SubGroupController();

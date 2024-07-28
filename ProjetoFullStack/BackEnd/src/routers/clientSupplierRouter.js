@@ -14,6 +14,4 @@ router.post("/client", clientSupplierController.create);
 
 router.put("/client/:id", clientSupplierController.update);
 
-router.delete("/client/:id", clientSupplierController.delete);
-
 module.exports = router;

@@ -78,11 +78,6 @@ class SaleDetailModel {
     return this.executeSQL(sql, [updateSaleDetail, id]); 
   }
 
-  delete(id) {
-    const sql = "DELETE FROM SaleDetail WHERE IdSaleDetail = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new SaleDetailModel();

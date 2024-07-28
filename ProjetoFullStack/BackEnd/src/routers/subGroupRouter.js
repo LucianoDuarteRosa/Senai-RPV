@@ -14,6 +14,4 @@ router.post("/subgroup", subGroupController.create);
 
 router.put("/subgroup/:id", subGroupController.update);
 
-router.delete("/subgroup/:id", subGroupController.delete);
-
 module.exports = router;

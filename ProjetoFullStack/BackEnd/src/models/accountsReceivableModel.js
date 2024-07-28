@@ -2,22 +2,22 @@
 const dbConnection = require("../../db/dbConnection");
 
 class AccountsReceivableModel {
-  
+
   executeSQL(sql, parametros = "") {
-    
-    return new Promise( function (resolve, reject) {
-        
-       
-        dbConnection.query(sql, parametros, function (error, resposta) {
-          
-          if (error) {
-            return reject(error);
-          }
 
-          return resolve(resposta);
-        });
+    return new Promise(function (resolve, reject) {
 
-      }
+
+      dbConnection.query(sql, parametros, function (error, resposta) {
+
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(resposta);
+      });
+
+    }
     );
   }
 
@@ -40,12 +40,12 @@ class AccountsReceivableModel {
       JOIN Sale ON AccountsReceivable.IdSale = Sale.IdSale
       JOIN User ON Sale.IdUser = User.IdUser
       JOIN ClientSupplier ON AccountsReceivable.IdClientSupplier = ClientSupplier.IdClientSupplier`;
-    return this.executeSQL(sql); 
+    return this.executeSQL(sql);
   }
-  
+
 
   read(id) {
-    const sql =  `SELECT
+    const sql = `SELECT
         AccountsReceivable.IdAccountReceivable, 
         AccountsReceivable.Amount, 
         AccountsReceivable.IdClientSupplier,
@@ -63,8 +63,8 @@ class AccountsReceivableModel {
       JOIN Sale ON AccountsReceivable.IdSale = Sale.IdSale
       JOIN User ON Sale.IdUser = User.IdUser
       JOIN ClientSupplier ON AccountsReceivable.IdClientSupplier = ClientSupplier.IdClientSupplier
-      WHERE AccountsReceivable.IdAccountReceivable = ?`; 
-    return this.executeSQL(sql, id); 
+      WHERE AccountsReceivable.IdAccountReceivable = ?`;
+    return this.executeSQL(sql, id);
   }
 
   search(parametro) {
@@ -95,23 +95,17 @@ class AccountsReceivableModel {
         OR AccountsReceivable.Amount LIKE ?`;
     const values = [parametro, `%${parametro}%`, `%${parametro}%`, `%${parametro}%`, `%${parametro}%`, `%${parametro}%`];
     return this.executeSQL(sql, values);
-  }  
+  }
 
   create(newAccountsReceivable) {
-    const sql = "INSERT INTO AccountsReceivable SET ?"; 
+    const sql = "INSERT INTO AccountsReceivable SET ?";
     return this.executeSQL(sql, newAccountsReceivable);
   }
 
   update(updateAccountsReceivable, id) {
     const sql = "UPDATE AccountsReceivable SET ? WHERE IdAccountsReceivable = ?";
-    return this.executeSQL(sql, [updateAccountsReceivable, id]); 
+    return this.executeSQL(sql, [updateAccountsReceivable, id]);
   }
-
-  delete(id) {
-    const sql = "DELETE FROM AccountsReceivable WHERE IdAccountsReceivable = ?"
-    return this.executeSQL(sql, id); 
-  }
-
 }
 
 module.exports = new AccountsReceivableModel();

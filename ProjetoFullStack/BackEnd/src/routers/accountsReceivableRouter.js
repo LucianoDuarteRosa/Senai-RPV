@@ -14,6 +14,4 @@ router.post("/receivable", accountsReceivableController.create);
 
 router.put("/receivable/:id", accountsReceivableController.update);
 
-router.delete("/receivable/:id", accountsReceivableController.delete);
-
 module.exports = router;
