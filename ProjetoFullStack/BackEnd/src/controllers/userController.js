@@ -1,7 +1,9 @@
 
 const userModel = require("../models/userModel");
 const bcrypt = require('bcryptjs');
+const moment = require('moment');
 const jwt = require('jsonwebtoken');
+const tokenModel = require('../models/tokenModel')
 
 
 class UserController {
@@ -89,10 +91,13 @@ class UserController {
       const isPasswordValid = await bcrypt.compare(password, user[0].Password);
 
       if (isPasswordValid) {
-        const token = jwt.sign({ id: user[0].IdUsuario }, process.env.JWT_SECRET, { expiresIn: '8h' });
+        const token = jwt.sign({}, process.env.JWT_SECRET, { expiresIn: '8h' });
+        const expiresAt = moment().add(8, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        const tokenCreate = {IdUser: user[0].IdUser, Token: token,  ExpiresToken: expiresAt }
+        tokenModel.create(tokenCreate);
+
         return res.status(200).json({ 
           token: token, 
-          id: user[0].IdUsuario, 
           name: user[0].UserName, 
           profile: user[0].IdProfile });
       } else {

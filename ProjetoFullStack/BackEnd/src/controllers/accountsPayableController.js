@@ -1,11 +1,10 @@
 
 const accountsPayableModel = require("../models/accountsPayableModel");
-
+const validator = require('../../utils/inputsValidator');
 
 class AccountsPayableController {
  
   readList(req, res) {
-   
     const retorno = accountsPayableModel.readList();
     return retorno
       .then((result) => result.length == 0
