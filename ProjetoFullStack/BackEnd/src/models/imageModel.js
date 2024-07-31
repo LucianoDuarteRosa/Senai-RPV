@@ -20,12 +20,7 @@ class ImageModel {
       }
     );
   }
-
-  readList() {
-      const sql = `SELECT IdImage, Path, IdProduct FROM Image`;
-    return this.executeSQL(sql); 
-  }
-
+  
   read(id) {
     const sql = "SELECT IdImage, Path, IdProduct FROM Image WHERE IdImage = ?"; 
     return this.executeSQL(sql, id); 

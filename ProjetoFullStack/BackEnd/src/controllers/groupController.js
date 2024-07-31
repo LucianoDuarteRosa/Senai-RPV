@@ -1,5 +1,5 @@
-
 const groupModel = require("../models/groupModel");
+const validator = require("../../utils/inputsValidator")
 
 
 class GroupController {
@@ -17,9 +17,19 @@ class GroupController {
 
  
   read(req, res) {
-    
     const { id } = req.params;
     
+    const errors = [];
+
+    const testId= validator.integerValidator(reqBody.idGroup);
+
+    if (testId !== true) {
+      errors.push(testId);
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
+
     const retorno = groupModel.read(id);
     return retorno
       .then((result) =>
@@ -46,6 +56,7 @@ class GroupController {
 
   create(req, res) {
     const reqBody = req.body; 
+  
     const retorno = groupModel.create(reqBody);
     return retorno
       .then((result) =>
@@ -57,6 +68,15 @@ class GroupController {
   update(req, res) {
     const { id } = req.params;
     const reqBody = req.body;
+
+    const testId= validator.integerValidator(reqBody.idGroup);
+
+    if (testId !== true) {
+      errors.push(testId);
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
       
     const retorno = groupModel.update(reqBody, id);
     return retorno
@@ -66,7 +86,6 @@ class GroupController {
       .catch((error) => res.status(400).json(error.message));
 
   }
-  
 }
 
 module.exports = new GroupController();

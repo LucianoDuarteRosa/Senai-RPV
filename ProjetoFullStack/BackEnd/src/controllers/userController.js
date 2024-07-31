@@ -3,13 +3,13 @@ const userModel = require("../models/userModel");
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
-const tokenModel = require('../models/tokenModel')
+const tokenModel = require('../models/tokenModel');
+const validator = require('../../utils/inputsValidator');
 
 
 class UserController {
 
   readList(req, res) {
-
     const retorno = userModel.readList();
     return retorno
       .then((result) => result.length == 0
@@ -21,18 +21,28 @@ class UserController {
 
 
   read(req, res) {
-
     const { id } = req.params;
+    const errors = [];
+
+    const test = validator.integerValidator(id);
+    if (test !== true) {
+        errors.push(test);
+    }
+
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
 
     const retorno = userModel.read(id);
-    return retorno
+
+     return retorno
       .then((result) =>
         result.length == 0
           ? res.status(404).send("Usuário não encontrado!")
           : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
-  }
+}
 
   search(req, res) {
 
@@ -50,34 +60,80 @@ class UserController {
 
   create(req, res) {
     const { name, email, password } = req.body;
+    const errors = [];
+
+    const testName = validator.allValidator(name, 2, 15);
+    const testEmail = validator.emailValidator(email);
+
+    if (testName !== true) {
+        errors.push(testName);
+    }
+    if (testEmail !== true) {
+        errors.push(testEmail);
+    }
+
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
+
+
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
-    let user = { UserName: name, UserEmail: email, Password: hashedPassword };
+    const user = { UserName: name, UserEmail: email, Password: hashedPassword };
 
-    const retorno = userModel.create(user);
-    return retorno
-      .then((result) =>
-        res.status(201).send("Usuário criado com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
+    userModel.create(user)
+        .then((result) => res.status(201).send("Usuário criado com sucesso!"))
+        .catch((error) => res.status(500).json({ error: error.message }));
+}
+
+
+update(req, res) {
+  const { id } = req.params;
+  const reqBody = req.body;
+
+  const errors = [];
+
+  const testId = validator.integerValidator(id);
+  const testName = validator.allValidator(reqBody.name, 3, 15);
+  const testEmail = validator.emailValidator(reqBody.email);
+  const testIdProfile = validator.integerValidator(reqBody.profile);
+  const testActive = validator.booleanValidator(reqBody.active);
+
+  if (testId !== true) {
+      errors.push(testId);
+  }
+  if (testName !== true) {
+      errors.push(testName);
+  }
+  if (testEmail !== true) {
+      errors.push(testEmail);
+  }
+  if (testIdProfile !== true) {
+      errors.push(testIdProfile);
+  }
+  if (testActive !== true) {
+      errors.push(testActive);
   }
 
-  update(req, res) {
-    const { id } = req.params;
-    const reqBody = req.body;
-
-    const retorno = userModel.update(reqBody, id);
-    return retorno
-      .then((result) =>
-        res.status(200).send("Usuário atualizado com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
-
+  if (errors.length > 0) {
+      return res.status(400).json({ errors });
   }
+
+  userModel.update(reqBody, id)
+      .then((result) => res.status(200).send("Usuário atualizado com sucesso!"))
+      .catch((error) => res.status(500).json({ error: error.message }));
+}
 
   async login(req, res) {
     let email = req.body.email;
     let password = req.body.password;
+
+    let testEmail = validator.emailValidator(email);
+
+    if(testEmail !== true){
+      return res.status(400).json(testEmail);
+    }
+
     try {
       const user = await userModel.findByEmail(email);
       if (!user[0]) {
@@ -93,13 +149,14 @@ class UserController {
       if (isPasswordValid) {
         const token = jwt.sign({}, process.env.JWT_SECRET, { expiresIn: '8h' });
         const expiresAt = moment().add(8, 'hours').format('YYYY-MM-DD HH:mm:ss');
-        const tokenCreate = {IdUser: user[0].IdUser, Token: token,  ExpiresToken: expiresAt }
+        const tokenCreate = { IdUser: user[0].IdUser, Token: token, ExpiresToken: expiresAt }
         tokenModel.create(tokenCreate);
 
-        return res.status(200).json({ 
-          token: token, 
-          name: user[0].UserName, 
-          profile: user[0].IdProfile });
+        return res.status(200).json({
+          token: token,
+          name: user[0].UserName,
+          profile: user[0].IdProfile
+        });
       } else {
         return res.status(400).json({ message: 'Credenciais Inválidas' });
       }

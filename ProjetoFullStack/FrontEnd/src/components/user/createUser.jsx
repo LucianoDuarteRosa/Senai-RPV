@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import bcrypt from 'bcryptjs';
 
 // FRAMEWORKS - MATERIAL UI
 import Avatar from '@mui/material/Avatar';
@@ -36,7 +35,6 @@ function CreateUser() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        //encriptar a password antes do envio
         try {
             const response = await axios.post('http://localhost:3000/usuario', { ...formData,});
             console.log(response.data);

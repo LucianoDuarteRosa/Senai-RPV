@@ -1,6 +1,5 @@
-
 const saleDetailModel = require("../models/saleDetailModel");
-
+const validator = require("../../utils/inputsValidator")
 
 class SaleDetailController {
  
@@ -17,8 +16,18 @@ class SaleDetailController {
 
  
   read(req, res) {
-    
     const { id } = req.params;
+
+    const errors = [];
+
+    const test = validator.integerValidator(id);
+    if (test !== true) {
+      errors.push(test);
+    }
+
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
     
     const retorno = saleDetailModel.read(id);
     return retorno
@@ -32,6 +41,21 @@ class SaleDetailController {
 
   create(req, res) {
     const reqBody = req.body; 
+    const errors = [];
+
+    const testIdSale = validator.integerValidator(reqBody.idSale);
+    const testIdProduct = validator.integerValidator(reqBody.idProduct);
+
+    if (testIdSale !== true) {
+      errors.push(testIdSale);
+    }
+    if (testIdProduct !== true) {
+      errors.push(testIdProduct);
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
+
     const retorno = saleDetailModel.create(reqBody);
     return retorno
       .then((result) =>
@@ -43,6 +67,24 @@ class SaleDetailController {
   update(req, res) {
     const { id } = req.params;
     const reqBody = req.body;
+    const errors = [];
+
+    const testIdSaleDetail = validator.integerValidator(reqBody.idSaleDetail);
+    const testIdSale = validator.integerValidator(reqBody.idSale);
+    const testIdProduct = validator.integerValidator(reqBody.idProduct);
+
+    if (testIdSaleDetail !== true) {
+      errors.push(testIdSaleDetail);
+    }
+    if (testIdSale !== true) {
+      errors.push(testIdSale);
+    }
+    if (testIdProduct !== true) {
+      errors.push(testIdProduct);
+    }
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
       
     const retorno = saleDetailModel.update(reqBody, id);
     return retorno
