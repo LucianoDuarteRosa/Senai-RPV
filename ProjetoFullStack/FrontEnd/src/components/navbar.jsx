@@ -4,7 +4,7 @@ import { useAuth } from './login/authContext';
 import { Box, Typography, IconButton, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import HandymanIcon from '@mui/icons-material/Handyman';
-import { Button } from '@mui/material';
+import '../styles/index.css'
 
 const theme = createTheme();
 
@@ -26,17 +26,7 @@ export default function Navbar() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box className='navbar'
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          height: '80px',
-          m: 0,
-          p: 0,
-        }}
-      >
+      <Box className='navbar'>
         <Typography
           variant="h4"
           component="h1"
@@ -52,24 +42,22 @@ export default function Navbar() {
             style={{
               color: '#FFF',
               textDecoration: 'none',
-              fontFamily: 'Varela Round',
-              marginLeft: '40px',
             }}
           >
-            LavaQPassaBrecho
+            LavaQPassa
           </Link>
         </Typography>
         {user && (
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', mr: 6 }}>
-            <Typography variant="body1" sx={{ color: '#fff', mr: 3 }}>
+          <Box className="navbar-box">
+            <Typography sx={{ color: '#fff', mr: 3 }}>
               Olá, {userName}.
             </Typography>
-            <IconButton component={Link} to="/manager" sx={{ color: '#fff' }}>
+            <IconButton component={Link} to="/manager" sx={{ color: '#fff', marginRight: '5px'}}>
               <HandymanIcon fontSize="large" />
             </IconButton>
-            <Button variant="contained" color='success' onClick={logout} sx={{ ml: 2 }}>
+            <button className='secundary-button' onClick={logout}>
               Sair
-            </Button>
+            </button>
           </Box>
         )}
       </Box>

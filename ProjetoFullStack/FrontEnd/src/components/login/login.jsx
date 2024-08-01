@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useAuth } from '../login/authContext';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Container, Typography, Box, Paper, Link, InputAdornment, Avatar } from '@mui/material';
+import { TextField, Button, Typography, Box, Paper, Link, InputAdornment, Avatar } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -24,17 +24,17 @@ const Login = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="70vh" bgcolor="#f0f0f0">
+    <Box className='box'>
       <Paper elevation={3} style={{ padding: '40px', borderRadius: '8px', maxWidth: '500px', width: '100%' }}>
         <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-          <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
-            <LockOutlinedIcon />
+          <Avatar className='avatar'>
+            <LockOutlinedIcon className='avatar' />
           </Avatar>
           <Typography variant="h4" gutterBottom align="center">
             Login
           </Typography>
         </Box>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: "column", alignItems: 'center' }}>
           <TextField
             label="Email"
             type="email"
@@ -51,9 +51,30 @@ const Login = () => {
                 </InputAdornment>
               ),
             }}
+            InputLabelProps={{
+              sx: {
+                color: '#0303037e', // Cor padrão do label
+                '&.Mui-focused': {
+                  color: '#030303', // Cor do label quando em foco
+                },
+              },
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#0303037e', // Cor da borda
+                },
+                '&:hover fieldset': {
+                  borderColor: '#0303037e', // Cor da borda ao passar o mouse
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#030303af', // Cor da borda quando em foco
+                },
+              },
+            }}
           />
           <TextField
-            label="Password"
+            label="Senha"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -68,21 +89,41 @@ const Login = () => {
                 </InputAdornment>
               ),
             }}
+            InputLabelProps={{
+              sx: {
+                color: '#0303037e', // Cor padrão do label
+                '&.Mui-focused': {
+                  color: '#030303', // Cor do label quando em foco
+                },
+              },
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#0303037e', // Cor da borda
+                },
+                '&:hover fieldset': {
+                  borderColor: '#0303037e', // Cor da borda ao passar o mouse
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#030303af', // Cor da borda quando em foco
+                },
+              },
+            }}
           />
           <Box display="flex" justifyContent="flex-end" mb={2}>
             <Link href="" variant="body2">
-              Esqueceu sua senha?
             </Link>
           </Box>
-          <Button
+          <button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
-            style={{ padding: '10px' }}
+            className='primary-button'
           >
             Entrar
-          </Button>
+          </button>
         </form>
       </Paper>
     </Box>

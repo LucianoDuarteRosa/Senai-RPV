@@ -1,6 +1,7 @@
 // BIBLIOTECAS
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import '../styles/index.css'
 
 // FRAMEWORKS - MATERIAL UI
 import {
@@ -19,52 +20,190 @@ const theme = createTheme();
 
 export default function Manager() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container component="main" maxWidth="md">
-        <Box
-          sx={{
-            marginTop: 5,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingBottom:'30px'
-          }}
-        >
-          <Typography component="h1" variant="h4" gutterBottom fontFamily='signika'>
-            <b>Gerenciador</b>
-          </Typography>
+    <ThemeProvider theme={theme} >
+      <div className="main-manager">
+        <CssBaseline />
+        <Container component="main" maxWidth="md">
+          <Box className="box-manage">
+            <Typography component="h1" variant="h2" margin='30px'>
+              <b className="tile-manager">Gerenciador</b>
+            </Typography>
 
-          <Grid container spacing={2} justifyContent="center">         
-            <Grid item xs={12} sm={10} md={8}>
-              <Paper elevation={6} sx={{ padding: 1 }}>
-                <Typography variant="h5" gutterBottom fontFamily='signika'>
-                  Usuário
-                </Typography>
-                <Box display="flex" justifyContent="space-around">
-                  <Button
-                    component={RouterLink}
-                    to="/criarusuario"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Cadastrar
-                  </Button>
-                  <Button
-                    component={RouterLink}
-                    to="/buscarusuario"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Pesquisar
-                  </Button>
-                </Box>
-              </Paper>
+            <Grid>
+              <Grid item xs={12} sm={10} md={8} className="box-manage-main">
+              <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Produto</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Venda</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Contas a Pagar</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Contas a Receber</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Usuário</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/createuser"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/searchuser"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Categorias</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Sub-Categorias</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
+                    <b>Cliente/Fornecedores</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </Container>
+          </Box>
+        </Container>
+      </div>
     </ThemeProvider>
   );
 }

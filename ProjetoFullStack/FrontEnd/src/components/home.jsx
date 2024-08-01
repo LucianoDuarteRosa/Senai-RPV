@@ -8,7 +8,7 @@ return (
       <div className='body-home'>
         <div className='sidebar'>
           <div className=''>
-            <main>Teste</main>
+            <main></main>
           </div>
           <div className=''>
           </div>

@@ -26,9 +26,9 @@ function App() {
           <Route element={<PrivateRoute />}>
           <Route exact path='/' element={<Home/>} />
             <Route path="/manager" element={<Manager />} />
-            <Route path='/criarusuario' element={<CreateUser/>} />
-            <Route path='/buscarusuario' element={<SearchUser/>} />
-            <Route path="/atualizarusuario/:id" element={<UpdateUser/>} />
+            <Route path='/createuser' element={<CreateUser/>} />
+            <Route path='/searchuser' element={<SearchUser/>} />
+            <Route path="/updateuser/:id" element={<UpdateUser/>} />
           </Route>
         </Routes>
       </BrowserRouter>
