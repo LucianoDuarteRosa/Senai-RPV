@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DialogMessage from '../../../utils/dialogMessage';
+import validator from '../../../utils/inputsValidator';
 
 const theme = createTheme();
 
@@ -29,7 +30,7 @@ function CreateUser() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
-    
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
@@ -38,6 +39,26 @@ function CreateUser() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            const errors = [];
+    
+            const testName = validator.allValidator(formData.name, 2, 15);
+            const testEmail = validator.emailValidator(formData.email);
+    
+            if (testName !== true) {
+                errors.push(testName);
+            }
+            if (testEmail !== true) {
+                errors.push(testEmail);
+            }
+    
+            // Se houver erros, configura o diálogo de erro e retorna
+            if (errors.length > 0) {
+                setDialogStatus('error');
+                setDialogMessage(errors.join(' ')); // Concatena os erros em uma única string
+                return;
+            }
+    
+            // Se não houver erros, faz a chamada ao axios
             const response = await axios.post('http://localhost:3000/user', { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -51,11 +72,14 @@ function CreateUser() {
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
+    
         } catch (error) {
+            // Trata o erro da chamada ao axios
             const errorMessage = error.response?.data?.error || "Erro ao cadastrar usuário";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {
+            // Abre o diálogo em todos os casos
             setDialogOpen(true);
         }
     };
@@ -197,11 +221,11 @@ function CreateUser() {
                             </Button>
                         </Box>
                     </Box>
-                    <DialogMessage 
-                        open={dialogOpen} 
-                        onClose={handleCloseDialog} 
-                        status={dialogStatus} 
-                        message={dialogMessage} 
+                    <DialogMessage
+                        open={dialogOpen}
+                        onClose={handleCloseDialog}
+                        status={dialogStatus}
+                        message={dialogMessage}
                     />
                 </Box>
             </Container>

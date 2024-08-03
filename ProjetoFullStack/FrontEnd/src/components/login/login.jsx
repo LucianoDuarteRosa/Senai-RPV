@@ -13,16 +13,24 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await login(email, password);
       navigate('/');
     } catch (error) {
-      console.error('Login failed', error);
+      const errorMessage = error.response?.data?.error || "Credênciais inválidas. Verifique e tente novamente.";
+      setDialogStatus('error');
+      setDialogMessage(errorMessage);
+      setDialogOpen(true);
     }
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
   };
 
   return (
@@ -123,12 +131,18 @@ const Login = () => {
             color="primary"
             fullWidth
             className='primary-button'
-            style={{width: '50%'}}
+            style={{ width: '50%' }}
           >
             Entrar
           </Button>
         </form>
       </Paper>
+      <DialogMessage
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        status={dialogStatus}
+        message={dialogMessage}
+      />
     </Box>
   );
 };
