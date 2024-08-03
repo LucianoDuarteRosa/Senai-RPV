@@ -54,7 +54,7 @@ function CreateUser() {
             // Se houver erros, configura o diálogo de erro e retorna
             if (errors.length > 0) {
                 setDialogStatus('error');
-                setDialogMessage(errors.join(' ')); // Concatena os erros em uma única string
+                setDialogMessage(errors.join('\n')); // Concatena os erros em uma única string
                 return;
             }
     
@@ -75,7 +75,7 @@ function CreateUser() {
     
         } catch (error) {
             // Trata o erro da chamada ao axios
-            const errorMessage = error.response?.data?.error || "Erro ao cadastrar usuário";
+            const errorMessage = error.response?.data || "Erro ao cadastrar usuário";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {

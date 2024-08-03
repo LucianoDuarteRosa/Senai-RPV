@@ -2,40 +2,62 @@
 const dbConnection = require("../../db/dbConnection");
 
 class UserModel {
-  
+
   executeSQL(sql, parametros = "") {
-    
-    return new Promise( function (resolve, reject) {
-        
-       
-        dbConnection.query(sql, parametros, function (error, resposta) {
-          
-          if (error) {
-            return reject(error);
-          }
 
-          return resolve(resposta);
-        });
+    return new Promise(function (resolve, reject) {
 
-      }
+
+      dbConnection.query(sql, parametros, function (error, resposta) {
+
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(resposta);
+      });
+
+    }
     );
   }
 
   readList() {
-      const sql = `SELECT User.IdUser, User.UserName, User.UserEmail, User.Active, User.IdProfile, Profile.UserProfile FROM  User 
+    const sql = `SELECT User.IdUser, User.UserName, User.UserEmail, User.Active, User.IdProfile, Profile.UserProfile FROM  User 
       JOIN Profile ON User.IdProfile = Profile.IdProfile
     `;
-    return this.executeSQL(sql); 
+    return this.executeSQL(sql);
   }
 
   read(id) {
-    const sql = "SELECT User.IdUser, User.UserName, User.UserEmail, User.Active, User.IdProfile, Profile.UserProfile FROM  User JOIN Profile ON User.IdProfile = Profile.IdProfile WHERE User.IdUser = ?"; 
-    return this.executeSQL(sql, id); 
+    const sql = "SELECT User.IdUser, User.UserName, User.UserEmail, User.Active, User.IdProfile, Profile.UserProfile FROM  User JOIN Profile ON User.IdProfile = Profile.IdProfile WHERE User.IdUser = ?";
+    return this.executeSQL(sql, id);
   }
 
-  findByEmail(email){
-    const sql = "SELECT IdUser, UserName, UserEmail, Active, IdProfile, Password FROM  User  WHERE UserEmail = ?"; 
-    return this.executeSQL(sql, email); 
+  findByEmail(email) {
+    const sql = "SELECT IdUser, UserName, UserEmail, Active, IdProfile, Password FROM  User  WHERE UserEmail = ?";
+    return this.executeSQL(sql, email);
+  }
+
+  async checkUserExists(name, email) {
+    const sql = `SELECT UserName, UserEmail FROM User WHERE UserName = ? OR UserEmail = ?`;
+    const [rows] = await this.executeSQL(sql, [name, email]);
+  
+    // Verifica se rows é um array, se não for, transforma em array
+    const results = Array.isArray(rows) ? rows : [rows];
+  
+    let userNameExists = false;
+    let userEmailExists = false;
+  
+    results.forEach(row => {
+      if (row.UserName === name) {
+        userNameExists = true;
+      }
+      if (row.UserEmail === email) {
+        userEmailExists = true;
+      }
+    });
+  
+    return { userNameExists, userEmailExists };
   }
 
   search(parametro) {
@@ -49,13 +71,13 @@ class UserModel {
   }
 
   create(newUser) {
-    const sql = "INSERT INTO User SET ?"; 
+    const sql = "INSERT INTO User SET ?";
     return this.executeSQL(sql, newUser);
   }
 
   update(updateUser, id) {
     const sql = "UPDATE User SET ? WHERE IdUser = ?";
-    return this.executeSQL(sql, [updateUser, id]); 
+    return this.executeSQL(sql, [updateUser, id]);
   }
 
 }
