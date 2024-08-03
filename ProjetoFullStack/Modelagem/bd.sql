@@ -4,7 +4,7 @@ USE lavaQPassaBrecho;
 /* Profile type for administrators */
 CREATE TABLE Profile (
     IdProfile INT PRIMARY KEY AUTO_INCREMENT,
-    UserProfile ENUM('ADMINISTRADOR', 'USUARIO') DEFAULT 'USUARIO'
+    UserProfile ENUM('ADMINISTRADOR', 'COLABORADOR', 'USUARIO') DEFAULT 'USUARIO'
 );
 
 /* User for login associated with a profile type */
@@ -13,7 +13,7 @@ CREATE TABLE User (
     UserName VARCHAR(20) NOT NULL,
     UserEmail VARCHAR(60) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
-    IdProfile INT NOT NULL DEFAULT 2,
+    IdProfile INT NOT NULL DEFAULT 3,
     Active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (IdProfile) REFERENCES Profile(IdProfile) ON DELETE CASCADE
 );
@@ -177,11 +177,20 @@ CREATE TABLE AccountsReceivable (
 CREATE INDEX idx_sale_id_accounts_receivable ON AccountsReceivable (IdSale);
 CREATE INDEX idx_client_supplier_id_accounts_receivable ON AccountsReceivable (IdClientSupplier);
 
+CREATE TABLE Tokens (
+    IdToken INT AUTO_INCREMENT PRIMARY KEY,
+    IdUser INT NOT NULL,
+    Token VARCHAR(255) NOT NULL,
+    CreateToken TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ExpiresToken TIMESTAMP,
+    FOREIGN KEY (IdUser) REFERENCES User(IdUser)
+);
+
 /* Insert initial data */
-INSERT INTO Profile (UserProfile) VALUES ('ADMINISTRADOR'), ('USUARIO');
+INSERT INTO Profile (UserProfile) VALUES ('ADMINISTRADOR'), ('COLABORADOR'), ('USUARIO');
 
 INSERT INTO User (UserName, UserEmail, Password, IdProfile) VALUES 
-('admin', 'admin@example.com', 'senha_admin', 1),
+('admin', 'admin', '123', 1),
 ('usuario', 'usuario@example.com', 'senha_usuario', 2);
 
 INSERT INTO ProductGroup (GroupName) VALUES 

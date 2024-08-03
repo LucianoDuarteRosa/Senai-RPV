@@ -6,12 +6,14 @@ import { TextField, Button, Typography, Box, Paper, Link, InputAdornment, Avatar
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import DialogMessage from '../../../utils/dialogMessage';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [dialogMessage, setDialogMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -115,15 +117,16 @@ const Login = () => {
             <Link href="" variant="body2">
             </Link>
           </Box>
-          <button
+          <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
             className='primary-button'
+            style={{width: '50%'}}
           >
             Entrar
-          </button>
+          </Button>
         </form>
       </Paper>
     </Box>

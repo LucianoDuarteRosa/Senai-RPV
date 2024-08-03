@@ -1,33 +1,35 @@
-// BIBLIOTECAS
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-// FRAMEWORKS - MATERIAL UI
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import DialogMessage from '../../../utils/dialogMessage';
 
 const theme = createTheme();
 
 function CreateUser() {
     const navigate = useNavigate();
+
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const token = user.token || "";
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: ""
     });
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogStatus, setDialogStatus] = useState('');
+    const [dialogMessage, setDialogMessage] = useState('');
+    
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
@@ -36,56 +38,80 @@ function CreateUser() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/usuario', { ...formData,});
-            console.log(response.data);
+            const response = await axios.post('http://localhost:3000/user', { ...formData }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const successMessage = response.data || "Usuário cadastrado com sucesso!";
             setFormData({
                 name: "",
                 email: "",
                 password: ""
             });
-            setErrorMessage(""); // Limpa mensagem de erro se houver
-            setSuccessMessage("Usuário cadastrado com sucesso!");
+            setDialogStatus('success');
+            setDialogMessage(successMessage);
         } catch (error) {
-            console.error(error);
-            setErrorMessage("Erro ao cadastrar usuário");
-            setSuccessMessage(""); // Limpa mensagem de sucesso se houver
+            const errorMessage = error.response?.data?.error || "Erro ao cadastrar usuário";
+            setDialogStatus('error');
+            setDialogMessage(errorMessage);
+        } finally {
+            setDialogOpen(true);
         }
     };
 
     const handleVoltar = () => {
-        navigate("/manager"); // Navegar de volta para a página
+        navigate("/manager");
+    };
+
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
     };
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container className="box-container">
                 <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
-                        <AccountCircleIcon />
+                <Box className="box-manager-all">
+                    <Avatar className='avatar'>
+                        <AccountCircleIcon className='avatar' />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Cadastro de Usuário
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
                             id="name"
-                            label="name"
+                            label="Nome"
                             name="name"
                             autoComplete="name"
                             autoFocus
                             value={formData.name}
                             onChange={handleChange}
+                            InputLabelProps={{
+                                sx: {
+                                    color: '#0303037e',
+                                    '&.Mui-focused': {
+                                        color: '#030303',
+                                    },
+                                },
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#030303af',
+                                    },
+                                },
+                            }}
                         />
                         <TextField
                             margin="normal"
@@ -97,47 +123,86 @@ function CreateUser() {
                             autoComplete="email"
                             value={formData.email}
                             onChange={handleChange}
+                            InputLabelProps={{
+                                sx: {
+                                    color: '#0303037e',
+                                    '&.Mui-focused': {
+                                        color: '#030303',
+                                    },
+                                },
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#030303af',
+                                    },
+                                },
+                            }}
                         />
                         <TextField
                             margin="normal"
                             required
                             fullWidth
                             name="password"
-                            label="password"
+                            label="Senha"
                             type="password"
                             id="password"
                             autoComplete="current-password"
                             value={formData.password}
                             onChange={handleChange}
-                        />
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                gap: 2,
-                                mt: 3,
-                                mb: 2
+                            InputLabelProps={{
+                                sx: {
+                                    color: '#0303037e',
+                                    '&.Mui-focused': {
+                                        color: '#030303',
+                                    },
+                                },
                             }}
-                        >
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#030303af',
+                                    },
+                                },
+                            }}
+                        />
+                        <Box className="box-manager-button">
                             <Button
                                 type="submit"
                                 variant="contained"
-                                sx={{ width: 150 }}
+                                fullWidth
+                                className='primary-button'
                             >
                                 Cadastrar
                             </Button>
                             <Button
                                 variant="contained"
-                                sx={{ width: 150 }}
+                                fullWidth
+                                className='primary-button'
                                 onClick={handleVoltar}
                             >
                                 Voltar
                             </Button>
                         </Box>
-                        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-                        {successMessage && <Alert severity="success">{successMessage}</Alert>}
                     </Box>
+                    <DialogMessage 
+                        open={dialogOpen} 
+                        onClose={handleCloseDialog} 
+                        status={dialogStatus} 
+                        message={dialogMessage} 
+                    />
                 </Box>
             </Container>
         </ThemeProvider>
