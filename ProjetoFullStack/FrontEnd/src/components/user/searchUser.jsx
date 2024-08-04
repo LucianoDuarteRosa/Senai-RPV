@@ -162,7 +162,14 @@ function UserSearch() {
                   checked={showActiveOnly}
                   onChange={handleCheckboxChange}
                   name="showActiveOnly"
-                  color="primary"
+                  sx={{
+                    '&.Mui-checked': {
+                      color: '#45a049',
+                    },
+                    '&.Mui-checked + .MuiCheckbox-label::before': {
+                      backgroundColor: '#45a049',
+                    },
+                  }}
                 />
               }
               label="Mostrar apenas usuários ativos"
@@ -199,6 +206,14 @@ function UserSearch() {
                           <Checkbox
                             checked={!!user.Active}
                             readOnly
+                            sx={{
+                              '&.Mui-checked': {
+                                color: '#45a049',
+                              },
+                              '&.Mui-checked + .MuiCheckbox-label::before': {
+                                backgroundColor: '#45a049',
+                              },
+                            }}
                           />
                         </TableCell>
                         <TableCell>
