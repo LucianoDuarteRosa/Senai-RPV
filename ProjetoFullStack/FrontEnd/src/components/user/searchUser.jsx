@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {
@@ -33,22 +32,30 @@ function UserSearch() {
   const [error, setError] = useState(null);
   const [showActiveOnly, setShowActiveOnly] = useState(true);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/usuario");
-        const filteredUsers = response.data.filter(user => user.Ativo || !showActiveOnly);
-        setUsers(filteredUsers);
-        setError(null);
-      } catch (error) {
-        console.error(error);
-        setUsers([]);
-        setError("Erro ao carregar usuários");
-      }
-    };
+  const user = JSON.parse(localStorage.getItem('user')) || {};
+  const token = user.token || "";
 
+  // Função para buscar e filtrar usuários
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/user", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const filteredUsers = response.data.filter(user => user.Active || !showActiveOnly);
+      setUsers(filteredUsers);
+      setError(null);
+    } catch (error) {
+      console.error(error);
+      setUsers([]);
+      setError("Erro ao carregar usuários");
+    }
+  };
+
+  useEffect(() => {
     fetchUsers();
-  }, [showActiveOnly]);
+  }, [showActiveOnly, token]); // Dependências para atualizar quando showActiveOnly ou token mudar
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -61,8 +68,12 @@ function UserSearch() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:3000/usuariosearch/${searchTerm}`);
-      const filteredUsers = response.data.filter(user => user.Ativo || !showActiveOnly);
+      const response = await axios.get(`http://localhost:3000/usersearch/${searchTerm}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const filteredUsers = response.data.filter(user => user.Active || !showActiveOnly);
       setUsers(filteredUsers);
       setError(null);
     } catch (error) {
@@ -145,20 +156,20 @@ function UserSearch() {
                   </TableHead>
                   <TableBody>
                     {users.map((user) => (
-                      <TableRow key={user.IdUsuario}>
-                        <TableCell>{user.IdUsuario}</TableCell>
-                        <TableCell>{user.Nome}</TableCell>
-                        <TableCell>{user.Email}</TableCell>
+                      <TableRow key={user.IdUser}>
+                        <TableCell>{user.IdUser}</TableCell>
+                        <TableCell>{user.UserName}</TableCell>
+                        <TableCell>{user.UserEmail}</TableCell>
                         <TableCell>
                           <Checkbox
-                            checked={user.Ativo}
+                            checked={!!user.Active} 
                             readOnly
                           />
                         </TableCell>
                         <TableCell>
-                          <Button 
+                          <Button
                             component={Link}
-                            to={`/atualizarusuario/${user.IdUsuario}`}
+                            to={`/updateuser/${user.IdUser}`}
                             variant="contained" color="warning"
                           >
                             Editar
@@ -175,7 +186,7 @@ function UserSearch() {
             <Button
               fullWidth
               variant="contained"
-              sx={{ width: 150}}
+              sx={{ width: 150 }}
               onClick={handleVoltar}
             >
               Voltar

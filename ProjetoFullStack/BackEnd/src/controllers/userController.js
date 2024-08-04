@@ -70,19 +70,22 @@ class UserController {
       errors.push(testName);
     }
     if (testEmail !== true) {
+      errors.push(testEmail); // Corrigido para adicionar erro ao array
+    }
+    
+    if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
-
   
     try {
       // Verifica se o nome de usuário ou e-mail já existem
       const { userNameExists, userEmailExists } = await userModel.checkUserExists(name, email);
-  
+      
       if (userNameExists) {
-        return res.status(400).send('Nome de usuário já cadastrado!');
+        return res.status(400).json({ error: 'Nome de usuário já cadastrado!' });
       }
       if (userEmailExists) {
-        return res.status(400).send('E-mail já cadastrado!');
+        return res.status(400).json({ error: 'E-mail já cadastrado!' });
       }
   
       // Cria o usuário se não houver erros
@@ -93,6 +96,7 @@ class UserController {
       await userModel.create(user);
       res.status(201).send('Usuário criado com sucesso!');
     } catch (error) {
+      console.error('Error creating user:', error); // Adicionado para melhor depuração
       res.status(500).json({ error: error.message });
     }
   }

@@ -48,14 +48,18 @@ class UserModel {
     let userNameExists = false;
     let userEmailExists = false;
   
-    results.forEach(row => {
-      if (row.UserName === name) {
-        userNameExists = true;
-      }
-      if (row.UserEmail === email) {
-        userEmailExists = true;
-      }
-    });
+    // Somente itera se results não estiver vazio
+    if (results.length > 0) {
+      results.forEach(row => {
+        // Verifica se a propriedade row.UserName e row.UserEmail existe antes de comparar
+        if (row && row.UserName === name) {
+          userNameExists = true;
+        }
+        if (row && row.UserEmail === email) {
+          userEmailExists = true;
+        }
+      });
+    }
   
     return { userNameExists, userEmailExists };
   }

@@ -74,8 +74,9 @@ function CreateUser() {
             setDialogMessage(successMessage);
     
         } catch (error) {
+            console.log(error)
             // Trata o erro da chamada ao axios
-            const errorMessage = error.response?.data || "Erro ao cadastrar usuário";
+            const errorMessage = error.response?.data?.error || "Erro ao cadastrar usuário";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {

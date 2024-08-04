@@ -81,7 +81,7 @@ function UpdateUser() {
   }
 
   const handleVoltar = () => {
-    navigate("/buscarusuario"); // Navegar de volta para a página de busca
+    navigate("/searchuser"); // Navegar de volta para a página de busca
   };
 
   return (
