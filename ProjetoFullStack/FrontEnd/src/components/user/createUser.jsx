@@ -97,7 +97,7 @@ function CreateUser() {
         <ThemeProvider theme={theme}>
             <Container className="box-container">
                 <CssBaseline />
-                <Box className="box-manager-all">
+                <Box className="box-manager-user">
                     <Avatar className='avatar'>
                         <AccountCircleIcon className='avatar' />
                     </Avatar>

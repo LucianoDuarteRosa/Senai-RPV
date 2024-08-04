@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   TextField,
   Typography,
   Table,
@@ -21,7 +20,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Alert from '@mui/material/Alert';
+import DialogMessage from '../../../utils/dialogMessage';
 
 const theme = createTheme();
 
@@ -30,8 +29,10 @@ function UserSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [error, setError] = useState(null);
   const [showActiveOnly, setShowActiveOnly] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogStatus, setDialogStatus] = useState('');
+  const [dialogMessage, setDialogMessage] = useState('');
 
   const user = JSON.parse(localStorage.getItem('user')) || {};
   const token = user.token || "";
@@ -46,12 +47,14 @@ function UserSearch() {
       });
       setUsers(response.data);
       setFilteredUsers(response.data.filter(user => user.Active || !showActiveOnly));
-      setError(null);
     } catch (error) {
       console.error(error);
       setUsers([]);
       setFilteredUsers([]);
-      setError("Erro ao carregar usuários");
+      const errorMessage = error.response?.data?.error || "Erro ao carregar usuários.";
+      setDialogStatus('error');
+      setDialogMessage(errorMessage);
+      setDialogOpen(true);
     }
   };
 
@@ -74,21 +77,28 @@ function UserSearch() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axios.get(`http://localhost:3000/usersearch/${searchTerm}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      const searchedUsers = response.data;
-      setUsers(searchedUsers);
-      setFilteredUsers(searchedUsers.filter(user => user.Active || !showActiveOnly));
-      setError(null);
-    } catch (error) {
-      console.error(error);
-      setUsers([]);
-      setFilteredUsers([]);
-      setError("Nenhum usuário encontrado");
+    if (searchTerm.trim() === "") {
+      // Se o campo de pesquisa estiver vazio, buscar todos os usuários
+      fetchUsers();
+    } else {
+      // Caso contrário, buscar usuários que correspondem ao termo de pesquisa
+      try {
+        const response = await axios.get(`http://localhost:3000/usersearch/${searchTerm}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const searchedUsers = response.data;
+        setUsers(searchedUsers);
+        setFilteredUsers(searchedUsers.filter(user => user.Active || !showActiveOnly));
+      } catch (error) {
+        setUsers([]);
+        setFilteredUsers([]);
+        const errorMessage = error.response?.data?.error || "Nenhum usuário encontrado.";
+        setDialogStatus('error');
+        setDialogMessage(errorMessage);
+        setDialogOpen(true);
+      }
     }
   };
 
@@ -96,20 +106,16 @@ function UserSearch() {
     navigate("/manager"); // Navegar de volta para a página
   };
 
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
-            <AccountCircleIcon />
+      <Container className="box-container-search">
+        <Box className="box-manager-search">
+          <Avatar className='avatar'>
+            <AccountCircleIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
             Pesquisa de Usuário
@@ -127,7 +133,28 @@ function UserSearch() {
               value={searchTerm}
               onChange={handleChange}
               placeholder="Digite o nome ou email do usuário"
-              sx={{ maxWidth: 'calc(100% - 120px)', display: 'inline-block' }} // Ajuste de largura do campo de pesquisa
+              InputLabelProps={{
+                sx: {
+                  color: '#0303037e',
+                  '&.Mui-focused': {
+                    color: '#030303',
+                  },
+                },
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#0303037e',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#0303037e',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#030303af',
+                  },
+                },
+                maxWidth: 'calc(100% - 120px)', display: 'inline-block'
+              }}
             />
             <FormControlLabel
               control={
@@ -141,18 +168,17 @@ function UserSearch() {
               label="Mostrar apenas usuários ativos"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mb: 2 }}>
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ width: 150 }} // Definindo largura mínima para o botão
+                className='primary-button'
               >
                 Buscar
               </Button>
             </Box>
-            {error && <Alert severity="error" sx={{ mt: 2, width: '100%' }}>{error}</Alert>}
             {filteredUsers.length > 0 && (
-              <TableContainer component={Paper} sx={{ mt: 3, width: "100%", maxHeight: 400, overflowY: 'auto', border: "1px solid #ccc", borderRadius: "8px", padding: "16px" }}>
+              <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxHeight: 400, overflowY: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -171,7 +197,7 @@ function UserSearch() {
                         <TableCell>{user.UserEmail}</TableCell>
                         <TableCell>
                           <Checkbox
-                            checked={!!user.Active} 
+                            checked={!!user.Active}
                             readOnly
                           />
                         </TableCell>
@@ -179,7 +205,7 @@ function UserSearch() {
                           <Button
                             component={Link}
                             to={`/updateuser/${user.IdUser}`}
-                            variant="contained" color="warning"
+                            variant="contained" color="success"
                           >
                             Editar
                           </Button>
@@ -191,16 +217,23 @@ function UserSearch() {
               </TableContainer>
             )}
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 0, width: '100%', maxWidth: 600 }}>
             <Button
+              className='primary-button'
+              sx={{ width: '50%', maxWidth: 600, }}
               fullWidth
               variant="contained"
-              sx={{ width: 150 }}
               onClick={handleVoltar}
             >
               Voltar
             </Button>
           </Box>
+          <DialogMessage
+            open={dialogOpen}
+            onClose={handleCloseDialog}
+            status={dialogStatus}
+            message={dialogMessage}
+          />
         </Box>
       </Container>
     </ThemeProvider>
