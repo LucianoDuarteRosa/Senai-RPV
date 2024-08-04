@@ -29,13 +29,14 @@ function UserSearch() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [error, setError] = useState(null);
   const [showActiveOnly, setShowActiveOnly] = useState(true);
 
   const user = JSON.parse(localStorage.getItem('user')) || {};
   const token = user.token || "";
 
-  // Função para buscar e filtrar usuários
+  // Função para buscar todos os usuários
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:3000/user", {
@@ -43,19 +44,25 @@ function UserSearch() {
           'Authorization': `Bearer ${token}`
         }
       });
-      const filteredUsers = response.data.filter(user => user.Active || !showActiveOnly);
-      setUsers(filteredUsers);
+      setUsers(response.data);
+      setFilteredUsers(response.data.filter(user => user.Active || !showActiveOnly));
       setError(null);
     } catch (error) {
       console.error(error);
       setUsers([]);
+      setFilteredUsers([]);
       setError("Erro ao carregar usuários");
     }
   };
 
   useEffect(() => {
     fetchUsers();
-  }, [showActiveOnly, token]); // Dependências para atualizar quando showActiveOnly ou token mudar
+  }, [token]); // Dependência para atualizar quando token mudar
+
+  useEffect(() => {
+    // Filtra os usuários de acordo com o estado do checkbox
+    setFilteredUsers(users.filter(user => user.Active || !showActiveOnly));
+  }, [showActiveOnly, users]); // Dependências para atualizar quando showActiveOnly ou users mudar
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -73,12 +80,14 @@ function UserSearch() {
           'Authorization': `Bearer ${token}`
         }
       });
-      const filteredUsers = response.data.filter(user => user.Active || !showActiveOnly);
-      setUsers(filteredUsers);
+      const searchedUsers = response.data;
+      setUsers(searchedUsers);
+      setFilteredUsers(searchedUsers.filter(user => user.Active || !showActiveOnly));
       setError(null);
     } catch (error) {
       console.error(error);
       setUsers([]);
+      setFilteredUsers([]);
       setError("Nenhum usuário encontrado");
     }
   };
@@ -142,8 +151,8 @@ function UserSearch() {
               </Button>
             </Box>
             {error && <Alert severity="error" sx={{ mt: 2, width: '100%' }}>{error}</Alert>}
-            {users.length > 0 && (
-              <TableContainer component={Paper} sx={{ mt: 3, width: "100%", border: "1px solid #ccc", borderRadius: "8px", padding: "16px" }}>
+            {filteredUsers.length > 0 && (
+              <TableContainer component={Paper} sx={{ mt: 3, width: "100%", maxHeight: 400, overflowY: 'auto', border: "1px solid #ccc", borderRadius: "8px", padding: "16px" }}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -155,7 +164,7 @@ function UserSearch() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {users.map((user) => (
+                    {filteredUsers.map((user) => (
                       <TableRow key={user.IdUser}>
                         <TableCell>{user.IdUser}</TableCell>
                         <TableCell>{user.UserName}</TableCell>

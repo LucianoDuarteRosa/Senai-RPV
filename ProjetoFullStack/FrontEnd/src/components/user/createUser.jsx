@@ -40,24 +40,24 @@ function CreateUser() {
         event.preventDefault();
         try {
             const errors = [];
-    
+
             const testName = validator.allValidator(formData.name, 2, 15);
             const testEmail = validator.emailValidator(formData.email);
-    
+
             if (testName !== true) {
                 errors.push(testName);
             }
             if (testEmail !== true) {
                 errors.push(testEmail);
             }
-    
+
             // Se houver erros, configura o diálogo de erro e retorna
             if (errors.length > 0) {
                 setDialogStatus('error');
                 setDialogMessage(errors.join('\n')); // Concatena os erros em uma única string
                 return;
             }
-    
+
             // Se não houver erros, faz a chamada ao axios
             const response = await axios.post('http://localhost:3000/user', { ...formData }, {
                 headers: {
@@ -72,7 +72,7 @@ function CreateUser() {
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
-    
+
         } catch (error) {
             console.log(error)
             // Trata o erro da chamada ao axios
