@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Avatar from '@mui/material/Avatar';
@@ -12,6 +12,9 @@ import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import '../../styles/index.css'
 
 const theme = createTheme();
 
@@ -24,12 +27,32 @@ function CreateUser() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        profile: ""
     });
 
+    const [profiles, setProfiles] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
+
+    useEffect(() => {
+        // Fetch profiles when the component mounts
+        const fetchProfiles = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setProfiles(response.data);
+            } catch (error) {
+                console.error("Error fetching profiles", error);
+            }
+        };
+
+        fetchProfiles();
+    }, [token]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -51,14 +74,12 @@ function CreateUser() {
                 errors.push(testEmail);
             }
 
-            // Se houver erros, configura o diálogo de erro e retorna
             if (errors.length > 0) {
                 setDialogStatus('error');
-                setDialogMessage(errors.join('\n')); // Concatena os erros em uma única string
+                setDialogMessage(errors.join('\n'));
                 return;
             }
 
-            // Se não houver erros, faz a chamada ao axios
             const response = await axios.post('http://localhost:3000/user', { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -68,19 +89,17 @@ function CreateUser() {
             setFormData({
                 name: "",
                 email: "",
-                password: ""
+                password: "",
+                profile: ""
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
-
         } catch (error) {
-            console.log(error)
-            // Trata o erro da chamada ao axios
+            console.log(error);
             const errorMessage = error.response?.data?.error || "Erro ao cadastrar usuário";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {
-            // Abre o diálogo em todos os casos
             setDialogOpen(true);
         }
     };
@@ -203,6 +222,30 @@ function CreateUser() {
                                 },
                             }}
                         />
+                        <Select
+                            name="profile"
+                            value={formData.profile}
+                            onChange={handleChange}
+                            fullWidth
+                            displayEmpty
+                            renderValue={(selected) => {
+                                if (!selected) {
+                                    return <em>Selecione um perfil de usuário</em>;
+                                }
+                                return profiles.find(profile => profile.IdProfile === selected)?.UserProfile || '';
+                            }}
+                            color="success"
+                            sx={{mt:'10px'}}
+                        >
+                            <MenuItem value="" >
+                                <em>Selecione um perfil de usuário</em>
+                            </MenuItem>
+                            {profiles.map((profile) => (
+                                <MenuItem key={profile.IdProfile} value={profile.IdProfile}>
+                                    {profile.UserProfile}
+                                </MenuItem>
+                            ))}
+                        </Select>
                         <Box className="box-manager-button">
                             <Button
                                 type="submit"

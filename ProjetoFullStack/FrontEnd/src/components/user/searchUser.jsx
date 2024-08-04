@@ -120,7 +120,7 @@ function UserSearch() {
           <Typography component="h1" variant="h5">
             Pesquisa de Usuário
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
             <TextField
               margin="normal"
               required
@@ -185,13 +185,14 @@ function UserSearch() {
               </Button>
             </Box>
             {filteredUsers.length > 0 && (
-              <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxHeight: 400, overflowY: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
+              <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxWidth: '100%', maxHeight: 400, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
                 <Table>
                   <TableHead>
                     <TableRow>
                       <TableCell>Id</TableCell>
                       <TableCell>Nome</TableCell>
                       <TableCell>Email</TableCell>
+                      <TableCell>Perfil</TableCell>
                       <TableCell>Ativo</TableCell>
                       <TableCell>Ações</TableCell>
                     </TableRow>
@@ -200,8 +201,9 @@ function UserSearch() {
                     {filteredUsers.map((user) => (
                       <TableRow key={user.IdUser}>
                         <TableCell>{user.IdUser}</TableCell>
-                        <TableCell>{user.UserName}</TableCell>
+                        <TableCell>{user.UserName}</TableCell>           
                         <TableCell>{user.UserEmail}</TableCell>
+                        <TableCell>{user.UserProfile}</TableCell>
                         <TableCell>
                           <Checkbox
                             checked={!!user.Active}

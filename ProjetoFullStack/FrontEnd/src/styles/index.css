@@ -175,7 +175,7 @@ body{
 }
 .box-manager-search{
     margin-top: 5%;
-    width: 850px;
+    width: 1200px;
     display: flex;
     padding: 20px;
     flex-direction: column;
@@ -191,3 +191,4 @@ body{
     gap: 10px;
     margin-top: 15px;
 }
+
