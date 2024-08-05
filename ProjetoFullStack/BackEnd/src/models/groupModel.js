@@ -33,7 +33,7 @@ class GroupModel {
 
   search(parametro) {
     const sql = `
-      SELECT IdGroup, GroupName, Group.Active FROM ProductGroup 
+      SELECT IdGroup, GroupName, Active FROM ProductGroup 
       WHERE IdGroup = ? OR GroupName LIKE ? OR IdGroup LIKE ?`;
     const values = [parametro, `%${parametro}%`, `%${parametro}%`];
     return this.executeSQL(sql, values);

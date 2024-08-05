@@ -9,6 +9,9 @@ import Manager from './components/manager';
 import CreateUser from './components/user/createUser';
 import SearchUser from './components/user/searchUser';
 import UpdateUser from './components/user/updateUser';
+import CreateGroup from './components/group/createGroup';
+import SearchGroup from './components/group/searchGroup';
+import UpdateGroup from './components/group/updateGroup';
 import Home from './components/home';
 import Login from './components/login/login';
 import PrivateRoute from './components/login/privateRoute';
@@ -28,6 +31,9 @@ function App() {
             <Route path='/createuser' element={<CreateUser/>} />
             <Route path='/searchuser' element={<SearchUser/>} />
             <Route path="/updateuser/:id" element={<UpdateUser/>} />
+            <Route path='/creategroup' element={<CreateGroup/>} />
+            <Route path='/searchgroup' element={<SearchGroup/>} />
+            <Route path="/updategroup/:id" element={<UpdateGroup/>} />
           </Route>
         </Routes>
       </BrowserRouter>

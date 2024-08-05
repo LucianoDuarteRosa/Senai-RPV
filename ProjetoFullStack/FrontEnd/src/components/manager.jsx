@@ -159,19 +159,19 @@ export default function Manager() {
                 </Paper>
                 <Paper className="manager-cards">
                   <Typography component="h1" variant="h5">
-                    <b>Categorias</b>
+                    <b>Grupo</b>
                   </Typography>
                   <Box display="flex" justifyContent="space-around">
                     <RouterLink 
                       component={RouterLink}
-                      to="/criarusuario"
+                      to="/creategroup"
                       className="primary-button-manager"
                     >
                       Cadastrar
                     </RouterLink >
                     <RouterLink 
                       component={RouterLink}
-                      to="/buscarusuario"
+                      to="/searchgroup"
                       className="primary-button-manager"
                     >
                       Pesquisar
@@ -180,7 +180,7 @@ export default function Manager() {
                 </Paper>
                 <Paper className="manager-cards">
                   <Typography component="h1" variant="h5">
-                    <b>Sub-Categorias</b>
+                    <b>Sub-Grupo</b>
                   </Typography>
                   <Box display="flex" justifyContent="space-around">
                     <RouterLink 

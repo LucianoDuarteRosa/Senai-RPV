@@ -21,7 +21,7 @@ class GroupController {
     
     const errors = [];
 
-    const testId= validator.integerValidator(reqBody.idGroup);
+    const testId= validator.integerValidator(id);
 
     if (testId !== true) {
       errors.push(testId);
@@ -56,8 +56,8 @@ class GroupController {
 
   create(req, res) {
     const reqBody = req.body; 
-  
-    const retorno = groupModel.create(reqBody);
+    const group = {GroupName: reqBody.name}
+    const retorno = groupModel.create(group);
     return retorno
       .then((result) =>
         res.status(201).send("Grupo criado com sucesso!")
@@ -67,9 +67,11 @@ class GroupController {
 
   update(req, res) {
     const { id } = req.params;
-    const reqBody = req.body;
+    const reqBody = req.body; 
 
-    const testId= validator.integerValidator(reqBody.idGroup);
+    const errors = [];
+
+    const testId= validator.integerValidator(id);
 
     if (testId !== true) {
       errors.push(testId);
@@ -77,8 +79,10 @@ class GroupController {
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
+
+    const group ={GroupName: reqBody.name, Active: reqBody.active};
       
-    const retorno = groupModel.update(reqBody, id);
+    const retorno = groupModel.update(group, id);
     return retorno
       .then((result) =>
         res.status(200).send("Grupo atualizado com sucesso!")

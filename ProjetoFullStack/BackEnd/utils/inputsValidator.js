@@ -220,7 +220,7 @@ class InputValidator {
 
     allValidator(value, min, max) {
         try {
-            const regex = new RegExp(`^[a-zA-Z0-9]{${min},${max}}$`);
+            const regex = new RegExp(`^[\\p{L}0-9]{${min},${max}}$`, 'u');
             if (regex.test(value)) {
                 return true;
             } else {

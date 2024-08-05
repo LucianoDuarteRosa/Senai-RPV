@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
-    "@mui/icons-material": "^5.15.21",
+    "@mui/icons-material": "^5.16.6",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.21",
     "axios": "^1.7.2",
