@@ -28,34 +28,32 @@ function CreateUser() {
 
     const [formData, setFormData] = useState({
         name: "",
-        email: "",
-        password: "",
-        profile: ""
+        idgroup: "",
     });
 
-    const [profiles, setProfiles] = useState([]);
+    const [group, setGroup] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
 
     useEffect(() => {
-        const fetchProfiles = async () => {
+        const fetchGroup = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/profile', {
+                const response = await axios.get('http://localhost:3000/group', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                setProfiles(response.data);
+                setGroup(response.data);
             } catch (error) {
-                console.error("Error fetching profiles", error);
+                console.error("Error fetching group", error);
                 if (error.response && error.response.status === 401) {
                     logout();
                 }
             }
         };
 
-        fetchProfiles();
+        fetchGroup();
     }, [token]);
 
     const handleChange = (event) => {
@@ -69,32 +67,26 @@ function CreateUser() {
             const errors = [];
 
             const testName = validator.allValidator(formData.name, 2, 15);
-            const testEmail = validator.emailValidator(formData.email);
 
             if (testName !== true) {
                 errors.push(testName);
             }
-            if (testEmail !== true) {
-                errors.push(testEmail);
-            }
 
             if (errors.length > 0) {
                 setDialogStatus('error');
-                setDialogMessage(errors.join('\n'));
+                setDialogMessage(errors);
                 return;
             }
-
-            const response = await axios.post('http://localhost:3000/user', { ...formData }, {
+            console.log(formData);
+            const response = await axios.post('http://localhost:3000/subgroup', { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            const successMessage = response.data || "Usuário cadastrado com sucesso!";
+            const successMessage = response.data || "Sub-Grupo cadastrado com sucesso!";
             setFormData({
                 name: "",
-                email: "",
-                password: "",
-                profile: ""
+                idgroup: "",
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
@@ -103,7 +95,7 @@ function CreateUser() {
             if (error.response && error.response.status === 401) {
                 logout();
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar usuário";
+            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar sub-grupo";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {
@@ -128,9 +120,9 @@ function CreateUser() {
                         <AccountCircleIcon className='avatar' />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Cadastro de Usuário
+                        Cadastro de Sub-Grupo
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%'}}>
                         <TextField
                             margin="normal"
                             required
@@ -164,92 +156,27 @@ function CreateUser() {
                                 },
                             }}
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email"
-                            name="email"
-                            autoComplete="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            InputLabelProps={{
-                                sx: {
-                                    color: '#0303037e',
-                                    '&.Mui-focused': {
-                                        color: '#030303',
-                                    },
-                                },
-                            }}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#0303037e',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#0303037e',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#030303af',
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Senha"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            InputLabelProps={{
-                                sx: {
-                                    color: '#0303037e',
-                                    '&.Mui-focused': {
-                                        color: '#030303',
-                                    },
-                                },
-                            }}
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#0303037e',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#0303037e',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#030303af',
-                                    },
-                                },
-                            }}
-                        />
                         <Select
-                            name="profile"
-                            value={formData.profile}
+                            name="idgroup"
+                            value={formData.idgroup}
                             onChange={handleChange}
                             fullWidth
                             displayEmpty
                             renderValue={(selected) => {
                                 if (!selected) {
-                                    return <em>Selecione um perfil de usuário</em>;
+                                    return <em>Selecione um grupo</em>;
                                 }
-                                return profiles.find(profile => profile.IdProfile === selected)?.UserProfile || '';
+                                return group.find(group => group.IdGroup === selected)?.GroupName || '';
                             }}
                             color="success"
-                            sx={{ mt: '10px' }}
+                            sx={{ mt: '10px'}}
                         >
                             <MenuItem value="" >
-                                <em>Selecione um perfil de usuário</em>
+                                <em>Selecione um grupo</em>
                             </MenuItem>
-                            {profiles.map((profile) => (
-                                <MenuItem key={profile.IdProfile} value={profile.IdProfile}>
-                                    {profile.UserProfile}
+                            {group.map((group) => (
+                                <MenuItem key={group.IdGroup} value={group.IdGroup}>
+                                    {group.GroupName}
                                 </MenuItem>
                             ))}
                         </Select>

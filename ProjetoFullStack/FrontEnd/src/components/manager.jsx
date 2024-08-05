@@ -185,14 +185,14 @@ export default function Manager() {
                   <Box display="flex" justifyContent="space-around">
                     <RouterLink 
                       component={RouterLink}
-                      to="/criarusuario"
+                      to="/createsubgroup"
                       className="primary-button-manager"
                     >
                       Cadastrar
                     </RouterLink >
                     <RouterLink 
                       component={RouterLink}
-                      to="/buscarusuario"
+                      to="/searchsubgroup"
                       className="primary-button-manager"
                     >
                       Pesquisar

@@ -23,7 +23,7 @@ class SubGroupModel {
 
   readList() {
       const sql = `SELECT SubGroup.IdSubGroup, SubGroup.SubGroupName, SubGroup.Active, ProductGroup.IdGroup, ProductGroup.GroupName FROM SubGroup
-    JOIN ProductGroup ON SubGroup.IdGroup = ProductGroup.IdGroup`;
+    JOIN ProductGroup ON SubGroup.IdGroup = ProductGroup.IdGroup ORDER BY ProductGroup.GroupName`;
     return this.executeSQL(sql); 
   }
 

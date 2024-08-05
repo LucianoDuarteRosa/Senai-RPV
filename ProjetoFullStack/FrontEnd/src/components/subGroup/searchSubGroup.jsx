@@ -25,12 +25,12 @@ import DialogMessage from '../../../utils/dialogMessage';
 
 const theme = createTheme();
 
-function GroupSearch() {
+function SubGroupSearch() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [groups, setGroup] = useState([]);
-  const [filteredGroup, setFilteredGroup] = useState([]);
+  const [subGroup, setSubGroups] = useState([]);
+  const [filteredSubGroups, setFilteredSubGroups] = useState([]);
   const [showActiveOnly, setShowActiveOnly] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
@@ -39,24 +39,24 @@ function GroupSearch() {
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
-  // Função para buscar todos os grupos
-  const fetchGroup = async () => {
+  // Função para buscar todos os usuários
+  const fetchSubGroups = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/group", {
+      const response = await axios.get("http://localhost:3000/subgroup", {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      setGroup(response.data);
-      setFilteredGroup(response.data.filter(group => group.Active || !showActiveOnly));
+      setSubGroups(response.data);
+      setFilteredSubGroups(response.data.filter(subGroup => subGroup.Active || !showActiveOnly));
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
         logout();
       }
-      setGroup([]);
-      setFilteredGroup([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar group.";
+      setSubGroups([]);
+      setFilteredSubGroups([]);
+      const errorMessage = error.response?.data?.error || "Erro ao carregar sub-grupos.";
       setDialogStatus('error');
       setDialogMessage(errorMessage);
       setDialogOpen(true);
@@ -64,13 +64,12 @@ function GroupSearch() {
   };
 
   useEffect(() => {
-    fetchGroup();
-  }, [token]); // Dependência para atualizar quando token mudar
+    fetchSubGroups();
+  }, [token]); 
 
   useEffect(() => {
-    // Filtra os grupo de acordo com o estado do checkbox
-    setFilteredGroup(groups.filter(group => group.Active || !showActiveOnly));
-  }, [showActiveOnly, groups]); // Dependências para atualizar quando showActiveOnly ou grupo mudar
+    setFilteredSubGroups(subGroup.filter(subGroup => subGroup.Active || !showActiveOnly));
+  }, [showActiveOnly, subGroup]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -83,27 +82,25 @@ function GroupSearch() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim() === "") {
-      // Se o campo de pesquisa estiver vazio, buscar todos os grupo
-      fetchGroup();
+      fetchSubGroups();
     } else {
-      // Caso contrário, buscar grupo que correspondem ao termo de pesquisa
       try {
-        const response = await axios.get(`http://localhost:3000/groupsearch/${searchTerm}`, {
+        const response = await axios.get(`http://localhost:3000/subgroupsearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        const searchedGroup = response.data;
-        setGroup(searchedGroup);
-        setFilteredGroup(searchedGroup.filter(group => group.Active || !showActiveOnly));
+        const searchedSubGroup = response.data;
+        setSubGroups(searchedSubGroup);
+        setFilteredSubGroups(searchedSubGroup.filter(subGroup => subGroup.Active || !showActiveOnly));
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
           logout();
         }
-        setGroup([]);
-        setFilteredGroup([]);
-        const errorMessage = error.response?.data?.error || "Nenhum grupo encontrado.";
+        setSubGroups([]);
+        setFilteredSubGroups([]);
+        const errorMessage = error.response?.data?.error || "Nenhum sub-grupo encontrado.";
         setDialogStatus('error');
         setDialogMessage(errorMessage);
         setDialogOpen(true);
@@ -127,21 +124,21 @@ function GroupSearch() {
             <AccountCircleIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Pesquisa de Grupo
+            Pesquisa de Sub-Grupo
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 750, margin: '0 auto', textAlign: 'center' }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
             <TextField
               margin="normal"
               required
               fullWidth
               id="searchTerm"
-              label="Pesquisar Grupo"
+              label="Pesquisar Sub-Grupo"
               name="searchTerm"
               autoComplete="searchTerm"
               autoFocus
               value={searchTerm}
               onChange={handleChange}
-              placeholder="Digite o nome grupo"
+              placeholder="Digite o nome do grupo ou sub-grupo"
               InputLabelProps={{
                 sx: {
                   color: '#0303037e',
@@ -181,7 +178,7 @@ function GroupSearch() {
                   }}
                 />
               }
-              label="Mostrar apenas grupos ativos"
+              label="Mostrar apenas usuários ativos"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mb: 2 }}>
@@ -194,25 +191,27 @@ function GroupSearch() {
                 Buscar
               </Button>
             </Box>
-            {filteredGroup.length > 0 && (
+            {filteredSubGroups.length > 0 && (
               <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxWidth: '100%', maxHeight: 400, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
                 <Table>
                   <TableHead>
                     <TableRow>
                       <TableCell>Id</TableCell>
-                      <TableCell>Nome</TableCell>
+                      <TableCell>Sub-Grupo</TableCell>
+                      <TableCell>Grupo</TableCell>
                       <TableCell>Ativo</TableCell>
                       <TableCell>Ações</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredGroup.map((group) => (
-                      <TableRow key={group.IdGroup}>
-                        <TableCell>{group.IdGroup}</TableCell>
-                        <TableCell>{group.GroupName}</TableCell>
+                    {filteredSubGroups.map((subGroup) => (
+                      <TableRow key={subGroup.IdSubGroup}>
+                        <TableCell>{subGroup.IdSubGroup}</TableCell>
+                        <TableCell>{subGroup.SubGroupName}</TableCell>
+                        <TableCell>{subGroup.GroupName}</TableCell>
                         <TableCell>
                           <Checkbox
-                            checked={!!group.Active}
+                            checked={!!subGroup.Active}
                             readOnly
                             sx={{
                               '&.Mui-checked': {
@@ -227,7 +226,7 @@ function GroupSearch() {
                         <TableCell>
                           <Button
                             component={Link}
-                            to={`/updategroup/${group.IdGroup}`}
+                            to={`/updatesubgroup/${subGroup.IdSubGroup}`}
                             variant="contained" color="success"
                           >
                             Editar
@@ -263,4 +262,4 @@ function GroupSearch() {
   );
 }
 
-export default GroupSearch;
+export default SubGroupSearch;

@@ -53,11 +53,11 @@ class SubGroupController {
   }
 
   create(req, res) {
-    const { name, idGroup } = req.body;
+    const { name, idgroup } = req.body;
     const errors = [];
 
     const testName = validator.allValidator(name, 2, 15);
-    const testIdGroup = validator.integerValidator(idGroup);
+    const testIdGroup = validator.integerValidator(idgroup);
 
     if (testName !== true) {
       errors.push(testName);
@@ -69,9 +69,9 @@ class SubGroupController {
       return res.status(400).json({ errors });
     }
 
-    const user = { SubGroupName: name, IdGroup: idGroup };
+    const subGroup = { SubGroupName: name, IdGroup: idgroup };
 
-    const retorno = subGroupModel.create(reqBody);
+    const retorno = subGroupModel.create(subGroup);
     return retorno
       .then((result) =>
         res.status(201).send("Sub-Grupo criado com sucesso!")
@@ -85,9 +85,9 @@ class SubGroupController {
     const errors = [];
 
     const testId = validator.integerValidator(id);
-    const testName = validator.allValidator(reqBody.name, 3, 15);
-    const testIdGroup = validator.integerValidator(reqBody.IdGroup);
-    const testActive = validator.booleanValidator(reqBody.Active);
+    const testName = validator.allValidator(reqBody.name, 2, 15);
+    const testIdGroup = validator.integerValidator(reqBody.idgroup);
+    const testActive = validator.booleanValidator(reqBody.active);
 
     if (testId !== true) {
       errors.push(testId);
@@ -106,7 +106,9 @@ class SubGroupController {
       return res.status(400).json({ errors });
     }
 
-    const retorno = subGroupModel.update(reqBody, id);
+    const subGroup ={SubGroupName: reqBody.name, Active: reqBody.active , IdGroup: reqBody.idgroup};
+
+    const retorno = subGroupModel.update(subGroup, id);
     return retorno
       .then((result) =>
         res.status(200).send("Sub-Grupo atualizado com sucesso!")
