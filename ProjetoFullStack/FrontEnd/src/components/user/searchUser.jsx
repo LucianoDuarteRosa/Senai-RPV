@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from '../login/authContext';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {
   Box,
@@ -25,6 +26,7 @@ import DialogMessage from '../../../utils/dialogMessage';
 const theme = createTheme();
 
 function UserSearch() {
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
@@ -34,8 +36,8 @@ function UserSearch() {
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
-  const user = JSON.parse(localStorage.getItem('user')) || {};
-  const token = user.token || "";
+  const userToken = JSON.parse(localStorage.getItem('user')) || {};
+  const token = userToken.token || "";
 
   // Função para buscar todos os usuários
   const fetchUsers = async () => {
@@ -49,6 +51,9 @@ function UserSearch() {
       setFilteredUsers(response.data.filter(user => user.Active || !showActiveOnly));
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.status === 401) {
+        logout();
+      }
       setUsers([]);
       setFilteredUsers([]);
       const errorMessage = error.response?.data?.error || "Erro ao carregar usuários.";
@@ -92,6 +97,10 @@ function UserSearch() {
         setUsers(searchedUsers);
         setFilteredUsers(searchedUsers.filter(user => user.Active || !showActiveOnly));
       } catch (error) {
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
         setUsers([]);
         setFilteredUsers([]);
         const errorMessage = error.response?.data?.error || "Nenhum usuário encontrado.";
@@ -180,6 +189,7 @@ function UserSearch() {
                 type="submit"
                 variant="contained"
                 className='primary-button'
+                sx={{ width: '32%' }}
               >
                 Buscar
               </Button>
@@ -201,7 +211,7 @@ function UserSearch() {
                     {filteredUsers.map((user) => (
                       <TableRow key={user.IdUser}>
                         <TableCell>{user.IdUser}</TableCell>
-                        <TableCell>{user.UserName}</TableCell>           
+                        <TableCell>{user.UserName}</TableCell>
                         <TableCell>{user.UserEmail}</TableCell>
                         <TableCell>{user.UserProfile}</TableCell>
                         <TableCell>
@@ -237,7 +247,7 @@ function UserSearch() {
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 0, width: '100%', maxWidth: 600 }}>
             <Button
               className='primary-button'
-              sx={{ width: '83%' }}
+              sx={{ width: '50%' }}
               fullWidth
               variant="contained"
               onClick={handleVoltar}

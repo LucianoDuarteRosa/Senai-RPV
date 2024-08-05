@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from '../login/authContext';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -19,10 +20,11 @@ import '../../styles/index.css'
 const theme = createTheme();
 
 function CreateUser() {
+    const { logout } = useAuth();
     const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem('user')) || {};
-    const token = user.token || "";
+    const userToken = JSON.parse(localStorage.getItem('user')) || {};
+    const token = userToken.token || "";
 
     const [formData, setFormData] = useState({
         name: "",
@@ -48,6 +50,9 @@ function CreateUser() {
                 setProfiles(response.data);
             } catch (error) {
                 console.error("Error fetching profiles", error);
+                if (error.response && error.response.status === 401) {
+                    logout();
+                }
             }
         };
 
@@ -96,6 +101,9 @@ function CreateUser() {
             setDialogMessage(successMessage);
         } catch (error) {
             console.log(error);
+            if (error.response && error.response.status === 401) {
+                logout();
+            }
             const errorMessage = error.response?.data?.errors || "Erro ao cadastrar usuário";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
@@ -235,7 +243,7 @@ function CreateUser() {
                                 return profiles.find(profile => profile.IdProfile === selected)?.UserProfile || '';
                             }}
                             color="success"
-                            sx={{mt:'10px'}}
+                            sx={{ mt: '10px' }}
                         >
                             <MenuItem value="" >
                                 <em>Selecione um perfil de usuário</em>

@@ -138,6 +138,27 @@ export default function Manager() {
                 </Paper>
                 <Paper className="manager-cards">
                   <Typography component="h1" variant="h5">
+                    <b>Cliente/Fornecedores</b>
+                  </Typography>
+                  <Box display="flex" justifyContent="space-around">
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/criarusuario"
+                      className="primary-button-manager"
+                    >
+                      Cadastrar
+                    </RouterLink >
+                    <RouterLink 
+                      component={RouterLink}
+                      to="/buscarusuario"
+                      className="primary-button-manager"
+                    >
+                      Pesquisar
+                    </RouterLink >
+                  </Box>
+                </Paper>
+                <Paper className="manager-cards">
+                  <Typography component="h1" variant="h5">
                     <b>Categorias</b>
                   </Typography>
                   <Box display="flex" justifyContent="space-around">
@@ -160,27 +181,6 @@ export default function Manager() {
                 <Paper className="manager-cards">
                   <Typography component="h1" variant="h5">
                     <b>Sub-Categorias</b>
-                  </Typography>
-                  <Box display="flex" justifyContent="space-around">
-                    <RouterLink 
-                      component={RouterLink}
-                      to="/criarusuario"
-                      className="primary-button-manager"
-                    >
-                      Cadastrar
-                    </RouterLink >
-                    <RouterLink 
-                      component={RouterLink}
-                      to="/buscarusuario"
-                      className="primary-button-manager"
-                    >
-                      Pesquisar
-                    </RouterLink >
-                  </Box>
-                </Paper>
-                <Paper className="manager-cards">
-                  <Typography component="h1" variant="h5">
-                    <b>Cliente/Fornecedores</b>
                   </Typography>
                   <Box display="flex" justifyContent="space-around">
                     <RouterLink 

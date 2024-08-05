@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from '../login/authContext';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -21,6 +22,7 @@ import Select from '@mui/material/Select';
 const theme = createTheme();
 
 function UpdateUser() {
+  const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState({
@@ -30,7 +32,7 @@ function UpdateUser() {
     profile: ''
   });
   const [loading, setLoading] = useState(true);
-  const [profiles, setProfiles] = useState([]); // Estado para armazenar os perfis
+  const [profiles, setProfiles] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
@@ -55,6 +57,10 @@ function UpdateUser() {
           profile: userData.IdProfile || ''
         });
       } catch (error) {
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
         const errorMessage = error.response?.data?.error || "Erro ao carregar usuário";
         setDialogStatus('error');
         setDialogMessage(errorMessage);
@@ -73,6 +79,9 @@ function UpdateUser() {
         });
         setProfiles(response.data);
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
         console.error("Error fetching profiles", error);
       }
     };
@@ -120,6 +129,9 @@ function UpdateUser() {
       setDialogMessage("Usuário atualizado com sucesso");
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.status === 401) {
+        logout();
+      }
       const errorMessage = error.response?.data?.errors || "Erro ao atualizar usuário.";
       setDialogStatus('error');
       setDialogMessage(errorMessage);
@@ -255,7 +267,7 @@ function UpdateUser() {
                 <Checkbox
                   checked={user.active}
                   onChange={handleChange}
-                  name="Active"
+                  name="active"
                   sx={{
                     '&.Mui-checked': {
                       color: '#45a049',
