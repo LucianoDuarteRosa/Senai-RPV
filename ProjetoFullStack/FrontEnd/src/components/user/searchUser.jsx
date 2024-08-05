@@ -237,7 +237,7 @@ function UserSearch() {
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 0, width: '100%', maxWidth: 600 }}>
             <Button
               className='primary-button'
-              sx={{ width: '50%', maxWidth: 600, }}
+              sx={{ width: '83%' }}
               fullWidth
               variant="contained"
               onClick={handleVoltar}

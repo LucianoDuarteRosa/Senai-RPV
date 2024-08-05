@@ -82,10 +82,10 @@ class UserController {
       const { userNameExists, userEmailExists } = await userModel.checkUserExists(name, email);
       
       if (userNameExists) {
-        return res.status(400).json({ error: 'Nome de usuário já cadastrado!' });
+        return res.status(400).json({ errors: 'Nome de usuário já cadastrado!' });
       }
       if (userEmailExists) {
-        return res.status(400).json({ error: 'E-mail já cadastrado!' });
+        return res.status(400).json({ errors: 'E-mail já cadastrado!' });
       }
   
       // Cria o usuário se não houver erros
@@ -133,7 +133,14 @@ class UserController {
       return res.status(400).json({ errors });
     }
 
-    userModel.update(reqBody, id)
+    let user = {
+      UserName: reqBody.name,
+      UserEmail: reqBody.email,
+      Active: reqBody.active,
+      IdProfile: reqBody.profile
+    }
+
+    userModel.update(user, id)
       .then((result) => res.status(200).send("Usuário atualizado com sucesso!"))
       .catch((error) => res.status(500).json({ error: error.message }));
   }

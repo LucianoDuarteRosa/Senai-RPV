@@ -96,7 +96,7 @@ function CreateUser() {
             setDialogMessage(successMessage);
         } catch (error) {
             console.log(error);
-            const errorMessage = error.response?.data?.error || "Erro ao cadastrar usuário";
+            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar usuário";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {

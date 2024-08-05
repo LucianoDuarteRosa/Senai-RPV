@@ -4,16 +4,16 @@ USE lavaQPassaBrecho;
 /* Profile type for administrators */
 CREATE TABLE Profile (
     IdProfile INT PRIMARY KEY AUTO_INCREMENT,
-    UserProfile ENUM('ADMINISTRADOR', 'COLABORADOR', 'USUARIO') DEFAULT 'USUARIO'
+    UserProfile ENUM('Administrador', 'Colaborador', 'Usuário')
 );
 
 /* User for login associated with a profile type */
 CREATE TABLE User (
     IdUser INT PRIMARY KEY AUTO_INCREMENT,
-    UserName VARCHAR(20) NOT NULL,
+    UserName VARCHAR(20) NOT NULL UNIQUE,
     UserEmail VARCHAR(60) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
-    IdProfile INT NOT NULL DEFAULT 3,
+    IdProfile INT NOT NULL,
     Active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (IdProfile) REFERENCES Profile(IdProfile) ON DELETE CASCADE
 );

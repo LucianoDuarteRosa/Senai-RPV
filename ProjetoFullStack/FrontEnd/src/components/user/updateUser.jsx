@@ -24,10 +24,10 @@ function UpdateUser() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState({
-    UserName: '',
-    UserEmail: '',
-    Active: false,
-    IdProfile: '' // Atualiza para o nome correto da coluna
+    name: '',
+    email: '',
+    active: false,
+    profile: ''
   });
   const [loading, setLoading] = useState(true);
   const [profiles, setProfiles] = useState([]); // Estado para armazenar os perfis
@@ -49,10 +49,10 @@ function UpdateUser() {
         });
         const userData = response.data[0];
         setUser({
-          UserName: userData.UserName,
-          UserEmail: userData.UserEmail,
-          Active: Boolean(userData.Active),
-          IdProfile: userData.IdProfile || '' // Corrige o nome da propriedade
+          name: userData.UserName,
+          email: userData.UserEmail,
+          active: Boolean(userData.Active),
+          profile: userData.IdProfile || ''
         });
       } catch (error) {
         const errorMessage = error.response?.data?.error || "Erro ao carregar usuário";
@@ -91,9 +91,9 @@ function UpdateUser() {
     try {
       const errors = [];
 
-      const testName = validator.allValidator(user.UserName, 2, 15);
-      const testEmail = validator.emailValidator(user.UserEmail);
-      const testActive = validator.booleanValidator(user.Active);
+      const testName = validator.allValidator(user.name, 2, 15);
+      const testEmail = validator.emailValidator(user.email);
+      const testActive = validator.booleanValidator(user.active);
 
       if (testName !== true) {
         errors.push(testName);
@@ -110,7 +110,7 @@ function UpdateUser() {
         setDialogMessage(errors.join('\n'));
         return;
       }
-
+      console.log(user)
       await axios.put(`http://localhost:3000/user/${id}`, { ...user }, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -119,7 +119,8 @@ function UpdateUser() {
       setDialogStatus('success');
       setDialogMessage("Usuário atualizado com sucesso");
     } catch (error) {
-      const errorMessage = error.response?.data?.error || "Erro ao atualizar usuário.";
+      console.log(error);
+      const errorMessage = error.response?.data?.errors || "Erro ao atualizar usuário.";
       setDialogStatus('error');
       setDialogMessage(errorMessage);
     } finally {
@@ -166,12 +167,11 @@ function UpdateUser() {
               margin="normal"
               required
               fullWidth
-              id="UserName"
               label="Nome"
-              name="UserName"
+              name="name"
               autoComplete="nome"
               autoFocus
-              value={user.UserName || ''}
+              value={user.name || ''}
               onChange={handleChange}
               InputLabelProps={{
                 sx: {
@@ -199,11 +199,10 @@ function UpdateUser() {
               margin="normal"
               required
               fullWidth
-              id="UserEmail"
               label="Email"
-              name="UserEmail"
+              name="email"
               autoComplete="email"
-              value={user.UserEmail || ''}
+              value={user.email || ''}
               onChange={handleChange}
               InputLabelProps={{
                 sx: {
@@ -229,7 +228,7 @@ function UpdateUser() {
             />
             <Select
               name="IdProfile" // Atualiza o nome da propriedade no Select
-              value={user.IdProfile || ''}
+              value={user.profile || ''}
               onChange={handleChange}
               fullWidth
               color="success"
@@ -254,7 +253,7 @@ function UpdateUser() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={user.Active}
+                  checked={user.active}
                   onChange={handleChange}
                   name="Active"
                   sx={{
