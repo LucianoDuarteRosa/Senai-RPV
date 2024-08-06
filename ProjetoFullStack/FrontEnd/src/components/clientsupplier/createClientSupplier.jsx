@@ -29,6 +29,7 @@ function CreateClientSupplier() {
         name: "",
         cpf: "",
         cnpj: "",
+        cpfcnpj: "",
         zipcode: "",
         address: "",
         number: "",
@@ -40,6 +41,7 @@ function CreateClientSupplier() {
         email: "",
         isclient: false,
         issupplier: false,
+        isclientsupplier: false,
         typekey: "",
         pixkey: "",
         active: true
@@ -60,8 +62,10 @@ function CreateClientSupplier() {
             ...formData,
             isclient: value === "client",
             issupplier: value === "supplier",
+            isclientsupplier: value === "clientsupplier",
             cpf: value === "supplier" ? "" : formData.cpf,
             cnpj: value === "client" ? "" : formData.cnpj,
+            cpfcnpj: value === "clientsupplier" ? "" : formData.cpfcnpj
         });
     };
 
@@ -134,6 +138,29 @@ function CreateClientSupplier() {
                     errors.push('Digite 14 números para o CNPJ.');
                 }
             }
+
+            if (formData.isclientsupplier === true) {
+                if (formData.cpfcnpj.length === 11) {
+                    const testCpf = validator.cpfValidator(formData.cpfcnpj)
+                    if (testCpf !== true) {
+                        errors.push('Formato do CPF inválido.');
+                    }else{
+                        formData.cpf = formData.cpfcnpj;
+                    }
+                }
+                if (formData.cpfcnpj.length === 14) {
+                    const testCnpj = validator.cnpjValidator(formData.cpfcnpj)
+                    if (testCnpj !== true) {
+                        errors.push(testCnpj);
+                    }else{
+                        formData.cnpj = formData.cpfcnpj;
+                    }
+                } 
+                if(formData.cpfcnpj.length !== 14 && formData.cpfcnpj.length !== 11 ){
+                    errors.push('Digite 14 números para o CNPJ e 11 números para CPF.');
+                }
+            }
+            
             if (formData.typekey === 'Phone') {
                 const testTypeKey = validator.phoneValidator(formData.pixkey)
                 if (testTypeKey !== true) {
@@ -201,6 +228,7 @@ function CreateClientSupplier() {
                 name: "",
                 cpf: "",
                 cnpj: "",
+                cpfcnpj: "",
                 zipcode: "",
                 address: "",
                 number: "",
@@ -212,6 +240,7 @@ function CreateClientSupplier() {
                 email: "",
                 isclient: false,
                 issupplier: false,
+                isclientsupplier: false,
                 typekey: "",
                 pixkey: "",
                 active: true
@@ -292,7 +321,7 @@ function CreateClientSupplier() {
                             label="Tipo"
                             required
                             name="type"
-                            value={formData.isclient ? "client" : formData.issupplier ? "supplier" : ""}
+                            value={formData.isclient ? "client" : formData.issupplier ? "supplier" : formData.isclientsupplier ? "clientsupplier" :""}
                             onChange={handleSelectChange}
                             SelectProps={{
                                 native: true,
@@ -322,10 +351,12 @@ function CreateClientSupplier() {
                             <option value=""></option>
                             <option value="client">Cliente</option>
                             <option value="supplier">Fornecedor</option>
+                            <option value="clientsupplier">Cliente e Fornecedor</option>
                         </TextField>
 
                         {formData.isclient && (
                             <TextField
+                                type="number"
                                 className="textfield-client"
                                 fullWidth
                                 margin="normal"
@@ -361,6 +392,7 @@ function CreateClientSupplier() {
                         {formData.issupplier && (
                             <TextField
                                 className="textfield-client"
+                                type="number"
                                 fullWidth
                                 margin="normal"
                                 label="CNPJ"
@@ -392,7 +424,42 @@ function CreateClientSupplier() {
                             />
                         )}
 
-                        {!formData.isclient && !formData.issupplier && (
+                        {formData.isclientsupplier && (
+                            <TextField
+                                className="textfield-client"
+                                type="number"
+                                fullWidth
+                                margin="normal"
+                                label="CPF ou CNPJ"
+                                name="cpfcnpj"
+                                autoComplete="cpfcnpj"
+                                value={formData.cpfcnpj}
+                                onChange={handleChange}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: '#0303037e',
+                                        '&.Mui-focused': {
+                                            color: '#030303',
+                                        },
+                                    },
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#030303af',
+                                        },
+                                    },
+                                }}
+                            />
+                        )}
+
+                        {!formData.isclient && !formData.issupplier && !formData.isclientsupplier &&(
                             <TextField
                                 className="textfield-client"
                                 fullWidth
@@ -425,6 +492,7 @@ function CreateClientSupplier() {
                         )}
                         <TextField
                             className="textfield-client"
+                            type="number"
                             fullWidth
                             margin="normal"
                             required
@@ -652,6 +720,7 @@ function CreateClientSupplier() {
                         />
                         <TextField
                             className="textfield-client"
+                            type="number"
                             fullWidth
                             margin="normal"
                             required

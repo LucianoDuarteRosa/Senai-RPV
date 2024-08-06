@@ -61,38 +61,38 @@ class UserController {
   async create(req, res) {
     const { name, email, password } = req.body;
     const errors = [];
-  
+
     // Validações
     const testName = validator.allValidator(name, 2, 15);
     const testEmail = validator.emailValidator(email);
-  
+
     if (testName !== true) {
       errors.push(testName);
     }
     if (testEmail !== true) {
       errors.push(testEmail); // Corrigido para adicionar erro ao array
     }
-    
+
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
-  
+
     try {
       // Verifica se o nome de usuário ou e-mail já existem
       const { userNameExists, userEmailExists } = await userModel.checkUserExists(name, email);
-      
+
       if (userNameExists) {
         return res.status(400).json({ errors: 'Nome de usuário já cadastrado!' });
       }
       if (userEmailExists) {
         return res.status(400).json({ errors: 'E-mail já cadastrado!' });
       }
-  
+
       // Cria o usuário se não houver erros
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(password, salt);
       const user = { UserName: name, UserEmail: email, Password: hashedPassword };
-  
+
       await userModel.create(user);
       res.status(201).send('Usuário criado com sucesso!');
     } catch (error) {

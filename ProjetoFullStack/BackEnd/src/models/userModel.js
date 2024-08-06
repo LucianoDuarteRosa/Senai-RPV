@@ -60,7 +60,6 @@ class UserModel {
         }
       });
     }
-  
     return { userNameExists, userEmailExists };
   }
 

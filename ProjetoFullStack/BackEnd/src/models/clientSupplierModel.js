@@ -41,14 +41,36 @@ class ClientSupplierModel {
     return this.executeSQL(sql, values);
   }
 
-  create(newEspaco) {
-    const sql = "INSERT INTO ClientSupplier SET ?";
-    return this.executeSQL(sql, newEspaco);
+  async checkUserExists(cpf, cnpj) {
+    const sql = `SELECT Cpf, Cnpj FROM ClientSupplier WHERE Cpf = ? OR Cnpj = ?`;
+    const [rows] = await this.executeSQL(sql, [cpf, cnpj]);
+
+    const results = Array.isArray(rows) ? rows : [rows];
+
+    let cpfExists = false;
+    let cnpjExists = false;
+
+    if (results.length > 0) {
+      results.forEach(row => {
+        if (row && row.Cpf === cpf) {
+          cpfExists = true;
+        }
+        if (row && row.Cnpj === cnpj) {
+          cnpjExists = true;
+        }
+      });
+    }
+    return { cpfExists, cnpjExists };
   }
 
-  update(updateEspaco, id) {
+  create(newClientSupplier) {
+    const sql = "INSERT INTO ClientSupplier SET ?";
+    return this.executeSQL(sql, newClientSupplier);
+  }
+
+  update(updateClientSupplier, id) {
     const sql = "UPDATE ClientSupplier SET ? WHERE IdClientSupplier = ?";
-    return this.executeSQL(sql, [updateEspaco, id]);
+    return this.executeSQL(sql, [updateClientSupplier, id]);
   }
 
 }

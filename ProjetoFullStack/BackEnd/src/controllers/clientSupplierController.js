@@ -52,8 +52,10 @@ class ClientSupplierController {
       .catch((error) => res.status(400).json(error.message));
   }
 
-  create(req, res) {
+  async create(req, res) {
     const reqBody = req.body;
+
+    //valições de campos de entrada
     const errors = [];
 
     const testName = validator.allValidator(reqBody.name, 2, 80);
@@ -146,18 +148,29 @@ class ClientSupplierController {
       return res.status(400).json({ errors });
     }
 
+    //valida se o cliente já existe
+    const { cpfExists, cnpjExists } = await clientSupplierModel.checkUserExists(reqBody.cpf, reqBody.cnpj);
+
+    if (cpfExists) {
+      return res.status(400).json({ errors: 'CNPJ de usuário já cadastrado!' });
+    }
+    if (cnpjExists) {
+      return res.status(400).json({ errors: 'Cpf já cadastrado!' });
+    }
+
+    //cria o objeto para inserir no banco
     let client = {
       ClientSupplierName: reqBody.name, ZipCode: reqBody.zipcode, Address: reqBody.address, Number: reqBody.number,
       Complement: reqBody.complement, Neighborhood: reqBody.neighborhood, City: reqBody.city, State: reqBody.state, Phone: reqBody.phone,
       Email: reqBody.email, TypeKey: reqBody.typekey, PixKey: reqBody.pixkey
     };
 
-    if(reqBody.isclient === true){
+    if (reqBody.isclient === true) {
       client.IsClient = reqBody.isclient;
       client.Cpf = reqBody.cpf
     }
 
-    if(reqBody.issupplier === true){
+    if (reqBody.issupplier === true) {
       client.IsSupplier = reqBody.issupplier;
       client.Cpnj = reqBody.cnpj
     }
