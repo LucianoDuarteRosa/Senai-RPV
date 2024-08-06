@@ -73,7 +73,7 @@ class ClientSupplierController {
         errors.push('Complemento permite o campo maxímo de 100 caracteres.');
       }
     }
-    if (reqBody.isclient === true) {
+    if (reqBody.isclient === true && reqBody.issupplier === false) {
       if (reqBody.cpf.length === 11) {
         const testCpf = validator.cpfValidator(reqBody.cpf)
         if (testCpf !== true) {
@@ -83,7 +83,7 @@ class ClientSupplierController {
         errors.push('Digite 11 números para o CPF.');
       }
     }
-    if (reqBody.issupplier === true) {
+    if (reqBody.issupplier === true && reqBody.isclient === false) {
       if (reqBody.cnpj.length === 14) {
         const testCnpj = validator.cnpjValidator(reqBody.cnpj)
         if (testCnpj !== true) {
@@ -93,7 +93,26 @@ class ClientSupplierController {
         errors.push('Digite 14 números para o CNPJ.');
       }
     }
-    if (reqBody.typekey === 'Phone') {
+    if (reqBody.isclientsupplier === true) {
+      if (reqBody.cpf.length === 11) {
+        const testCpf = validator.cpfValidator(reqBody.cpf)
+        if (testCpf !== true) {
+          errors.push('Formato do CPF inválido.');
+        }
+      }
+      if (reqBody.cnpj.length === 14) {
+        const testCnpj = validator.cnpjValidator(reqBody.cnpj)
+        if (testCnpj !== true) {
+          errors.push(testCnpj);
+        }
+      }
+      if (reqBody.cpfcnpj.length !== 14 && reqBody.cpfcnpj.length !== 11) {
+        errors.push('Digite 14 números para o CNPJ e 11 números para CPF.');
+      }
+    }
+
+
+    if (reqBody.typekey === 'Telefone') {
       const testTypeKey = validator.phoneValidator(reqBody.pixkey)
       if (testTypeKey !== true) {
         errors.push('Formato errado para o telefone da Chave PIX');
@@ -165,14 +184,25 @@ class ClientSupplierController {
       Email: reqBody.email, TypeKey: reqBody.typekey, PixKey: reqBody.pixkey
     };
 
-    if (reqBody.isclient === true) {
+    if (reqBody.isclient === true && reqBody.issupplier === false) {
       client.IsClient = reqBody.isclient;
       client.Cpf = reqBody.cpf
     }
 
-    if (reqBody.issupplier === true) {
+    if (reqBody.issupplier === true && reqBody.isclient === false) {
       client.IsSupplier = reqBody.issupplier;
-      client.Cpnj = reqBody.cnpj
+      client.Cnpj = reqBody.cnpj
+    }
+
+    if (reqBody.issupplier === true && reqBody.isclient === true) {
+      client.IsSupplier = reqBody.issupplier;
+      client.IsClient = reqBody.isclient;
+      if (reqBody.cnpj.length === 14) {
+        client.Cnpj = reqBody.cnpj
+      }
+      if (reqBody.cpf.length === 11) {
+        client.Cpf = reqBody.cpf
+      }
     }
 
     const retorno = clientSupplierModel.create(client);
@@ -188,7 +218,7 @@ class ClientSupplierController {
     const reqBody = req.body;
     const errors = [];
 
-    const testClientSupplier = validator.integerValidator(reqBody.idClientSupplier);
+    const testClientSupplier = validator.integerValidator(id);
     const testClientSupplierName = validator.allValidator(reqBody.name, 2, 40);
     const testZipCode = validator.zipCodeValidator(reqBody.zipcode);
     const testAddress = validator.allValidator(reqBody.address, 5, 255);

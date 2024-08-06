@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DialogMessage from '../../../utils/dialogMessage';
 import validator from '../../../utils/inputsValidator';
 import '../../styles/index.css'
@@ -93,7 +93,7 @@ function CreateGroup() {
                 <CssBaseline />
                 <Box className="box-manager-user">
                     <Avatar className='avatar'>
-                        <AccountCircleIcon className='avatar' />
+                        <AccountTreeIcon className='avatar' />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Cadastro de Grupo

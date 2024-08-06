@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from '../login/authContext';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import {
   Box,
   Button,
@@ -121,7 +121,7 @@ function SubGroupSearch() {
       <Container className="box-container-search">
         <Box className="box-manager-search">
           <Avatar className='avatar'>
-            <AccountCircleIcon className='avatar' />
+            <AccountTreeIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
             Pesquisa de Sub-Grupo

@@ -62,20 +62,20 @@ CREATE INDEX idx_store_name ON Store (StoreName);
 CREATE TABLE ClientSupplier (
     IdClientSupplier INT PRIMARY KEY AUTO_INCREMENT,
     ClientSupplierName VARCHAR(80) NOT NULL,
-    Cpf VARCHAR(14),
-    Cnpj VARCHAR(18),
+    Cpf VARCHAR(14) UNIQUE,
+    Cnpj VARCHAR(18) UNIQUE,
     ZipCode VARCHAR(9) NOT NULL,
     Address VARCHAR(255) NOT NULL,
     Number VARCHAR(20) NOT NULL,
     Complement VARCHAR(100),
-    Neighborhood VARCHAR(60),
+    Neighborhood VARCHAR(60) NOT NULL,
     City VARCHAR(40) NOT NULL,
-    State VARCHAR(40) NOT NULL,
+    State VARCHAR(2) NOT NULL,
     Phone VARCHAR(35) NOT NULL,
-    Email VARCHAR(60) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
     IsClient BOOLEAN,
     IsSupplier BOOLEAN,
-	UserProfile ENUM('CPF/CNPJ', 'Email', 'Telefone', 'Chave Aleatória', 'Chave PIX' ),
+	TypeKey ENUM('CPF/CNPJ', 'Email', 'Phone', 'RandomKey', 'KeyPixBanc'),
     PixKey VARCHAR(255),
     Active BOOLEAN DEFAULT TRUE
 );
@@ -212,8 +212,8 @@ INSERT INTO Store (StoreName, ZipCode, Address, Number, Complement, Neighborhood
 ('Loja B', '87654-321', 'Avenida B', '456', 'Apto 2', 'Bairro B', 'Cidade B', 'Estado B', '987654321', 'lojab@example.com');
 
 INSERT INTO ClientSupplier (ClientSupplierName, Cpf, Cnpj, ZipCode, Address, Number, Complement, Neighborhood, City, State, Phone, Email, IsClient, IsSupplier) VALUES 
-('João da Silva', '123.456.789-10', NULL, '12345678', 'Rua A', '123', NULL, 'Bairro A', 'Cidade A', 'Estado A', '123456789', 'joao@silva.com', TRUE, FALSE),
-('Maria Oliveira', NULL, '12.345.678/0001-90', '87654321', 'Avenida B', '456', 'Apto 2', 'Bairro B', 'Cidade B', 'Estado B', '987654321', 'maria@oliveira.com', FALSE, TRUE);
+('João da Silva', '123.456.789-10', NULL, '12345678', 'Rua A', '123', NULL, 'Bairro A', 'Cidade A', 'AA', '123456789', 'joao@silva.com', TRUE, FALSE),
+('Maria Oliveira', NULL, '12.345.678/0001-90', '87654321', 'Avenida B', '456', 'Apto 2', 'Bairro B', 'Cidade B', 'BB', '987654321', 'maria@oliveira.com', FALSE, TRUE);
 
 INSERT INTO Product (ProductName, CostPrice, SalePrice, IdClientSupplier, IdSubGroup, IdStore, IdUser, RegistrationDate) VALUES 
 ('Camiseta Azul', 20.0, 50.0, 1, 1, 1, 1, NOW()),

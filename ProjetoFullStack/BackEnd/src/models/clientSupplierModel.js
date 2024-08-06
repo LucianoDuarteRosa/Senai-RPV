@@ -25,7 +25,7 @@ class ClientSupplierModel {
 
 
   readList() {
-    const sql = "SELECT IdClientSupplier, ClientSupplierName, Cpf, Cnpj, ZipCode, Address, Number, Complement, Neighborhood, City, State, Phone, Email, IsClient, IsSupplier, PixKey, Active FROM ClientSupplier";
+    const sql = "SELECT IdClientSupplier, ClientSupplierName, Cpf, Cnpj, ZipCode, Address, Number, Complement, Neighborhood, City, State, Phone, Email, IsClient, IsSupplier, TypeKey, PixKey, Active FROM ClientSupplier";
     return this.executeSQL(sql);
   }
 

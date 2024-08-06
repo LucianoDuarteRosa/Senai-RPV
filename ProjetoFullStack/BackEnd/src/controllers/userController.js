@@ -59,7 +59,7 @@ class UserController {
   }
 
   async create(req, res) {
-    const { name, email, password } = req.body;
+    const { name, email, password, profile } = req.body;
     const errors = [];
 
     // Validações
@@ -91,7 +91,7 @@ class UserController {
       // Cria o usuário se não houver erros
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(password, salt);
-      const user = { UserName: name, UserEmail: email, Password: hashedPassword };
+      const user = { UserName: name, UserEmail: email, Password: hashedPassword, IdProfile: profile };
 
       await userModel.create(user);
       res.status(201).send('Usuário criado com sucesso!');

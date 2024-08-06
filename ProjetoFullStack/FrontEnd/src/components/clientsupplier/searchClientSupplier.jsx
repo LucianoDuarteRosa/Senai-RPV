@@ -29,8 +29,8 @@ function SearchClientSupplier() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [groups, setGroup] = useState([]);
-  const [filteredGroup, setFilteredGroup] = useState([]);
+  const [clientSupplier, setClientSupplier] = useState([]);
+  const [filteredClientSupplier, setFilteredClientSupplier] = useState([]);
   const [showActiveOnly, setShowActiveOnly] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
@@ -39,24 +39,24 @@ function SearchClientSupplier() {
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
-  // Função para buscar todos os grupos
-  const fetchGroup = async () => {
+  // Função para buscar todos os cliente/fornecedor
+  const fetchClientSupplier = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/group", {
+      const response = await axios.get("http://localhost:3000/client", {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      setGroup(response.data);
-      setFilteredGroup(response.data.filter(group => group.Active || !showActiveOnly));
+      setClientSupplier(response.data);
+      setFilteredClientSupplier(response.data.filter(clientSupplier => clientSupplier.Active || !showActiveOnly));
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
         logout();
       }
-      setGroup([]);
-      setFilteredGroup([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar group.";
+      setClientSupplier([]);
+      setFilteredClientSupplier([]);
+      const errorMessage = error.response?.data?.error || "Erro ao carregar cliente/fornecedor.";
       setDialogStatus('error');
       setDialogMessage(errorMessage);
       setDialogOpen(true);
@@ -64,13 +64,13 @@ function SearchClientSupplier() {
   };
 
   useEffect(() => {
-    fetchGroup();
-  }, [token]); // Dependência para atualizar quando token mudar
+    fetchClientSupplier();
+  }, [token]);
 
   useEffect(() => {
-    // Filtra os grupo de acordo com o estado do checkbox
-    setFilteredGroup(groups.filter(group => group.Active || !showActiveOnly));
-  }, [showActiveOnly, groups]); // Dependências para atualizar quando showActiveOnly ou grupo mudar
+    // Filtra os cliente/fornecedor de acordo com o estado do checkbox
+    setFilteredClientSupplier(clientSupplier.filter(clientSupplier => clientSupplier.Active || !showActiveOnly));
+  }, [showActiveOnly, clientSupplier]); // Dependências para atualizar quando showActiveOnly
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -83,27 +83,27 @@ function SearchClientSupplier() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim() === "") {
-      // Se o campo de pesquisa estiver vazio, buscar todos os grupo
-      fetchGroup();
+      // Se o campo de pesquisa estiver vazio, buscar todos os cliente/fornecedor
+      fetchClientSupplier();
     } else {
-      // Caso contrário, buscar grupo que correspondem ao termo de pesquisa
+      // Caso contrário, buscar cliente/fornecedor que correspondem ao termo de pesquisa
       try {
-        const response = await axios.get(`http://localhost:3000/groupsearch/${searchTerm}`, {
+        const response = await axios.get(`http://localhost:3000/clientsearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        const searchedGroup = response.data;
-        setGroup(searchedGroup);
-        setFilteredGroup(searchedGroup.filter(group => group.Active || !showActiveOnly));
+        const searchClientSupplier = response.data;
+        setClientSupplier(searchClientSupplier);
+        setFilteredClientSupplier(searchClientSupplier.filter(clientSupplier => clientSupplier.Active || !showActiveOnly));
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
           logout();
         }
-        setGroup([]);
-        setFilteredGroup([]);
-        const errorMessage = error.response?.data?.error || "Nenhum grupo encontrado.";
+        setClientSupplier([]);
+        setFilteredClientSupplier([]);
+        const errorMessage = error.response?.data?.error || "Nenhum cliente/fornecedor encontrado.";
         setDialogStatus('error');
         setDialogMessage(errorMessage);
         setDialogOpen(true);
@@ -121,27 +121,27 @@ function SearchClientSupplier() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className="box-container-search">
+      <Container className="box-container-search" >
         <Box className="box-manager-search">
           <Avatar className='avatar'>
             <AssignmentIndIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Pesquisa de Grupo
+            Pesquisa de Cliente/Fornecedor
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 750, margin: '0 auto', textAlign: 'center' }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 1000, margin: '0 auto', textAlign: 'center', }}>
             <TextField
               margin="normal"
               required
               fullWidth
               id="searchTerm"
-              label="Pesquisar Grupo"
+              label="Pesquisar Cliente/Fornecedor"
               name="searchTerm"
               autoComplete="searchTerm"
               autoFocus
               value={searchTerm}
               onChange={handleChange}
-              placeholder="Digite o nome grupo"
+              placeholder="Digite o nome, endereço, bairro, cidade, e-mail ou telefone"
               InputLabelProps={{
                 sx: {
                   color: '#0303037e',
@@ -181,7 +181,7 @@ function SearchClientSupplier() {
                   }}
                 />
               }
-              label="Mostrar apenas grupos ativos"
+              label="Mostrar apenas clientes/fornecedores ativos"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mb: 2 }}>
@@ -194,51 +194,97 @@ function SearchClientSupplier() {
                 Buscar
               </Button>
             </Box>
-            {filteredGroup.length > 0 && (
-              <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxWidth: '100%', maxHeight: 400, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Id</TableCell>
-                      <TableCell>Nome</TableCell>
-                      <TableCell>Ativo</TableCell>
-                      <TableCell>Ações</TableCell>
+            <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxHeight: 800, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ minWidth: 50 }}>Id</TableCell>
+                    <TableCell sx={{ minWidth: 150 }}>Nome</TableCell>
+                    <TableCell sx={{ minWidth: 100 }}>Telefone</TableCell>
+                    <TableCell sx={{ minWidth: 200 }}>E-mail</TableCell>
+                    <TableCell sx={{ minWidth: 120 }}>Tipo</TableCell>
+                    <TableCell sx={{ minWidth: 150 }}>Chave Pix</TableCell>
+                    <TableCell sx={{ minWidth: 300 }}>Endereço</TableCell>
+                    <TableCell sx={{ minWidth: 80 }}>Número</TableCell>
+                    <TableCell sx={{ minWidth: 100 }}>Complemento</TableCell>
+                    <TableCell sx={{ minWidth: 100 }}>Bairro</TableCell>
+                    <TableCell sx={{ minWidth: 100 }}>Cidade</TableCell>
+                    <TableCell sx={{ minWidth: 80 }}>Cliente</TableCell>
+                    <TableCell sx={{ minWidth: 80 }}>Fornecedor</TableCell>
+                    <TableCell sx={{ minWidth: 80 }}>Ativo</TableCell>
+                    <TableCell sx={{ minWidth: 100 }}>Ações</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredClientSupplier.map((clientSupplier) => (
+                    <TableRow key={clientSupplier.IdclientSupplier}>
+                      <TableCell>{clientSupplier.IdClientSupplier}</TableCell>
+                      <TableCell>{clientSupplier.ClientSupplierName}</TableCell>
+                      <TableCell>{clientSupplier.Phone}</TableCell>
+                      <TableCell>{clientSupplier.Email}</TableCell>
+                      <TableCell>{clientSupplier.TypeKey}</TableCell>
+                      <TableCell>{clientSupplier.PixKey}</TableCell>
+                      <TableCell>{clientSupplier.Address}</TableCell>
+                      <TableCell>{clientSupplier.Number}</TableCell>
+                      <TableCell>{clientSupplier.Complement}</TableCell>
+                      <TableCell>{clientSupplier.Neighborhood}</TableCell>
+                      <TableCell>{clientSupplier.City}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={!!clientSupplier.IsClient}
+                          readOnly
+                          sx={{
+                            '&.Mui-checked': {
+                              color: '#45a049',
+                            },
+                            '&.Mui-checked + .MuiCheckbox-label::before': {
+                              backgroundColor: '#45a049',
+                            },
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={!!clientSupplier.IsSupplier}
+                          readOnly
+                          sx={{
+                            '&.Mui-checked': {
+                              color: '#45a049',
+                            },
+                            '&.Mui-checked + .MuiCheckbox-label::before': {
+                              backgroundColor: '#45a049',
+                            },
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={!!clientSupplier.Active}
+                          readOnly
+                          sx={{
+                            '&.Mui-checked': {
+                              color: '#45a049',
+                            },
+                            '&.Mui-checked + .MuiCheckbox-label::before': {
+                              backgroundColor: '#45a049',
+                            },
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          component={Link}
+                          to={`/updateclient/${clientSupplier.IdclientSupplier}`}
+                          variant="contained" color="success"
+                        >
+                          Editar
+                        </Button>
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {filteredGroup.map((group) => (
-                      <TableRow key={group.IdGroup}>
-                        <TableCell>{group.IdGroup}</TableCell>
-                        <TableCell>{group.GroupName}</TableCell>
-                        <TableCell>
-                          <Checkbox
-                            checked={!!group.Active}
-                            readOnly
-                            sx={{
-                              '&.Mui-checked': {
-                                color: '#45a049',
-                              },
-                              '&.Mui-checked + .MuiCheckbox-label::before': {
-                                backgroundColor: '#45a049',
-                              },
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            component={Link}
-                            to={`/updategroup/${group.IdGroup}`}
-                            variant="contained" color="success"
-                          >
-                            Editar
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 0, width: '100%', maxWidth: 600 }}>
             <Button

@@ -146,6 +146,8 @@ function CreateClientSupplier() {
                         errors.push('Formato do CPF inválido.');
                     }else{
                         formData.cpf = formData.cpfcnpj;
+                        formData.isclient = true;
+                        formData.issupplier= true;
                     }
                 }
                 if (formData.cpfcnpj.length === 14) {
@@ -154,6 +156,8 @@ function CreateClientSupplier() {
                         errors.push(testCnpj);
                     }else{
                         formData.cnpj = formData.cpfcnpj;
+                        formData.isclient = true;
+                        formData.issupplier= true;
                     }
                 } 
                 if(formData.cpfcnpj.length !== 14 && formData.cpfcnpj.length !== 11 ){
@@ -161,7 +165,7 @@ function CreateClientSupplier() {
                 }
             }
             
-            if (formData.typekey === 'Phone') {
+            if (formData.typekey === 'Telefone') {
                 const testTypeKey = validator.phoneValidator(formData.pixkey)
                 if (testTypeKey !== true) {
                     errors.push('Formato errado para o telefone da Chave PIX');
@@ -823,11 +827,11 @@ function CreateClientSupplier() {
                             }}
                         >
                             <option value=""></option>
-                            <option value="Phone">Telefone</option>
+                            <option value="Telefone">Telefone</option>
                             <option value="Email">Email</option>
                             <option value="CPF/CNPJ">CPF/CNPJ</option>
-                            <option value="RandomKey">Chave Aleatória</option>
-                            <option value="KeyPixBanc">Chave PIX</option>
+                            <option value="Chave Aleatória">Chave Aleatória</option>
+                            <option value="Chave Pix">Chave PIX</option>
                         </TextField>
                         {formData.typekey && (
                             <TextField

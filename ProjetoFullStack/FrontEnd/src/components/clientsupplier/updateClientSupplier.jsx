@@ -23,9 +23,26 @@ function UpdateClientSupplier() {
   const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
-  const [group, setGroup] = useState({
-    name: '',
-    active: false,
+  const [formData, setFormData] = useState({
+    name: "",
+    cpf: "",
+    cnpj: "",
+    cpfcnpj: "",
+    zipcode: "",
+    address: "",
+    number: "",
+    complement: "",
+    neighborhood: "",
+    city: "",
+    state: "",
+    phone: "",
+    email: "",
+    isclient: false,
+    issupplier: false,
+    isclientsupplier: false,
+    typekey: "",
+    pixkey: "",
+    active: true
   });
   const [loading, setLoading] = useState(true);
 
@@ -37,25 +54,40 @@ function UpdateClientSupplier() {
   const token = userToken.token || "";
 
   useEffect(() => {
-    const fetchGroup = async () => {
+    const fetchClientSupplier = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/group/${id}`, {
+        const response = await axios.get(`http://localhost:3000/client/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        const groupData = response.data[0];
+        const clientData = response.data[0];
         
-        setGroup({
-          name: groupData.GroupName,
-          active: Boolean(groupData.Active),
+        setFormData({
+          name: clientData.ClientSupplierName,
+          cpf: clientData.Cpf,
+          cnpj: clientData.Cnpj,
+          zipcode: clientData.ZipCode,
+          address: clientData.Address,
+          number: clientData.Number,
+          complement: clientData.Complement,
+          neighborhood: clientData.Neighborhood,
+          city: clientData.City,
+          state: clientData.State,
+          phone: clientData.Phone,
+          email: clientData.Email,
+          isclient: Boolean(clientData.IsClient),
+          issupplier: Boolean(clientData.IsSupplier),
+          typekey: clientData.TypeKey,
+          pixkey: clientData.PixKey,
+          active: Boolean(clientData.Active)
         });
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
           logout();
         }
-        const errorMessage = error.response?.data?.error || "Erro ao carregar grupo.";
+        const errorMessage = error.response?.data?.error || "Erro ao carregar cliente/fornecedor.";
         setDialogStatus('error');
         setDialogMessage(errorMessage);
         setDialogOpen(true);
@@ -64,48 +96,31 @@ function UpdateClientSupplier() {
       }
     };
 
-    fetchGroup();
+    fetchClientSupplier();
   }, [id, token]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-    setGroup({ ...group, [name]: type === 'checkbox' ? checked : value });
+    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const errors = [];
 
-      const testName = validator.allValidator(group.name, 2, 15);
-      const testActive = validator.booleanValidator(group.active);
-
-      if (testName !== true) {
-        errors.push(testName);
-      }
-      if (testActive !== true) {
-        errors.push(testActive);
-      }
-
-      if (errors.length > 0) {
-        setDialogStatus('error');
-        setDialogMessage(errors.join('\n'));
-        return;
-      }
-
-      await axios.put(`http://localhost:3000/group/${id}`, { ...group }, {
+      await axios.put(`http://localhost:3000/client/${id}`, { ...formData }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
       setDialogStatus('success');
-      setDialogMessage("Grupo atualizado com sucesso");
+      setDialogMessage("Cliente/Fornecedor atualizado com sucesso");
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 401) {
         logout();
       }
-      const errorMessage = error.response?.data?.errors || "Erro ao atualizar grupo.";
+      const errorMessage = error.response?.data?.errors || "Erro ao atualizar cliente/fornecedor.";
       setDialogStatus('error');
       setDialogMessage(errorMessage);
     } finally {
@@ -129,7 +144,7 @@ function UpdateClientSupplier() {
   }
 
   const handleVoltar = () => {
-    navigate("/searchgroup");
+    navigate("/searchclient");
   };
 
   const handleCloseDialog = () => {
@@ -145,7 +160,7 @@ function UpdateClientSupplier() {
             <AssignmentIndIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Atualizar Grupo
+            Atualizar Cliente/Fornecedor
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -156,7 +171,7 @@ function UpdateClientSupplier() {
               name="name"
               autoComplete="nome"
               autoFocus
-              value={group.name || ''}
+              value={formData.name || ''}
               onChange={handleChange}
               InputLabelProps={{
                 sx: {
@@ -183,7 +198,7 @@ function UpdateClientSupplier() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={group.active}
+                  checked={formData.active}
                   onChange={handleChange}
                   name="active"
                   sx={{
