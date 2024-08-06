@@ -40,6 +40,7 @@ function CreateClientSupplier() {
         email: "",
         isclient: false,
         issupplier: false,
+        typekey: "",
         pixkey: "",
         active: true
     });
@@ -98,15 +99,95 @@ function CreateClientSupplier() {
         try {
             const errors = [];
 
-            const testName = validator.allValidator(formData.name, 2, 15);
+            const testName = validator.allValidator(formData.name, 2, 80);
+            const testZipCode = validator.zipCodeValidator(formData.zipcode);
+            const testAddress = validator.allValidator(formData.address, 2, 100);
+            const testNeighborhood = validator.allValidator(formData.neighborhood, 2, 60);
+            const testCity = validator.allValidator(formData.city, 2, 40);
+            const testState = validator.allValidator(formData.state, 2, 2);
+            const testPhone = validator.phoneValidator(formData.phone);
+            const testEmail = validator.emailValidator(formData.email);
 
-            if (testName !== true) {
-                errors.push(testName);
+            if (formData.complement.length > 0) {
+                const testComplement = validator.allValidator(formData.complement, 1, 100)
+                if (testComplement !== true) {
+                    errors.push('Complemento permite o campo maxímo de 100 caracteres.');
+                }
+            }
+            if (formData.isclient === true) {
+                if (formData.cpf.length === 11) {
+                    const testCpf = validator.cpfValidator(formData.cpf)
+                    if (testCpf !== true) {
+                        errors.push('Formato do CPF inválido.');
+                    }
+                } else {
+                    errors.push('Digite 11 números para o CPF.');
+                }
+            }
+            if (formData.issupplier === true) {
+                if (formData.cnpj.length === 14) {
+                    const testCnpj = validator.cnpjValidator(formData.cnpj)
+                    if (testCnpj !== true) {
+                        errors.push(testCnpj);
+                    }
+                } else {
+                    errors.push('Digite 14 números para o CNPJ.');
+                }
+            }
+            if (formData.typekey === 'Phone') {
+                const testTypeKey = validator.phoneValidator(formData.pixkey)
+                if (testTypeKey !== true) {
+                    errors.push('Formato errado para o telefone da Chave PIX');
+                }
+            }
+            if (formData.typekey === 'Email') {
+                const testTypeKey = validator.emailValidator(formData.pixkey)
+                if (testTypeKey !== true) {
+                    errors.push('Formato errado para o e-mail da Chave PIX');
+                }
+            }
+            if (formData.typekey === 'CPF/CNPJ') {
+                if (formData.typekey.length === 11) {
+                    const testTypeKey = validator.cpfValidator(formData.pixkey)
+                    if (testTypeKey !== true) {
+                        errors.push('Formato errado para o CPF da Chave PIX');
+                    }
+                }
+                if (formData.typekey.length === 14) {
+                    const testTypeKey = validator.cnpjValidator(formData.pixkey)
+                    if (testTypeKey !== true) {
+                        errors.push('Formato errado para o CNPJ da Chave PIX');
+                    }
+                }
             }
 
+            if (testName !== true) {
+                errors.push('Digite no mínimo 2 caracteres para o nome.');
+            }
+            if (testZipCode !== true) {
+                errors.push('Digite no mínimo 8 números para o CEP.');
+            }
+            if (testAddress !== true) {
+                errors.push('Digite no mínimo 2 caracteres para o endereço.');
+            }
+            if (testNeighborhood !== true) {
+                errors.push('Digite no mínimo 2 caracteres para o bairro.');
+            }
+            if (testCity !== true) {
+                errors.push('Digite no mínimo 2 caracteres para o cidade.');
+            }
+            if (testState !== true) {
+                errors.push('Digite 2 caracteres para o estado(Ex: MG, RJ...).');
+            }
+            if (testPhone !== true) {
+                errors.push('Digite no mínimo 11 números para o telefone(Ex: 32 12345 1234');
+            }
+            if (testEmail !== true) {
+                errors.push('Digite um formato válido para o e-mail(Ex: exemplo@exemplo.com).');
+            }
             if (errors.length > 0) {
                 setDialogStatus('error');
-                setDialogMessage(errors);
+                setDialogMessage(errors.join('\n'));
                 return;
             }
 
@@ -131,6 +212,7 @@ function CreateClientSupplier() {
                 email: "",
                 isclient: false,
                 issupplier: false,
+                typekey: "",
                 pixkey: "",
                 active: true
             });
@@ -159,16 +241,16 @@ function CreateClientSupplier() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container className="box-container">
+            <Container className="box-container" sx={{ mt: '2%' }}>
                 <CssBaseline />
-                <Box className="box-manager-client">
+                <Box className="box-manager-client" component="form" onSubmit={handleSubmit}>
                     <Avatar className='avatar'>
                         <AssignmentIndIcon className='avatar' />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Cadastro de Cliente/Fornecedor
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} className="box-manager-client-form">
+                    <Box className="box-manager-client-form">
                         <TextField
                             className="textfield-client"
                             fullWidth
@@ -635,39 +717,121 @@ function CreateClientSupplier() {
                             }}
                         />
                     </Box>
-                    <TextField
-                        className="textfield-client-pix"
-                        fullWidth
-                        margin="normal"
-                        required
-                        label="Chave Pix"
-                        name="pixkey"
-                        autoComplete="pixkey"
-                        autoFocus
-                        value={formData.pixkey}
-                        onChange={handleChange}
-                        InputLabelProps={{
-                            sx: {
-                                color: '#0303037e',
-                                '&.Mui-focused': {
-                                    color: '#030303',
+                    <Box className="box-manager-pix">
+                        <TextField
+                            className="textfield-client"
+                            fullWidth
+                            margin="normal"
+                            select
+                            label="Tipo de Chave"
+                            required
+                            name="typekey"
+                            value={formData.typekey}
+                            onChange={handleChange}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            InputLabelProps={{
+                                sx: {
+                                    color: '#0303037e',
+                                    '&.Mui-focused': {
+                                        color: '#030303',
+                                    },
                                 },
-                            },
-                        }}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: '#0303037e',
+                            }}
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#0303037e',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#030303af',
+                                    },
                                 },
-                                '&:hover fieldset': {
-                                    borderColor: '#0303037e',
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: '#030303af',
-                                },
-                            },
-                        }}
-                    />
+                            }}
+                        >
+                            <option value=""></option>
+                            <option value="Phone">Telefone</option>
+                            <option value="Email">Email</option>
+                            <option value="CPF/CNPJ">CPF/CNPJ</option>
+                            <option value="RandomKey">Chave Aleatória</option>
+                            <option value="KeyPixBanc">Chave PIX</option>
+                        </TextField>
+                        {formData.typekey && (
+                            <TextField
+                                className="textfield-client-pix"
+                                fullWidth
+                                margin="normal"
+                                required
+                                label="Chave Pix"
+                                name="pixkey"
+                                autoComplete="pixkey"
+                                autoFocus
+                                value={formData.pixkey}
+                                onChange={handleChange}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: '#0303037e',
+                                        '&.Mui-focused': {
+                                            color: '#030303',
+                                        },
+                                    },
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#030303af',
+                                        },
+                                    },
+                                }}
+                            />
+                        )}
+                        {!formData.typekey && (
+                            <TextField
+                                className="textfield-client-pix"
+                                fullWidth
+                                margin="normal"
+                                disabled
+                                required
+                                label="Chave Pix"
+                                name="pixkey"
+                                autoComplete="pixkey"
+                                autoFocus
+                                value={formData.pixkey}
+                                onChange={handleChange}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: '#0303037e',
+                                        '&.Mui-focused': {
+                                            color: '#030303',
+                                        },
+                                    },
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#030303af',
+                                        },
+                                    },
+                                }}
+                            />
+                        )}
+                    </Box>
                     <Box className="box-manager-button" sx={{ width: '60%' }}>
                         <Button
                             type="submit"

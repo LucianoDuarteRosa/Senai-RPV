@@ -75,6 +75,7 @@ CREATE TABLE ClientSupplier (
     Email VARCHAR(60) NOT NULL,
     IsClient BOOLEAN,
     IsSupplier BOOLEAN,
+	UserProfile ENUM('CPF/CNPJ', 'Email', 'Telefone', 'Chave Aleatória', 'Chave PIX' ),
     PixKey VARCHAR(255),
     Active BOOLEAN DEFAULT TRUE
 );
@@ -190,8 +191,8 @@ CREATE TABLE Tokens (
 INSERT INTO Profile (UserProfile) VALUES ('ADMINISTRADOR'), ('COLABORADOR'), ('USUARIO');
 
 INSERT INTO User (UserName, UserEmail, Password, IdProfile) VALUES 
-('admin', 'admin', '123', 1),
-('usuario', 'usuario@example.com', 'senha_usuario', 2);
+('admin', 'admin@admin.com', '$2a$10$QY3ZjyOzp13cu6V.46ZoNeTQbADgPltHSPwGDJnfRSz/70k3tOWQe', 1),
+('usuario', 'usuario@usuario.com', '$2a$10$QY3ZjyOzp13cu6V.46ZoNeTQbADgPltHSPwGDJnfRSz/70k3tOWQe', 2);
 
 INSERT INTO ProductGroup (GroupName) VALUES 
 ('Roupas'), 

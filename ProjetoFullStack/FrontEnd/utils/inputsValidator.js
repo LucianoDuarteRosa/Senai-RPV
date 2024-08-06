@@ -220,8 +220,9 @@ class InputValidator {
 
     allValidator(value, min, max) {
         try {
+            const trimmedValue = value.replace(/\s+/g, '');
             const regex = new RegExp(`^[\\p{L}0-9]{${min},${max}}$`, 'u');
-            if (regex.test(value)) {
+            if (regex.test(trimmedValue)) {
                 return true;
             } else {
                 throw new Error(`Por favor, digite valor válido(entre ${min} e ${max} caracteres, apenas letras e números).`);
