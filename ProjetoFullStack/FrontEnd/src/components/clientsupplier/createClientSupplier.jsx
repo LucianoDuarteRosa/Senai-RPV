@@ -191,7 +191,7 @@ function CreateClientSupplier() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:3000/clientsupplier', { ...formData }, {
+            const response = await axios.post('http://localhost:3000/client', { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
