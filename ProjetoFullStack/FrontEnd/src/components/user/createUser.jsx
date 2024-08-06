@@ -103,7 +103,7 @@ function CreateUser() {
             if (error.response && error.response.status === 401) {
                 logout();
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar usuário";
+            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar usuário.";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {

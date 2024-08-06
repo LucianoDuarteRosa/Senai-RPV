@@ -7,7 +7,7 @@
     --navbar: #528f55;
     --sidbar: #99c791;
     --avatar: #45a049;
-    --box-manager:#f5f5f5;
+    --box-manager: #f5f5f5;
     --font-color: #fff;
     --font-color-dark: #275327;
     --card-manager: #a8fdac;
@@ -19,11 +19,11 @@
     --btn-secundary-dark: #285c29;
 }
 
-body{
+body {
     background: linear-gradient(180deg, var(--background-1) 40%, var(--background-2) 100%);
     background-blend-mode: unset;
     height: 100vh;
-    
+
 }
 
 /*-------------- Navbar ----------------------------*/
@@ -36,17 +36,19 @@ body{
     background-color: var(--navbar);
 }
 
-.navbar-box{
+.navbar-box {
     display: flex;
     align-items: center;
     padding: 5px;
     width: 15%;
 }
+
 /*----------------------------------------------------*/
 /*---------------------- Avatar ----------------------*/
 .avatar {
     background-color: var(--avatar) !important;
 }
+
 /*----------------------------------------------------*/
 /*---------------------Box----------------------------*/
 .box {
@@ -55,10 +57,11 @@ body{
     align-items: center;
     height: 89vh;
 }
+
 /*----------------------------------------------------*/
 /*---------------------- Buttons ---------------------*/
 .primary-button {
-    background-color: var(--btn-primary)!important;
+    background-color: var(--btn-primary) !important;
     color: var(--font-color)"important";
     border: none;
     border-radius: 4px;
@@ -72,7 +75,7 @@ body{
 }
 
 .primary-button:hover {
-    background-color: var(--btn-primary-hover)!important;
+    background-color: var(--btn-primary-hover) !important;
 }
 
 .secundary-button {
@@ -111,32 +114,33 @@ body{
 .primary-button-manager:hover {
     background-color: var(--btn-secundary-dark);
 }
+
 /*-------------------------------------------------*/
 /*------------------Manager------------------------*/
-.main-manager{
+.main-manager {
     margin-top: 40px;
 }
 
-.box-manage{
+.box-manage {
     text-align: center;
 }
 
-.tile-manager{
+.tile-manager {
     color: var(--font-color-dark);
     font-weight: 1000;
 }
 
-.manager-cards{
+.manager-cards {
     padding: 15px 15px 20px 15px;
-    margin: 15px ;
-    background-color: var(--box-manager)!important;
-    box-shadow: none!important;
-    border-radius: 12px!important;
-    color: var(--font-color-dark)!important;
+    margin: 15px;
+    background-color: var(--box-manager) !important;
+    box-shadow: none !important;
+    border-radius: 12px !important;
+    color: var(--font-color-dark) !important;
     width: 550px;
 }
 
-.box-manage-main{
+.box-manage-main {
     text-align: start;
     margin-top: 0;
     display: grid;
@@ -148,14 +152,14 @@ body{
     padding-bottom: 30px;
 }
 
-.box-container{
-    display: flex!important;
-    align-items: center!important;
-    justify-content: center!important;
+.box-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     margin: 0;
 }
 
-.box-manager-user{
+.box-manager-user {
     margin-top: 12%;
     width: 550px;
     display: flex;
@@ -164,16 +168,17 @@ body{
     background-color: var(--box-manager);
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.box-container-search{
-    display: flex!important;
-    align-items: center!important;
-    justify-content: center!important;
+.box-container-search {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     margin: 0;
 }
-.box-manager-search{
+
+.box-manager-search {
     margin-top: 5%;
     width: 1200px;
     display: flex;
@@ -182,12 +187,45 @@ body{
     align-items: center;
     background-color: var(--box-manager);
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.box-manager-button{
+.box-manager-button {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-top: 15px;
+}
+
+.box-manager-client {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--box-manager);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-manager-client-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    align-items: center;
+    background-color: var(--box-manager);
+    border-radius: 12px;
+    margin: 5px;
+    gap: 10px;
+}
+
+.textfield-client {
+    width: 340px !important;
+}
+
+.textfield-client-pix{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%!important;
 }

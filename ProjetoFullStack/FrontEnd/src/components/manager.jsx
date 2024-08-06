@@ -143,14 +143,14 @@ export default function Manager() {
                   <Box display="flex" justifyContent="space-around">
                     <RouterLink 
                       component={RouterLink}
-                      to="/criarusuario"
+                      to="/createclient"
                       className="primary-button-manager"
                     >
                       Cadastrar
                     </RouterLink >
                     <RouterLink 
                       component={RouterLink}
-                      to="/buscarusuario"
+                      to="/searchclient"
                       className="primary-button-manager"
                     >
                       Pesquisar

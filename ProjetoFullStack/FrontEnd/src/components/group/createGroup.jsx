@@ -71,7 +71,7 @@ function CreateGroup() {
             if (error.response && error.response.status === 401) {
                 logout();
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar grupo";
+            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar grupo.";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {

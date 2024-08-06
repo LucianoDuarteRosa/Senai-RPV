@@ -95,7 +95,7 @@ function CreateUser() {
             if (error.response && error.response.status === 401) {
                 logout();
             }
-            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar sub-grupo";
+            const errorMessage = error.response?.data?.errors || "Erro ao cadastrar sub-grupo.";
             setDialogStatus('error');
             setDialogMessage(errorMessage);
         } finally {
