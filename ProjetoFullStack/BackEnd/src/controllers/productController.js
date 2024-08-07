@@ -1,11 +1,12 @@
 
 const productModel = require("../models/productModel");
-const validator = require("../../utils/inputsValidator")
+const validator = require("../../utils/inputsValidator");
+const converter = require("../../utils/converter");
 
 class ProductController {
- 
+
   readList(req, res) {
-   
+
     const retorno = productModel.readList();
     return retorno
       .then((result) => result.length == 0
@@ -15,7 +16,7 @@ class ProductController {
       .catch((error) => res.status(400).json(error.message));
   }
 
- 
+
   read(req, res) {
     const { id } = req.params;
     const errors = [];
@@ -28,44 +29,48 @@ class ProductController {
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
-    
+
     const retorno = productModel.read(id);
     return retorno
       .then((result) =>
-        result.length == 0 
-        ? res.status(404).send("Produto não encontrado!") 
-        : res.status(200).json(result)
+        result.length == 0
+          ? res.status(404).send("Produto não encontrado!")
+          : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
   }
 
   search(req, res) {
     const { id } = req.params;
-    
+
     const retorno = productModel.search(id);
     return retorno
       .then((result) =>
-        result.length == 0 
-        ? res.status(404).send("Nenhum produto encontrado!") 
-        : res.status(200).json(result)
+        result.length == 0
+          ? res.status(404).send("Nenhum produto encontrado!")
+          : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
   }
 
   create(req, res) {
-    const reqBody = req.body; 
+    const reqBody = req.body;
+
     const errors = [];
 
-    const testProductName = validator.allValidator(reqBody.productName, 2,50);
-    const testCostPrice = validator.floatValidator(reqBody.costPrice);
-    const testSalePrice = validator.floatValidator(reqBody.salePrice);
-    const testIdClientSupplier = validator.integerValidator(reqBody.idClientSupplier);
-    const testIdStore = validator.integerValidator(reqBody.idStore);
-    const testIdSubGroup = validator.integerValidator(reqBody.idSubGroup);
-    const testIdUser = validator.integerValidator(reqBody.idUser);
-    const testRegistrationDate = validator.dateValidator(reqBody.registrationDate);
-    const testActive = validator.booleanValidator(reqBody.active);
+    const testUserId = validator.integerValidator(reqBody.userId);
+    const testProductName = validator.allValidator(reqBody.name, 2, 50);
+    const testCostPrice = validator.floatValidator(reqBody.costprice);
+    const testSalePrice = validator.floatValidator(reqBody.saleprice);
+    const testIdClientSupplier = validator.integerValidator(reqBody.idclient);
+    const testIdStore = validator.integerValidator(reqBody.idstore);
+    const testIdSubGroup = validator.integerValidator(reqBody.idsubgroup);
 
+    let registrationdate = converter.toMySQLDate();
+
+    if (testUserId !== true) {
+      errors.push(testUserId);
+    }
     if (testProductName !== true) {
       errors.push(testProductName);
     }
@@ -84,20 +89,14 @@ class ProductController {
     if (testIdSubGroup !== true) {
       errors.push(testIdSubGroup);
     }
-    if (testIdUser !== true) {
-      errors.push(testIdUser);
-    }
-    if (testRegistrationDate !== true) {
-      errors.push(testRegistrationDate);
-    }
-    if (testActive !== true) {
-      errors.push(testActive);
-    }
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
 
-    const retorno = productModel.create(reqBody);
+    const product = {ProductName: reqBody.name, CostPrice: reqBody.costprice, SalePrice: reqBody.saleprice, IdClientSupplier: reqBody.idclient,
+      IdSubGroup: reqBody.idsubgroup, IdStore: reqBody.idstore, IdUser: reqBody.userId, RegistrationDate: registrationdate}
+
+    const retorno = productModel.create(product);
     return retorno
       .then((result) =>
         res.status(201).send("Produto criado com sucesso!")
@@ -111,7 +110,7 @@ class ProductController {
     const errors = [];
 
     const testIdProduct = validator.integerValidator(reqBody.idProduct);
-    const testProductName = validator.allValidator(reqBody.productName, 2,50);
+    const testProductName = validator.allValidator(reqBody.productName, 2, 50);
     const testCostPrice = validator.floatValidator(reqBody.costPrice);
     const testSalePrice = validator.floatValidator(reqBody.salePrice);
     const testIdClientSupplier = validator.integerValidator(reqBody.idClientSupplier);
@@ -154,7 +153,7 @@ class ProductController {
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
-      
+
     const retorno = productModel.update(reqBody, id);
     return retorno
       .then((result) =>

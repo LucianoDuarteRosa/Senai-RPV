@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
@@ -15,6 +16,7 @@ import DialogMessage from '../../../utils/dialogMessage';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import '../../styles/index.css';
+import validator from '../../../utils/inputsValidator'
 
 const theme = createTheme();
 
@@ -32,9 +34,7 @@ function CreateProduct() {
         idclient: "",
         idgroup: "",
         idsubgroup: "",
-        idstore: "",
-        iduser: "",
-        registrationdate: ""
+        idstore: ""
     });
 
     const [groups, setGroup] = useState([]);
@@ -43,9 +43,14 @@ function CreateProduct() {
     const [subGroups, setSubGroup] = useState([]);
     const [filteredSubGroups, setFilteredSubGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState("");
+    const [imagePreviewUrl, setImagePreviewUrl] = useState("");
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
+
+    const InputStyled = styled('input')({
+        display: 'none',
+    });
 
     useEffect(() => {
         const fetchGroup = async () => {
@@ -130,8 +135,8 @@ function CreateProduct() {
             ...prevFormData,
             [name]: value
         }));
-        
-  
+
+
         if (name === "idgroup") {
             setSelectedGroup(value);
             setFormData(prevFormData => ({
@@ -141,9 +146,64 @@ function CreateProduct() {
         }
     };
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            if (['image/jpeg', 'image/png'].includes(file.type)) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setImagePreviewUrl(reader.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Por favor, selecione um arquivo de imagem (.jpg, .jpeg, .png).');
+                setImagePreviewUrl("");
+            }
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+
+            const errors = [];
+
+            const testProductName = validator.allValidator(formData.name, 2, 50);
+            const testCostPrice = validator.floatValidator(formData.costprice);
+            const testSalePrice = validator.floatValidator(formData.saleprice);
+            const testIdClientSupplier = validator.integerValidator(formData.idclient);
+            const testIdStore = validator.integerValidator(formData.idstore);
+            const testIdGroup = validator.integerValidator(formData.idgroup);
+            const testIdSubGroup = validator.integerValidator(formData.idsubgroup);
+
+            if (testProductName !== true) {
+                errors.push(testProductName);
+            }
+            if (testCostPrice !== true) {
+                errors.push(testCostPrice);
+            }
+            if (testSalePrice !== true) {
+                errors.push(testSalePrice);
+            }
+            if (testIdClientSupplier !== true) {
+                errors.push(testIdClientSupplier);
+            }
+            if (testIdStore !== true) {
+                errors.push(testIdStore);
+            }
+            if (testIdGroup !== true) {
+                errors.push(testIdGroup);
+            }
+            if (testIdSubGroup !== true) {
+                errors.push(testIdSubGroup);
+            }
+            if (errors.length > 0) {
+                setDialogStatus('error');
+                setDialogMessage(errors.join('\n'));
+                return;
+            }
+
+
             const response = await axios.post('http://localhost:3000/product', { ...formData }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -157,9 +217,7 @@ function CreateProduct() {
                 isclient: "",
                 idgroup: "",
                 idsubgroup: "",
-                idstore: "",
-                iduser: "",
-                registrationdate: ""
+                idstore: ""
             });
             setDialogStatus('success');
             setDialogMessage(successMessage);
@@ -186,9 +244,9 @@ function CreateProduct() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container className="box-container">
+            <Container className="box-container-product">
                 <CssBaseline />
-                <Box className="box-manager-user" component="form" onSubmit={handleSubmit} >
+                <Box className="box-manager-product" component="form" onSubmit={handleSubmit} >
                     <Avatar className='avatar'>
                         <ProductionQuantityLimitsIcon className='avatar' />
                     </Avatar>
@@ -196,7 +254,7 @@ function CreateProduct() {
                         Cadastro de Produto
                     </Typography>
                     <Box sx={{ display: "flex", gap: '10px' }}>
-                        <Box sx={{ mt: 1 }}>
+                        <Box sx={{ mt: 1 }} className="box-manager-product-main">
                             <TextField
                                 margin="normal"
                                 required
@@ -301,6 +359,7 @@ function CreateProduct() {
                                 />
                             </Box>
                             <Select
+                                required
                                 name="idstore"
                                 value={formData.idstore}
                                 onChange={handleChange}
@@ -325,6 +384,7 @@ function CreateProduct() {
                                 ))}
                             </Select>
                             <Select
+                                required
                                 name="idclient"
                                 value={formData.idclient}
                                 onChange={handleChange}
@@ -340,7 +400,7 @@ function CreateProduct() {
                                 sx={{ mt: '10px' }}
                             >
                                 <MenuItem value="" >
-                                    <em>Selecione um Client</em>
+                                    <em>Selecione um Cliente</em>
                                 </MenuItem>
                                 {clients.map(client => (
                                     <MenuItem key={client.IdClientSupplier} value={client.IdClientSupplier}>
@@ -349,6 +409,7 @@ function CreateProduct() {
                                 ))}
                             </Select>
                             <Select
+                                required
                                 name="idgroup"
                                 value={formData.idgroup}
                                 onChange={(e) => {
@@ -376,6 +437,7 @@ function CreateProduct() {
                                 ))}
                             </Select>
                             <Select
+                                required
                                 name="idsubgroup"
                                 value={formData.idsubgroup}
                                 onChange={handleChange}
@@ -400,6 +462,40 @@ function CreateProduct() {
                                     </MenuItem>
                                 ))}
                             </Select>
+                        </Box>
+                        <Box sx={{ textAlign: 'center', mt: 2 }} className="box-manager-product-img">
+                            <Typography variant="h6">Carregar Imagem</Typography>
+                            <label htmlFor="upload-button">
+                                <Box
+                                    className="box-manager-product-load"
+                                >
+                                    {imagePreviewUrl ? (
+                                        <img
+                                            src={imagePreviewUrl}
+                                            alt="Preview"
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        />
+                                    ) : (
+                                        <Typography variant="body2" color="textSecondary">
+                                            Nenhuma imagem selecionada
+                                        </Typography>
+                                    )}
+                                </Box>
+                                <InputStyled
+                                    id="upload-button"
+                                    type="file"
+                                    accept=".jpg, .jpeg, .png"
+                                    onChange={handleImageChange}
+                                />
+                                <Button
+                                    className="primary-button"
+                                    variant="contained"
+                                    component="span"
+                                    sx={{ mt: 2, width: 'auto' }}
+                                >
+                                    Selecionar Imagem
+                                </Button>
+                            </label>
                         </Box>
                     </Box>
                     <Box className="box-manager-button" sx={{ width: '60%' }}>

@@ -31,7 +31,7 @@ class AuthMiddleware {
                     }
 
                     // Se o token for válido, passar o ID do usuário para a próxima rota
-                    req.userId = tokenRecord[0].IdUser;
+                    req.body.userId = tokenRecord[0].IdUser;
                     next();
                 } catch (dbError) {
                     console.error('Erro ao consultar o banco de dados:', dbError);
