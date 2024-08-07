@@ -120,15 +120,6 @@ function UpdateClientSupplier() {
     });
   };
 
-  const handleSelectPixChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      typekey: value === "Telefone" || value === "Email" || value === "CPF/CNPJ" || value === "Chave Aleatória" ||
-        value === "Chave Pix" ? '' : formData.typekey
-    });
-  };
-
   const handleZipCodeChange = async (event) => {
     const { value } = event.target;
 
@@ -161,6 +152,127 @@ function UpdateClientSupplier() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+
+      const errors = [];
+
+      const testName = validator.allValidator(formData.name, 2, 80);
+      const testZipCode = validator.zipCodeValidator(formData.zipcode);
+      const testAddress = validator.allValidator(formData.address, 2, 100);
+      const testNeighborhood = validator.allValidator(formData.neighborhood, 2, 60);
+      const testCity = validator.allValidator(formData.city, 2, 40);
+      const testState = validator.allValidator(formData.state, 2, 2);
+      const testPhone = validator.phoneValidator(formData.phone);
+      const testEmail = validator.emailValidator(formData.email);
+
+      if (formData.complement == !null) {
+          const testComplement = validator.allValidator(formData.complement, 1, 100)
+          if (testComplement !== true) {
+              errors.push('Complemento permite o campo maxímo de 100 caracteres.');
+          }
+      }
+      if (formData.isclient === true) {
+          if (formData.cpf.length === 11) {
+              const testCpf = validator.cpfValidator(formData.cpf)
+              if (testCpf !== true) {
+                  errors.push('Formato do CPF inválido.');
+              }
+          } else {
+              errors.push('Digite 11 números para o CPF.');
+          }
+      }
+      if (formData.issupplier === true) {
+          if (formData.cnpj.length === 14) {
+              const testCnpj = validator.cnpjValidator(formData.cnpj)
+              if (testCnpj !== true) {
+                  errors.push(testCnpj);
+              }
+          } else {
+              errors.push('Digite 14 números para o CNPJ.');
+          }
+      }
+
+      if (formData.isclientsupplier === true) {
+          if (formData.cpfcnpj.length === 11) {
+              const testCpf = validator.cpfValidator(formData.cpfcnpj)
+              if (testCpf !== true) {
+                  errors.push('Formato do CPF inválido.');
+              }else{
+                  formData.cpf = formData.cpfcnpj;
+                  formData.isclient = true;
+                  formData.issupplier= true;
+              }
+          }
+          if (formData.cpfcnpj.length === 14) {
+              const testCnpj = validator.cnpjValidator(formData.cpfcnpj)
+              if (testCnpj !== true) {
+                  errors.push(testCnpj);
+              }else{
+                  formData.cnpj = formData.cpfcnpj;
+                  formData.isclient = true;
+                  formData.issupplier= true;
+              }
+          } 
+          if(formData.cpfcnpj.length !== 14 && formData.cpfcnpj.length !== 11 ){
+              errors.push('Digite 14 números para o CNPJ e 11 números para CPF.');
+          }
+      }
+      
+      if (formData.typekey === 'Telefone') {
+          const testTypeKey = validator.phoneValidator(formData.pixkey)
+          if (testTypeKey !== true) {
+              errors.push('Formato errado para o telefone da Chave PIX');
+          }
+      }
+      if (formData.typekey === 'Email') {
+          const testTypeKey = validator.emailValidator(formData.pixkey)
+          if (testTypeKey !== true) {
+              errors.push('Formato errado para o e-mail da Chave PIX');
+          }
+      }
+      if (formData.typekey === 'CPF/CNPJ') {
+          if (formData.typekey.length === 11) {
+              const testTypeKey = validator.cpfValidator(formData.pixkey)
+              if (testTypeKey !== true) {
+                  errors.push('Formato errado para o CPF da Chave PIX');
+              }
+          }
+          if (formData.typekey.length === 14) {
+              const testTypeKey = validator.cnpjValidator(formData.pixkey)
+              if (testTypeKey !== true) {
+                  errors.push('Formato errado para o CNPJ da Chave PIX');
+              }
+          }
+      }
+
+      if (testName !== true) {
+          errors.push('Digite no mínimo 2 caracteres para o nome.');
+      }
+      if (testZipCode !== true) {
+          errors.push('Digite no mínimo 8 números para o CEP.');
+      }
+      if (testAddress !== true) {
+          errors.push('Digite no mínimo 2 caracteres para o endereço.');
+      }
+      if (testNeighborhood !== true) {
+          errors.push('Digite no mínimo 2 caracteres para o bairro.');
+      }
+      if (testCity !== true) {
+          errors.push('Digite no mínimo 2 caracteres para o cidade.');
+      }
+      if (testState !== true) {
+          errors.push('Digite 2 caracteres para o estado(Ex: MG, RJ...).');
+      }
+      if (testPhone !== true) {
+          errors.push('Digite no mínimo 11 números para o telefone(Ex: 32 12345 1234');
+      }
+      if (testEmail !== true) {
+          errors.push('Digite um formato válido para o e-mail(Ex: exemplo@exemplo.com).');
+      }
+      if (errors.length > 0) {
+          setDialogStatus('error');
+          setDialogMessage(errors.join('\n'));
+          return;
+      }
 
       await axios.put(`http://localhost:3000/client/${id}`, { ...formData }, {
         headers: {
@@ -734,7 +846,7 @@ function UpdateClientSupplier() {
               required
               name="typekey"
               value={formData.typekey}
-              onChange={handleSelectPixChange}
+              onChange={handleChange}
               SelectProps={{
                 native: true,
               }}
