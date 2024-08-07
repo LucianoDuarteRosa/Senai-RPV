@@ -243,3 +243,9 @@ body {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.textfield-product input::-webkit-inner-spin-button,
+.textfield-product input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

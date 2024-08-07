@@ -40,21 +40,6 @@ CREATE TABLE SubGroup (
 CREATE INDEX idx_subgroup_name ON SubGroup (SubGroupName);
 CREATE INDEX idx_group_id ON SubGroup (IdGroup);
 
-/* Store information */
-CREATE TABLE Store (
-    IdStore INT PRIMARY KEY AUTO_INCREMENT,
-    StoreName VARCHAR(40) NOT NULL,
-    ZipCode VARCHAR(9) NOT NULL,
-    Address VARCHAR(255) NOT NULL,
-    Number VARCHAR(20) NOT NULL,
-    Complement VARCHAR(100),
-    Neighborhood VARCHAR(60),
-    City VARCHAR(40) NOT NULL,
-    State VARCHAR(40) NOT NULL,
-    Phone VARCHAR(35) NOT NULL,
-    Email VARCHAR(60) NOT NULL,
-    Active BOOLEAN DEFAULT TRUE
-);
 
 CREATE INDEX idx_store_name ON Store (StoreName);
 
@@ -90,12 +75,10 @@ CREATE TABLE Product (
     SalePrice DOUBLE NOT NULL,
     IdClientSupplier INT NOT NULL,
     IdSubGroup INT NOT NULL,
-    IdStore INT NOT NULL,
     IdUser INT NOT NULL,
     RegistrationDate DATETIME NOT NULL,
     Sold BOOLEAN DEFAULT FALSE,
     Active BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (IdStore) REFERENCES Store(IdStore) ON DELETE CASCADE,
     FOREIGN KEY (IdClientSupplier) REFERENCES ClientSupplier(IdClientSupplier) ON DELETE CASCADE,
     FOREIGN KEY (IdSubGroup) REFERENCES SubGroup(IdSubGroup) ON DELETE CASCADE,
     FOREIGN KEY (IdUser) REFERENCES User(IdUser) ON DELETE CASCADE
@@ -215,9 +198,9 @@ INSERT INTO ClientSupplier (ClientSupplierName, Cpf, Cnpj, ZipCode, Address, Num
 ('João da Silva', '12345678910', NULL, '12345678', 'Rua A', '123', NULL, 'Bairro A', 'Cidade A', 'AA', '123456789', 'joao@silva.com', TRUE, FALSE),
 ('Maria Oliveira', NULL, '12345678000190', '87654321', 'Avenida B', '456', 'Apto 2', 'Bairro B', 'Cidade B', 'BB', '987654321', 'maria@oliveira.com', FALSE, TRUE);
 
-INSERT INTO Product (ProductName, CostPrice, SalePrice, IdClientSupplier, IdSubGroup, IdStore, IdUser, RegistrationDate) VALUES 
-('Camiseta Azul', 20.0, 50.0, 1, 1, 1, 1, NOW()),
-('Tênis Esportivo', 100.0, 200.0, 2, 3, 2, 2, NOW());
+INSERT INTO Product (ProductName, CostPrice, SalePrice, IdClientSupplier, IdSubGroup, IdUser, RegistrationDate) VALUES 
+('Camiseta Azul', 20.0, 50.0, 1, 1, 1, NOW()),
+('Tênis Esportivo', 100.0, 200.0, 2, 3, 2, NOW());
 
 INSERT INTO Image (Path, IdProduct) VALUES
 ('path/to/image1.jpg', 1),

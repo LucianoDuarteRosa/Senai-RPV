@@ -18,6 +18,9 @@ import UpdateSubGroup from './components/subGroup/updateSubGroup';
 import CreateClientSupplier from './components/clientsupplier/createClientSupplier';
 import SearchClientSupplier from './components/clientsupplier/searchClientSupplier';
 import UpdateClientSupplier from './components/clientsupplier/updateClientSupplier';
+import CreateProduct from './components/product/createProduct';
+import SearchProduct from './components/product/searchProduct';
+import UpdateProduct from './components/product/updateProduct';
 import Home from './components/home';
 import Login from './components/login/login';
 import PrivateRoute from './components/login/privateRoute';
@@ -46,6 +49,9 @@ function App() {
             <Route path='/createclient' element={<CreateClientSupplier/>} />
             <Route path='/searchclient' element={<SearchClientSupplier/>} />
             <Route path="/updateclient/:id" element={<UpdateClientSupplier/>} />
+            <Route path='/createproduct' element={<CreateProduct/>} />
+            <Route path='/searchproduct' element={<SearchProduct/>} />
+            <Route path="/updateproduct/:id" element={<UpdateProduct/>} />
           </Route>
         </Routes>
       </BrowserRouter>
