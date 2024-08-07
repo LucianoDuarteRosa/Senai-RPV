@@ -217,7 +217,7 @@ function SearchClientSupplier() {
                 </TableHead>
                 <TableBody>
                   {filteredClientSupplier.map((clientSupplier) => (
-                    <TableRow key={clientSupplier.IdclientSupplier}>
+                    <TableRow key={clientSupplier.IdClientSupplier}>
                       <TableCell>{clientSupplier.IdClientSupplier}</TableCell>
                       <TableCell>{clientSupplier.ClientSupplierName}</TableCell>
                       <TableCell>{clientSupplier.Phone}</TableCell>
@@ -274,7 +274,7 @@ function SearchClientSupplier() {
                       <TableCell>
                         <Button
                           component={Link}
-                          to={`/updateclient/${clientSupplier.IdclientSupplier}`}
+                          to={`/updateclient/${clientSupplier.IdClientSupplier}`}
                           variant="contained" color="success"
                         >
                           Editar

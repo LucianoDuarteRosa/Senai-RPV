@@ -75,7 +75,7 @@ CREATE TABLE ClientSupplier (
     Email VARCHAR(100) NOT NULL,
     IsClient BOOLEAN,
     IsSupplier BOOLEAN,
-	TypeKey ENUM('CPF/CNPJ', 'Email', 'Phone', 'RandomKey', 'KeyPixBanc'),
+	TypeKey ENUM('CPF/CNPJ', 'Email', 'Telefone', 'Chave Aleatória', 'Chave Pix'),
     PixKey VARCHAR(255),
     Active BOOLEAN DEFAULT TRUE
 );
@@ -212,8 +212,8 @@ INSERT INTO Store (StoreName, ZipCode, Address, Number, Complement, Neighborhood
 ('Loja B', '87654-321', 'Avenida B', '456', 'Apto 2', 'Bairro B', 'Cidade B', 'Estado B', '987654321', 'lojab@example.com');
 
 INSERT INTO ClientSupplier (ClientSupplierName, Cpf, Cnpj, ZipCode, Address, Number, Complement, Neighborhood, City, State, Phone, Email, IsClient, IsSupplier) VALUES 
-('João da Silva', '123.456.789-10', NULL, '12345678', 'Rua A', '123', NULL, 'Bairro A', 'Cidade A', 'AA', '123456789', 'joao@silva.com', TRUE, FALSE),
-('Maria Oliveira', NULL, '12.345.678/0001-90', '87654321', 'Avenida B', '456', 'Apto 2', 'Bairro B', 'Cidade B', 'BB', '987654321', 'maria@oliveira.com', FALSE, TRUE);
+('João da Silva', '12345678910', NULL, '12345678', 'Rua A', '123', NULL, 'Bairro A', 'Cidade A', 'AA', '123456789', 'joao@silva.com', TRUE, FALSE),
+('Maria Oliveira', NULL, '12345678000190', '87654321', 'Avenida B', '456', 'Apto 2', 'Bairro B', 'Cidade B', 'BB', '987654321', 'maria@oliveira.com', FALSE, TRUE);
 
 INSERT INTO Product (ProductName, CostPrice, SalePrice, IdClientSupplier, IdSubGroup, IdStore, IdUser, RegistrationDate) VALUES 
 ('Camiseta Azul', 20.0, 50.0, 1, 1, 1, 1, NOW()),

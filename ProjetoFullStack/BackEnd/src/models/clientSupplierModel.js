@@ -30,7 +30,7 @@ class ClientSupplierModel {
   }
 
   read(id) {
-    const sql = "SELECT IdClientSupplier, ClientSupplierName, Cpf, Cnpj, ZipCode, Address, Number, Complement, Neighborhood, City, State, Phone, Email, IsClient, IsSupplier, PixKey, Active FROM ClientSupplier WHERE IdClientSupplier = ?";
+    const sql = "SELECT IdClientSupplier, ClientSupplierName, Cpf, Cnpj, ZipCode, Address, Number, Complement, Neighborhood, City, State, Phone, Email, IsClient, IsSupplier, TypeKey, PixKey, Active FROM ClientSupplier WHERE IdClientSupplier = ?";
     return this.executeSQL(sql, id);
   }
 
