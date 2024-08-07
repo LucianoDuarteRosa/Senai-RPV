@@ -120,7 +120,7 @@ function CreateUser() {
                         <AccountTreeIcon className='avatar' />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Cadastro de Sub-Grupo
+                        Cadastro de Subgrupo
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, width: '100%'}}>
                         <TextField

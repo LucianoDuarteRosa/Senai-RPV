@@ -170,7 +170,7 @@ function UpdateSubGroup() {
             <AccountTreeIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Atualizar Sub-Gropo
+            Atualizar Subgrupo
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField

@@ -180,7 +180,7 @@ export default function Manager() {
                 </Paper>
                 <Paper className="manager-cards">
                   <Typography component="h1" variant="h5">
-                    <b>Sub-Grupo</b>
+                    <b>Subgrupo</b>
                   </Typography>
                   <Box display="flex" justifyContent="space-around">
                     <RouterLink 

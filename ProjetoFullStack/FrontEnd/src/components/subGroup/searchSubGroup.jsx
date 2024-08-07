@@ -124,7 +124,7 @@ function SubGroupSearch() {
             <AccountTreeIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Pesquisa de Sub-Grupo
+            Pesquisa de Subgrupo
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
             <TextField
