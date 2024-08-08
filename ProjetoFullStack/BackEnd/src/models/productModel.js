@@ -45,7 +45,8 @@ class ProductModel {
     JOIN User ON Product.IdUser = User.IdUser
     JOIN ClientSupplier ON Product.IdClientSupplier = ClientSupplier.IdClientSupplier
     JOIN SubGroup ON Product.IdSubGroup = SubGroup.IdSubGroup
-    JOIN \`ProductGroup\` ON SubGroup.IdGroup = \`ProductGroup\`.IdGroup`;
+    JOIN \`ProductGroup\` ON SubGroup.IdGroup = \`ProductGroup\`.IdGroup
+    ORDER BY  Product.IdProduct`;
     return this.executeSQL(sql); 
 }
 

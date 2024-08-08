@@ -258,7 +258,7 @@ body {
 }
 
 .box-manager-product {
-    margin-top: 12%;
+    margin-top: 5%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -269,10 +269,11 @@ body {
 }
 
 .box-manager-product-main{
-    width: 450px;
+    width: 550px;
 }
 
-.box-manager-product-img{
+/*---------------imagens de cadastro não usar por enquanto--------------------*/
+/* .box-manager-product-img{
     padding: 10px;
     width: 350px;
 }
@@ -287,4 +288,4 @@ body {
     overflow: hidden;
     position: relative;
     box-shadow: 4px 3px 8px #0303037e;
-}
+} */

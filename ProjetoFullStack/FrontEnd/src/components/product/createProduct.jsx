@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
@@ -28,6 +27,7 @@ function CreateProduct() {
     const token = userToken.token || "";
 
     const [formData, setFormData] = useState({
+        idProduct: "",
         name: "",
         costprice: "",
         saleprice: "",
@@ -37,20 +37,21 @@ function CreateProduct() {
         idstore: ""
     });
 
+    const [products, setProducts] = useState([]);
     const [groups, setGroup] = useState([]);
     const [clients, setClients] = useState([]);
     const [stores, setStores] = useState([]);
     const [subGroups, setSubGroup] = useState([]);
     const [filteredSubGroups, setFilteredSubGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState("");
-    const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+    //const [imagePreviewUrl, setImagePreviewUrl] = useState("");
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
 
-    const InputStyled = styled('input')({
+    /*const InputStyled = styled('input')({
         display: 'none',
-    });
+    });*/
 
     useEffect(() => {
         const fetchGroup = async () => {
@@ -113,7 +114,28 @@ function CreateProduct() {
                 }
             }
         };
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/product', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                console.log(response.data)
+                let position = response.data.length -1;
+                
+                setProducts({
+                    idProduct: response.data[position].IdProduct + 1,      
+                  });
+            } catch (error) {
+                console.error("Error fetching product", error);
+                if (error.response && error.response.status === 401) {
+                    logout();
+                }
+            }
+        };
 
+        fetchProducts();
         fetchClients();
         fetchStores();
         fetchSubGroup();
@@ -145,7 +167,7 @@ function CreateProduct() {
             }));
         }
     };
-
+    /*
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -160,7 +182,7 @@ function CreateProduct() {
                 setImagePreviewUrl("");
             }
         }
-    };
+    };*/
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -203,14 +225,14 @@ function CreateProduct() {
                 return;
             }
 
-
             const response = await axios.post('http://localhost:3000/product', { ...formData }, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
                 }
             });
             const successMessage = response.data || "Produto cadastrado com sucesso!";
             setFormData({
+                idProduct: "",
                 name: "",
                 costprice: "",
                 saleprice: "",
@@ -255,11 +277,42 @@ function CreateProduct() {
                     </Typography>
                     <Box sx={{ display: "flex", gap: '10px' }}>
                         <Box sx={{ mt: 1 }} className="box-manager-product-main">
+                        <TextField
+                                margin="normal"
+                                disabled
+                                fullWidth
+                                label="Código do Produto"
+                                name="idProduct"
+                                autoComplete="naidProductme"
+                                autoFocus
+                                value={products.idProduct || ''}
+                                onChange={handleChange}
+                                InputLabelProps={{
+                                    sx: {
+                                        color: '#0303037e',
+                                        '&.Mui-focused': {
+                                            color: '#030303',
+                                        },
+                                    },
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#0303037e',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#030303af',
+                                        },
+                                    },
+                                }}
+                            />
                             <TextField
+                                fullWidth
                                 margin="normal"
                                 required
-                                fullWidth
-                                id="name"
                                 label="Nome"
                                 name="name"
                                 autoComplete="name"
@@ -329,7 +382,6 @@ function CreateProduct() {
                                     type="number"
                                     required
                                     fullWidth
-                                    id="saleprice"
                                     label="Preço de Venda"
                                     name="saleprice"
                                     autoComplete="saleprice"
@@ -463,7 +515,7 @@ function CreateProduct() {
                                 ))}
                             </Select>
                         </Box>
-                        <Box sx={{ textAlign: 'center', mt: 2 }} className="box-manager-product-img">
+                      {/*   <Box sx={{ textAlign: 'center', mt: 2 }} className="box-manager-product-img">
                             <Typography variant="h6">Carregar Imagem</Typography>
                             <label htmlFor="upload-button">
                                 <Box
@@ -484,6 +536,7 @@ function CreateProduct() {
                                 <InputStyled
                                     id="upload-button"
                                     type="file"
+                                    name="image"
                                     accept=".jpg, .jpeg, .png"
                                     onChange={handleImageChange}
                                 />
@@ -496,7 +549,7 @@ function CreateProduct() {
                                     Selecionar Imagem
                                 </Button>
                             </label>
-                        </Box>
+                        </Box> */}
                     </Box>
                     <Box className="box-manager-button" sx={{ width: '60%' }}>
                         <Button
