@@ -42,12 +42,13 @@ function CreateProduct() {
     const [clients, setClients] = useState([]);
     const [stores, setStores] = useState([]);
     const [subGroups, setSubGroup] = useState([]);
+    const [percentage, setPercentage] = useState("");
     const [filteredSubGroups, setFilteredSubGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState("");
-    //const [imagePreviewUrl, setImagePreviewUrl] = useState("");
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogStatus, setDialogStatus] = useState('');
     const [dialogMessage, setDialogMessage] = useState('');
+    //const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
     /*const InputStyled = styled('input')({
         display: 'none',
@@ -122,11 +123,11 @@ function CreateProduct() {
                     }
                 });
                 console.log(response.data)
-                let position = response.data.length -1;
-                
+                let position = response.data.length - 1;
+
                 setProducts({
-                    idProduct: response.data[position].IdProduct + 1,      
-                  });
+                    idProduct: response.data[position].IdProduct + 1,
+                });
             } catch (error) {
                 console.error("Error fetching product", error);
                 if (error.response && error.response.status === 401) {
@@ -150,6 +151,21 @@ function CreateProduct() {
             setFilteredSubGroups([]);
         }
     }, [selectedGroup, subGroups]);
+
+    useEffect(() => {
+        const calculatePercentage = () => {
+            const costprice = parseFloat(formData.costprice);
+            const saleprice = parseFloat(formData.saleprice);
+            if (!isNaN(costprice) && !isNaN(saleprice) && costprice > 0) {
+                const percentage = ((saleprice - costprice) / costprice) * 100;
+                setPercentage(percentage.toFixed(2) + '%');
+            } else {
+                setPercentage('');
+            }
+        };
+
+        calculatePercentage();
+    }, [formData.costprice, formData.saleprice]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -277,7 +293,7 @@ function CreateProduct() {
                     </Typography>
                     <Box sx={{ display: "flex", gap: '10px' }}>
                         <Box sx={{ mt: 1 }} className="box-manager-product-main">
-                        <TextField
+                            <TextField
                                 margin="normal"
                                 disabled
                                 fullWidth
@@ -348,11 +364,42 @@ function CreateProduct() {
                                     type="number"
                                     required
                                     fullWidth
-                                    id="costprice"
                                     label="Preço de Custo"
                                     name="costprice"
                                     autoComplete="costprice"
                                     value={formData.costprice}
+                                    onChange={handleChange}
+                                    InputLabelProps={{
+                                        sx: {
+                                            color: '#0303037e',
+                                            '&.Mui-focused': {
+                                                color: '#030303',
+                                            },
+                                        },
+                                    }}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            '& fieldset': {
+                                                borderColor: '#0303037e',
+                                            },
+                                            '&:hover fieldset': {
+                                                borderColor: '#0303037e',
+                                            },
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: '#030303af',
+                                            },
+                                        },
+                                    }}
+                                />
+                                <TextField
+                                    className="textfield-product"
+                                    margin="normal"
+                                    disabled
+                                    fullWidth
+                                    label="Percentual"
+                                    name="percentage"
+                                    autoComplete="percentage"
+                                    value={percentage}
                                     onChange={handleChange}
                                     InputLabelProps={{
                                         sx: {
@@ -515,7 +562,7 @@ function CreateProduct() {
                                 ))}
                             </Select>
                         </Box>
-                      {/*   <Box sx={{ textAlign: 'center', mt: 2 }} className="box-manager-product-img">
+                        {/*   <Box sx={{ textAlign: 'center', mt: 2 }} className="box-manager-product-img">
                             <Typography variant="h6">Carregar Imagem</Typography>
                             <label htmlFor="upload-button">
                                 <Box
