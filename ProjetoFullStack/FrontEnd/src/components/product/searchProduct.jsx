@@ -29,34 +29,33 @@ function SearchProduct() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [filteredproducts, setFilteredProducts] = useState([]);
   const [showActiveOnly, setShowActiveOnly] = useState(true);
+  const [showSoldOnly, setShowSoldOnly] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogStatus, setDialogStatus] = useState('');
   const [dialogMessage, setDialogMessage] = useState('');
 
-  const userToken = JSON.parse(localStorage.getItem('user')) || {};
-  const token = userToken.token || "";
+  const productToken = JSON.parse(localStorage.getItem('user')) || {};
+  const token = productToken.token || "";
 
-  // Função para buscar todos os usuários
-  const fetchUsers = async () => {
+  const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/user", {
+      const response = await axios.get("http://localhost:3000/product", {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      setUsers(response.data);
-      setFilteredUsers(response.data.filter(user => user.Active || !showActiveOnly));
+      setProducts(response.data);
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
         logout();
       }
-      setUsers([]);
-      setFilteredUsers([]);
-      const errorMessage = error.response?.data?.error || "Erro ao carregar usuários.";
+      setProducts([]);
+      setFilteredProducts([]);
+      const errorMessage = error.response?.data?.error || "Erro ao carregar produtos.";
       setDialogStatus('error');
       setDialogMessage(errorMessage);
       setDialogOpen(true);
@@ -64,13 +63,17 @@ function SearchProduct() {
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, [token]); // Dependência para atualizar quando token mudar
+    fetchProducts();
+  }, [token]);
 
   useEffect(() => {
-    // Filtra os usuários de acordo com o estado do checkbox
-    setFilteredUsers(users.filter(user => user.Active || !showActiveOnly));
-  }, [showActiveOnly, users]); // Dependências para atualizar quando showActiveOnly ou users mudar
+    const filterProducts = products.filter(product => {
+      const matchesActive = showActiveOnly ? product.Active : true;
+      const matchesSold = showSoldOnly ? !product.Sold : true;
+      return matchesActive && matchesSold;
+    });
+    setFilteredProducts(filterProducts);
+  }, [showActiveOnly, showSoldOnly, products]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -80,30 +83,35 @@ function SearchProduct() {
     setShowActiveOnly(event.target.checked);
   };
 
+  const handleCheckboxSoldChange = (event) => {
+    setShowSoldOnly(event.target.checked);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (searchTerm.trim() === "") {
-      // Se o campo de pesquisa estiver vazio, buscar todos os usuários
-      fetchUsers();
+      // Se o campo de pesquisa estiver vazio, buscar todos os produtos
+      fetchProducts();
     } else {
-      // Caso contrário, buscar usuários que correspondem ao termo de pesquisa
+      // Caso contrário, buscar produtos que correspondem ao termo de pesquisa
       try {
-        const response = await axios.get(`http://localhost:3000/usersearch/${searchTerm}`, {
+        const response = await axios.get(`http://localhost:3000/productsearch/${searchTerm}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        const searchedUsers = response.data;
-        setUsers(searchedUsers);
-        setFilteredUsers(searchedUsers.filter(user => user.Active || !showActiveOnly));
+        const searchedproducts = response.data;
+        setProducts(searchedproducts);
+        setFilteredProducts(searchedproducts.filter(product => product.Active || !showActiveOnly) && searchedproducts.filter(product => !product.Sold || !showSoldOnly));
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
           logout();
         }
-        setUsers([]);
-        setFilteredUsers([]);
-        const errorMessage = error.response?.data?.error || "Nenhum usuário encontrado.";
+        setProducts([]);
+        setFilteredProducts([]);
+
+        const errorMessage = error.response?.data?.error || "Nenhum produto encontrado.";
         setDialogStatus('error');
         setDialogMessage(errorMessage);
         setDialogOpen(true);
@@ -127,21 +135,21 @@ function SearchProduct() {
             <ProductionQuantityLimitsIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Pesquisa de Usuário
+            Pesquisa de Produtos
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 1000, margin: '0 auto', textAlign: 'center' }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
             <TextField
               margin="normal"
               required
               fullWidth
               id="searchTerm"
-              label="Pesquisar Usuário"
+              label="Pesquisar Produtos"
               name="searchTerm"
               autoComplete="searchTerm"
               autoFocus
               value={searchTerm}
               onChange={handleChange}
-              placeholder="Digite o nome ou email do usuário"
+              placeholder="Digite o nome, grupo, subgrupo, loja ou fornecedor do produto"
               InputLabelProps={{
                 sx: {
                   color: '#0303037e',
@@ -181,8 +189,27 @@ function SearchProduct() {
                   }}
                 />
               }
-              label="Mostrar apenas usuários ativos"
+              label="Mostrar produtos ativos"
               sx={{ display: 'inline-block', verticalAlign: 'middle' }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={showSoldOnly}
+                  onChange={handleCheckboxSoldChange}
+                  name="showSoldOnly"
+                  sx={{
+                    '&.Mui-checked': {
+                      color: '#45a049',
+                    },
+                    '&.Mui-checked + .MuiCheckbox-label::before': {
+                      backgroundColor: '#45a049',
+                    },
+                  }}
+                />
+              }
+              label="Ocultar produtos vendidos"
+              sx={{ display: 'inline-block', verticalAlign: 'middle', gap: '10px' }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mb: 2 }}>
               <Button
@@ -194,29 +221,52 @@ function SearchProduct() {
                 Buscar
               </Button>
             </Box>
-            {filteredUsers.length > 0 && (
+            {filteredproducts.length > 0 && (
               <TableContainer component={Paper} sx={{ mt: 2, width: "100%", maxWidth: '100%', maxHeight: 400, overflowY: 'auto', overflowX: 'auto', border: "1px solid #ccc", borderRadius: "8px" }}>
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Id</TableCell>
-                      <TableCell>Nome</TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Perfil</TableCell>
+                      <TableCell sx={{ minWidth: 50 }}>Id</TableCell>
+                      <TableCell sx={{ minWidth: 150 }}>Nome</TableCell>
+                      <TableCell sx={{ minWidth: 50 }}>Custo</TableCell>
+                      <TableCell sx={{ minWidth: 50 }}>Venda</TableCell>
+                      <TableCell sx={{ minWidth: 150 }}>Fornecedor</TableCell>
+                      <TableCell sx={{ minWidth: 100 }}>Loja</TableCell>
+                      <TableCell sx={{ minWidth: 50 }}>Grupo</TableCell>
+                      <TableCell sx={{ minWidth: 50 }}>SubGrupo</TableCell>
+                      <TableCell>Vendido</TableCell>
                       <TableCell>Ativo</TableCell>
                       <TableCell>Ações</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredUsers.map((user) => (
-                      <TableRow key={user.IdUser}>
-                        <TableCell>{user.IdUser}</TableCell>
-                        <TableCell>{user.UserName}</TableCell>
-                        <TableCell>{user.UserEmail}</TableCell>
-                        <TableCell>{user.UserProfile}</TableCell>
+                    {filteredproducts.map((product) => (
+                      <TableRow key={product.IdProduct}>
+                        <TableCell>{product.IdProduct}</TableCell>
+                        <TableCell>{product.ProductName}</TableCell>
+                        <TableCell>{product.CostPrice}</TableCell>
+                        <TableCell>{product.SalePrice}</TableCell>
+                        <TableCell>{product.ClientSupplierName}</TableCell>
+                        <TableCell>{product.StoreName}</TableCell>
+                        <TableCell>{product.GroupName}</TableCell>
+                        <TableCell>{product.SubGroupName}</TableCell>
                         <TableCell>
                           <Checkbox
-                            checked={!!user.Active}
+                            checked={!!product.Sold}
+                            readOnly
+                            sx={{
+                              '&.Mui-checked': {
+                                color: '#45a049',
+                              },
+                              '&.Mui-checked + .MuiCheckbox-label::before': {
+                                backgroundColor: '#45a049',
+                              },
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Checkbox
+                            checked={!!product.Active}
                             readOnly
                             sx={{
                               '&.Mui-checked': {
@@ -231,7 +281,7 @@ function SearchProduct() {
                         <TableCell>
                           <Button
                             component={Link}
-                            to={`/updateuser/${user.IdUser}`}
+                            to={`/updateproduct/${product.IdProduct}`}
                             variant="contained" color="success"
                           >
                             Editar
@@ -247,7 +297,7 @@ function SearchProduct() {
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 0, width: '100%', maxWidth: 600 }}>
             <Button
               className='primary-button'
-              sx={{ width: '50%' }}
+              sx={{ width: '53%' }}
               fullWidth
               variant="contained"
               onClick={handleVoltar}
