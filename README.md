@@ -18,6 +18,6 @@ Este é o lugar onde armazenamos o passo a passo de nossa jornada, nossa trilha 
 * **[Codificação para FrontEnd](https://github.com/LucianoDuarteRosa/Senai-RPV/tree/main/codificacaoFrontEnd)**
 * **[Codificação para BackEnd](https://github.com/LucianoDuarteRosa/Senai-RPV/tree/main/codificacaoBackEnd)**
 * **[Teste para BackEnd](https://github.com/LucianoDuarteRosa/Senai-RPV/tree/main/testeBackEnd)**
-
 * **[Desafio - Agenda Cultural](https://github.com/LucianoDuarteRosa/Senai-RPV/tree/main/desafioAgendaCultural)**
+* **[Projeto Final](https://github.com/LucianoDuarteRosa/Senai-RPV/tree/main/ProjetoFullStack)**
 ***
