@@ -107,21 +107,22 @@ class ProductController {
   update(req, res) {
     const { id } = req.params;
     const reqBody = req.body;
+
     const errors = [];
 
-    const testIdProduct = validator.integerValidator(reqBody.idProduct);
-    const testProductName = validator.allValidator(reqBody.productName, 2, 50);
-    const testCostPrice = validator.floatValidator(reqBody.costPrice);
-    const testSalePrice = validator.floatValidator(reqBody.salePrice);
-    const testIdClientSupplier = validator.integerValidator(reqBody.idClientSupplier);
-    const testIdStore = validator.integerValidator(reqBody.idStore);
-    const testIdSubGroup = validator.integerValidator(reqBody.idSubGroup);
-    const testIdUser = validator.integerValidator(reqBody.idUser);
-    const testRegistrationDate = validator.dateValidator(reqBody.registrationDate);
+    const testUserId = validator.integerValidator(reqBody.userId);
+    const testProductName = validator.allValidator(reqBody.name, 2, 50);
+    const testCostPrice = validator.floatValidator(reqBody.costprice);
+    const testSalePrice = validator.floatValidator(reqBody.saleprice);
+    const testIdClientSupplier = validator.integerValidator(reqBody.idclient);
+    const testIdStore = validator.integerValidator(reqBody.idstore);
+    const testIdSubGroup = validator.integerValidator(reqBody.idsubgroup);
+    const testIdUser = validator.integerValidator(reqBody.iduser);
     const testActive = validator.booleanValidator(reqBody.active);
+    const registrationDate = converter.convertToMySQLDateTimeFormat(reqBody.registrationdate);
 
-    if (testIdProduct !== true) {
-      errors.push(testIdProduct);
+    if (testUserId !== true) {
+      errors.push(testUserId);
     }
     if (testProductName !== true) {
       errors.push(testProductName);
@@ -144,9 +145,6 @@ class ProductController {
     if (testIdUser !== true) {
       errors.push(testIdUser);
     }
-    if (testRegistrationDate !== true) {
-      errors.push(testRegistrationDate);
-    }
     if (testActive !== true) {
       errors.push(testActive);
     }
@@ -154,7 +152,10 @@ class ProductController {
       return res.status(400).json({ errors });
     }
 
-    const retorno = productModel.update(reqBody, id);
+    const product = {ProductName: reqBody.name, CostPrice: reqBody.costprice, SalePrice: reqBody.saleprice, IdClientSupplier: reqBody.idclient,
+      IdSubGroup: reqBody.idsubgroup, IdStore: reqBody.idstore, IdUser: reqBody.iduser, RegistrationDate: registrationDate, Active: reqBody.active}
+
+    const retorno = productModel.update(product, id);
     return retorno
       .then((result) =>
         res.status(200).send("Produto atualizado com sucesso!")

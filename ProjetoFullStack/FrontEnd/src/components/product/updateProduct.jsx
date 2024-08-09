@@ -9,15 +9,15 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import CircularProgress from '@mui/material/CircularProgress';
-import DialogMessage from '../../../utils/dialogMessage';
-import validator from '../../../utils/inputsValidator';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import DialogMessage from '../../../utils/dialogMessage';
+import validator from '../../../utils/inputsValidator';
+import converter from '../../../utils/converter';
 
 const theme = createTheme();
 
@@ -25,36 +25,62 @@ function UpdateProduct() {
   const { logout } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-    active: false,
-    profile: ''
-  });
-  const [loading, setLoading] = useState(true);
-  const [profiles, setProfiles] = useState([]);
-
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogStatus, setDialogStatus] = useState('');
-  const [dialogMessage, setDialogMessage] = useState('');
 
   const userToken = JSON.parse(localStorage.getItem('user')) || {};
   const token = userToken.token || "";
 
+  const [formData, setFormData] = useState({
+    idproduct: "",
+    name: "",
+    costprice: "",
+    saleprice: "",
+    idclient: "",
+    idgsubgroup: "",
+    idgroup: "",
+    idsubgroup: "",
+    idstore: "",
+    sold: "",
+    active: "",
+    iduser: "",
+    username: "",
+    registrationdate: "",
+  });
+
+  const [groups, setGroup] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [subGroups, setSubGroup] = useState([]);
+  const [percentage, setPercentage] = useState("");
+  const [filteredSubGroups, setFilteredSubGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogStatus, setDialogStatus] = useState('');
+  const [dialogMessage, setDialogMessage] = useState('');
+
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/${id}`, {
+        const response = await axios.get(`http://localhost:3000/product/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        const userData = response.data[0];
-        setUser({
-          name: userData.UserName,
-          email: userData.UserEmail,
-          active: Boolean(userData.Active),
-          profile: userData.IdProfile || ''
+        const formData = response.data[0];
+        setFormData({
+          idproduct: formData.IdProduct,
+          name: formData.ProductName,
+          costprice: formData.CostPrice,
+          saleprice: formData.SalePrice,
+          idclient: formData.IdClientSupplier,
+          idgsubgroup: formData.IdSubGroup,
+          idgroup: formData.IdGroup,
+          idsubgroup: formData.IdSubGroup,
+          idstore: formData.IdStore,
+          sold: formData.Sold,
+          active: formData.Active,
+          iduser: formData.IdUser,
+          username: formData.UserName,
+          registrationdate: converter.convertToDateTimeLocalFormat(formData.RegistrationDate)
         });
       } catch (error) {
         console.log(error);
@@ -65,34 +91,113 @@ function UpdateProduct() {
         setDialogStatus('error');
         setDialogMessage(errorMessage);
         setDialogOpen(true);
-      } finally {
-        setLoading(false);
       }
-    };
+    }
 
-    const fetchProfiles = async () => {
+    const fetchGroup = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/profile', {
+        const response = await axios.get('http://localhost:3000/group', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        setProfiles(response.data);
+        setGroup(response.data);
       } catch (error) {
+        console.error("Error fetching group", error);
         if (error.response && error.response.status === 401) {
           logout();
         }
-        console.error("Error fetching profiles", error);
+      }
+    };
+    const fetchSubGroup = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/subgroup', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setSubGroup(response.data);
+      } catch (error) {
+        console.error("Error fetching sub-group", error);
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
+      }
+    };
+    const fetchStores = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/store', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setStores(response.data);
+      } catch (error) {
+        console.error("Error fetching store", error);
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
+      }
+    };
+    const fetchClients = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/client', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setClients(response.data);
+      } catch (error) {
+        console.error("Error fetching client", error);
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
       }
     };
 
-    fetchUser();
-    fetchProfiles();
-  }, [id, token]);
+    fetchProduct();
+    fetchClients();
+    fetchStores();
+    fetchSubGroup();
+    fetchGroup();
+  }, [id, token, logout]);
+
+  useEffect(() => {
+    const calculatePercentage = () => {
+      const costprice = parseFloat(formData.costprice);
+      const saleprice = parseFloat(formData.saleprice);
+      if (!isNaN(costprice) && !isNaN(saleprice) && costprice > 0) {
+        const percentage = ((saleprice - costprice) / costprice) * 100;
+        setPercentage(percentage.toFixed(2) + '%');
+      } else {
+        setPercentage('');
+      }
+    };
+
+    calculatePercentage();
+  }, [formData.costprice, formData.saleprice]);
+
+  useEffect(() => {
+    if (selectedGroup) {
+      setFilteredSubGroups(subGroups.filter(subGroup => subGroup.IdGroup === selectedGroup));
+    } else {
+      setFilteredSubGroups([]);
+    }
+  }, [selectedGroup, subGroups]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-    setUser({ ...user, [name]: type === 'checkbox' ? checked : value });
+    setFormData(prevFormData => ({
+      ...prevFormData, [name]: type === 'checkbox' ? checked : value
+    }));
+
+    if (name === "idgroup") {
+      setSelectedGroup(value);
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        idsubgroup: ""
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -100,27 +205,42 @@ function UpdateProduct() {
     try {
       const errors = [];
 
-      const testName = validator.allValidator(user.name, 2, 15);
-      const testEmail = validator.emailValidator(user.email);
-      const testActive = validator.booleanValidator(user.active);
+      const testProductName = validator.allValidator(formData.name, 2, 50);
+      const testCostPrice = validator.floatValidator(formData.costprice);
+      const testSalePrice = validator.floatValidator(formData.saleprice);
+      const testIdClientSupplier = validator.integerValidator(formData.idclient);
+      const testIdStore = validator.integerValidator(formData.idstore);
+      const testIdGroup = validator.integerValidator(formData.idgroup);
+      const testIdSubGroup = validator.integerValidator(formData.idsubgroup);
 
-      if (testName !== true) {
-        errors.push(testName);
+      if (testProductName !== true) {
+        errors.push(testProductName);
       }
-      if (testEmail !== true) {
-        errors.push(testEmail);
+      if (testCostPrice !== true) {
+        errors.push(testCostPrice);
       }
-      if (testActive !== true) {
-        errors.push(testActive);
+      if (testSalePrice !== true) {
+        errors.push(testSalePrice);
       }
-
+      if (testIdClientSupplier !== true) {
+        errors.push(testIdClientSupplier);
+      }
+      if (testIdStore !== true) {
+        errors.push(testIdStore);
+      }
+      if (testIdGroup !== true) {
+        errors.push(testIdGroup);
+      }
+      if (testIdSubGroup !== true) {
+        errors.push(testIdSubGroup);
+      }
       if (errors.length > 0) {
         setDialogStatus('error');
         setDialogMessage(errors.join('\n'));
         return;
       }
 
-      await axios.put(`http://localhost:3000/user/${id}`, { ...user }, {
+      await axios.put(`http://localhost:3000/product/${id}`, { ...formData }, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -140,23 +260,8 @@ function UpdateProduct() {
     }
   };
 
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
-
   const handleVoltar = () => {
-    navigate("/searchuser");
+    navigate("/searchproduct");
   };
 
   const handleCloseDialog = () => {
@@ -165,145 +270,362 @@ function UpdateProduct() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container className="box-container">
+      <Container className="box-container-product">
         <CssBaseline />
-        <Box className="box-manager-user">
+        <Box className="box-manager-product" sx={{ mt: '2%' }} component="form" onSubmit={handleSubmit} >
           <Avatar className='avatar'>
             <ProductionQuantityLimitsIcon className='avatar' />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Atualizar Usuário
+            Atualizar de Produto
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Nome"
-              name="name"
-              autoComplete="nome"
-              autoFocus
-              value={user.name || ''}
-              onChange={handleChange}
-              InputLabelProps={{
-                sx: {
-                  color: '#0303037e',
-                  '&.Mui-focused': {
-                    color: '#030303',
+          <Box sx={{ display: "flex", gap: '10px' }}>
+            <Box sx={{ mt: 1 }} className="box-manager-product-main">
+              <TextField
+                fullWidth
+                margin="normal"
+                required
+                label="Nome"
+                name="name"
+                autoComplete="name"
+                autoFocus
+                value={formData.name}
+                onChange={handleChange}
+                InputLabelProps={{
+                  sx: {
+                    color: '#0303037e',
+                    '&.Mui-focused': {
+                      color: '#030303',
+                    },
                   },
-                },
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#0303037e',
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#0303037e',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#0303037e',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#030303af',
+                    },
                   },
-                  '&:hover fieldset': {
-                    borderColor: '#0303037e',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#030303af',
-                  },
-                },
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Email"
-              name="email"
-              autoComplete="email"
-              value={user.email || ''}
-              onChange={handleChange}
-              InputLabelProps={{
-                sx: {
-                  color: '#0303037e',
-                  '&.Mui-focused': {
-                    color: '#030303',
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#0303037e',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#0303037e',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#030303af',
-                  },
-                },
-              }}
-            />
-            <Select
-              name="IdProfile" // Atualiza o nome da propriedade no Select
-              value={user.profile || ''}
-              onChange={handleChange}
-              fullWidth
-              color="success"
-              displayEmpty
-              renderValue={(selected) => {
-                if (!selected) {
-                  return <em>Selecione um perfil</em>;
-                }
-                return profiles.find(profile => profile.IdProfile === selected)?.UserProfile || '';
-              }}
-              sx={{ mt: '10px' }}
-            >
-              <MenuItem value="">
-                <em>Selecione um perfil</em>
-              </MenuItem>
-              {profiles.map((profile) => (
-                <MenuItem key={profile.IdProfile} value={profile.IdProfile}>
-                  {profile.UserProfile}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={user.active}
+                }}
+              />
+              <Box sx={{ display: 'flex', gap: '10px' }}>
+                <TextField
+                  className="textfield-product"
+                  margin="normal"
+                  type="number"
+                  required
+                  fullWidth
+                  label="Preço de Custo"
+                  name="costprice"
+                  autoComplete="costprice"
+                  value={formData.costprice}
                   onChange={handleChange}
-                  name="active"
+                  InputLabelProps={{
+                    sx: {
+                      color: '#0303037e',
+                      '&.Mui-focused': {
+                        color: '#030303',
+                      },
+                    },
+                  }}
                   sx={{
-                    '&.Mui-checked': {
-                      color: '#45a049',
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#0303037e',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#0303037e',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#030303af',
+                      },
                     },
                   }}
                 />
-              }
-              label="Ativo"
-            />
-            <Box className="box-manager-button">
-              <Button
-                type="submit"
+                <TextField
+                  className="textfield-product"
+                  margin="normal"
+                  disabled
+                  fullWidth
+                  label="Percentual"
+                  name="percentage"
+                  autoComplete="percentage"
+                  value={percentage}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    sx: {
+                      color: '#0303037e',
+                      '&.Mui-focused': {
+                        color: '#030303',
+                      },
+                    },
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#0303037e',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#0303037e',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#030303af',
+                      },
+                    },
+                  }}
+                />
+                <TextField
+                  className="textfield-product"
+                  margin="normal"
+                  type="number"
+                  required
+                  fullWidth
+                  label="Preço de Venda"
+                  name="saleprice"
+                  autoComplete="saleprice"
+                  value={formData.saleprice}
+                  onChange={handleChange}
+                  InputLabelProps={{
+                    sx: {
+                      color: '#0303037e',
+                      '&.Mui-focused': {
+                        color: '#030303',
+                      },
+                    },
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#0303037e',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#0303037e',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#030303af',
+                      },
+                    },
+                  }}
+                />
+              </Box>
+              <Select
+                required
+                name="idstore"
+                value={formData.idstore}
+                onChange={handleChange}
                 fullWidth
-                variant="contained"
-                className='primary-button'
+                displayEmpty
+                renderValue={(selected) => {
+                  if (!selected) {
+                    return <em>Selecione uma Loja</em>;
+                  }
+                  return stores.find(store => store.IdStore === selected)?.StoreName || '';
+                }}
+                color="success"
+                sx={{ mt: '10px' }}
               >
-                Salvar
-              </Button>
-              <Button
+                <MenuItem value="" >
+                  <em>Selecione uma Loja</em>
+                </MenuItem>
+                {stores.map(store => (
+                  <MenuItem key={store.IdStore} value={store.IdStore}>
+                    {store.StoreName}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Select
+                required
+                name="idclient"
+                value={formData.idclient}
+                onChange={handleChange}
                 fullWidth
-                variant="contained"
-                className='primary-button'
-                onClick={handleVoltar}
+                displayEmpty
+                renderValue={(selected) => {
+                  if (!selected) {
+                    return <em>Selecione um Cliente</em>;
+                  }
+                  return clients.find(client => client.IdClientSupplier === selected)?.ClientSupplierName || '';
+                }}
+                color="success"
+                sx={{ mt: '10px' }}
               >
-                Voltar
-              </Button>
+                <MenuItem value="" >
+                  <em>Selecione um Cliente</em>
+                </MenuItem>
+                {clients.map(client => (
+                  <MenuItem key={client.IdClientSupplier} value={client.IdClientSupplier}>
+                    {client.ClientSupplierName}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Box sx={{ display: 'flex', gap: '10px' }}>
+                <Select
+                  required
+                  name="idgroup"
+                  value={formData.idgroup}
+                  onChange={(e) => {
+                    handleChange(e);
+                    setSelectedGroup(e.target.value);
+                  }}
+                  fullWidth
+                  displayEmpty
+                  renderValue={(selected) => {
+                    if (!selected) {
+                      return <em>Selecione um Grupo</em>;
+                    }
+                    return groups.find(group => group.IdGroup === selected)?.GroupName || '';
+                  }}
+                  color="success"
+                  sx={{ mt: '10px' }}
+                >
+                  <MenuItem value="" >
+                    <em>Selecione um Grupo</em>
+                  </MenuItem>
+                  {groups.map(group => (
+                    <MenuItem key={group.IdGroup} value={group.IdGroup}>
+                      {group.GroupName}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Select
+                  required
+                  name="idsubgroup"
+                  value={formData.idsubgroup}
+                  onChange={handleChange}
+                  fullWidth
+                  displayEmpty
+                  renderValue={(selected) => {
+                    if (!selected) {
+                      return <em>Selecione um Subgrupo</em>;
+                    }
+                    return subGroups.find(subGroup => subGroup.IdSubGroup === selected)?.SubGroupName || '';
+                  }}
+                  color="success"
+                  sx={{ mt: '10px' }}
+                >
+                  <MenuItem value="" >
+                    <em>Selecione um Subgrupo</em>
+                  </MenuItem>
+                  {filteredSubGroups.map(subGroup => (
+                    <MenuItem key={subGroup.IdSubGroup} value={subGroup.IdSubGroup}>
+                      {subGroup.SubGroupName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+              <TextField
+                fullWidth
+                margin="normal"
+                disabled
+                label="Usuário"
+                name="username"
+                autoComplete="username"
+                autoFocus
+                value={formData.username}
+                onChange={handleChange}
+                InputLabelProps={{
+                  sx: {
+                    color: '#0303037e',
+                    '&.Mui-focused': {
+                      color: '#030303',
+                    },
+                  },
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#0303037e',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#0303037e',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#030303af',
+                    },
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                type="datetime-local"
+                margin="normal"
+                disabled
+                label="Data de Cadastro"
+                name="registrationdate"
+                autoComplete="registrationdate"
+                autoFocus
+                value={formData.registrationdate}
+                onChange={handleChange}
+                InputLabelProps={{
+                  sx: {
+                    color: '#0303037e',
+                    '&.Mui-focused': {
+                      color: '#030303',
+                    },
+                  },
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#0303037e',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#0303037e',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#030303af',
+                    },
+                  },
+                }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={Boolean(formData.active)}
+                    onChange={handleChange}
+                    name="active"
+                    sx={{
+                      '&.Mui-checked': {
+                        color: '#45a049',
+                      },
+                    }}
+                  />
+                }
+                label="Ativo"
+              />
             </Box>
           </Box>
+          <Box className="box-manager-button" sx={{ width: '60%' }}>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              className='primary-button'
+            >
+              Cadastrar
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              className='primary-button'
+              onClick={handleVoltar}
+            >
+              Voltar
+            </Button>
+          </Box>
         </Box>
-        <DialogMessage
-          open={dialogOpen}
-          onClose={handleCloseDialog}
-          status={dialogStatus}
-          message={dialogMessage}
-        />
       </Container>
+      <DialogMessage
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        status={dialogStatus}
+        message={dialogMessage}
+      />
     </ThemeProvider>
   );
 }

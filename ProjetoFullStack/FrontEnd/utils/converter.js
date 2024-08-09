@@ -1,12 +1,33 @@
-const { format, parse,  isValid } = require('date-fns');
+import { format, parse,  isValid } from 'date-fns';
 
 class Converter {
 
-    convertToMySQLDateTimeFormat(dateTimeLocalString) {
-        const [date, time] = dateTimeLocalString.split('T');
-        const formattedDateTime = `${date} ${time}:00`; // Adiciona os segundos
-        return formattedDateTime;
-      }
+    frontToMySQL(dateInput) {
+        let parsedDate;
+    
+        // Verificar se a entrada é um objeto Date
+        if (dateInput instanceof Date) {
+            parsedDate = dateInput;
+        } else if (typeof dateInput === 'string') {
+            // Tentar parsear a data a partir da string
+            parsedDate = parse(dateInput, 'dd/MM/yyyy', new Date());
+    
+            // Se a data original não estiver válida, tentar o formato YYYY-MM-DD
+            if (!isValid(parsedDate)) {
+                parsedDate = parse(dateInput, 'yyyy-MM-dd', new Date());
+            }
+        } else {
+            return ''; // Retornar uma string vazia se a entrada não for válida
+        }
+    
+        // Verificar se a data é válida
+        if (isValid(parsedDate)) {
+            // Retorna a data formatada para YYYY-MM-DD HH:mm:ss
+            return format(parsedDate, 'yyyy-MM-dd HH:mm:ss');
+        } else {
+            return ''; // Retornar uma string vazia se a data não for válida
+        }
+    }
 
     toMySQLDate(dateInput = new Date()) {
         let date;
@@ -63,6 +84,19 @@ class Converter {
             return error.message;
         }
     }
+
+     convertToDateTimeLocalFormat(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // meses são baseados em 0
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+      
 }
 
-module.exports = new Converter();
+export default new Converter();
+
